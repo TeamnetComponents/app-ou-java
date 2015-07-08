@@ -5,17 +5,21 @@
     <modelVersion>4.0.0</modelVersion>
 	
     <parent>
-        <groupId>ro.teamnet.bootstrap</groupId>
-        <artifactId>bootstrap-dependencies</artifactId>
+        <groupId>ro.teamnet.neo</groupId>
+        <artifactId>app-neo4j-dependencies</artifactId>
         <version>0.2-SNAPSHOT</version>
         <relativePath />
     </parent>
 	
 	<groupId>ro.teamnet.ou</groupId>
     <artifactId>app-ou-java</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
-	
+	<properties>
+        <bootstrap.version>0.2-SNAPSHOT</bootstrap.version>
+        <spring-data-neo4j.version>3.2.1.RELEASE</spring-data-neo4j.version>
+        <app-neo4j-base.version>0.2-SNAPSHOT</app-neo4j-base.version>
+    </properties>
     <distributionManagement>
         <repository>
             <id>tni-hq-artifact</id>
@@ -38,12 +42,30 @@
 
     <dependencies>
 		<!-- Project dependencies -->
-		<dependency>
+       <dependency>
+           <groupId>ro.teamnet.neo</groupId>
+           <artifactId>app-neo4j-base</artifactId>
+           <version>${app-neo4j-base.version}</version>
+       </dependency>
+
+        <dependency>
             <groupId>ro.teamnet.bootstrap</groupId>
             <artifactId>app-bootstrap-commons</artifactId>
-            <version>0.2-SNAPSHOT</version>
-            <scope>provided</scope>
+            <version>${bootstrap.version}</version>
         </dependency>
+        <dependency>
+            <groupId>ro.teamnet.bootstrap</groupId>
+            <artifactId>app-bootstrap-security</artifactId>
+            <version>${bootstrap.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>ro.teamnet.bootstrap</groupId>
+            <artifactId>app-bootstrap</artifactId>
+            <version>${bootstrap.version}</version>
+        </dependency>
+
     </dependencies>
 	
 	<build>
