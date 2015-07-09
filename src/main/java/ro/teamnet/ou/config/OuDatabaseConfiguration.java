@@ -13,6 +13,8 @@ import ro.teamnet.bootstrap.extend.AppRepositoryFactoryBean;
 import ro.teamnet.bootstrap.plugin.jpa.DefaultPackagesToScanPlugin;
 import ro.teamnet.bootstrap.plugin.jpa.JpaPackagesToScanPlugin;
 import ro.teamnet.neo.config.Neo4jBaseConfiguration;
+import ro.teamnet.neo.plugin.DefaultNeoPackagesToScanPlugin;
+import ro.teamnet.neo.plugin.NeoPackagesToScanPlugin;
 
 @Configuration
 @EnableTransactionManagement
@@ -20,20 +22,23 @@ import ro.teamnet.neo.config.Neo4jBaseConfiguration;
 @EnableJpaRepositories(basePackages = {"ro.teamnet.ou.repository.jpa"},
         repositoryFactoryBeanClass = AppRepositoryFactoryBean.class)
 @Import(Neo4jBaseConfiguration.class)
-@ComponentScan(basePackages = {"ro.teamnet.ou.domain.neo"})
 public class OuDatabaseConfiguration {
 
-    private RelaxedPropertyResolver propertyResolver;
-    private Environment env;
+
 
     @Bean
-    public JpaPackagesToScanPlugin jpaPackagesToScanPlugin1() {
-        JpaPackagesToScanPlugin ret = DefaultPackagesToScanPlugin
+    public JpaPackagesToScanPlugin jpaPackagesToScanPlugin() {
+        return DefaultPackagesToScanPlugin
                 .instance().addPackage("ro.teamnet.ou.domain.jpa");
-
-
-        return ret;
     }
+
+    @Bean
+    public NeoPackagesToScanPlugin neoPackagesToScanPlugin() {
+        return DefaultNeoPackagesToScanPlugin
+                .instance().addPackage("ro.teamnet.ou.domain.neo");
+    }
+
+
 
 
 }
