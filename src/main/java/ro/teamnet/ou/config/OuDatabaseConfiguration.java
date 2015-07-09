@@ -2,6 +2,7 @@ package ro.teamnet.ou.config;
 
 import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
@@ -19,6 +20,7 @@ import ro.teamnet.neo.config.Neo4jBaseConfiguration;
 @EnableJpaRepositories(basePackages = {"ro.teamnet.ou.repository.jpa"},
         repositoryFactoryBeanClass = AppRepositoryFactoryBean.class)
 @Import(Neo4jBaseConfiguration.class)
+@ComponentScan(basePackages = {"ro.teamnet.ou.domain.neo"})
 public class OuDatabaseConfiguration {
 
     private RelaxedPropertyResolver propertyResolver;
@@ -27,7 +29,7 @@ public class OuDatabaseConfiguration {
     @Bean
     public JpaPackagesToScanPlugin jpaPackagesToScanPlugin1() {
         JpaPackagesToScanPlugin ret = DefaultPackagesToScanPlugin
-                .instance().addPackage("ro.teamnet.ou.domain.neo");
+                .instance().addPackage("ro.teamnet.ou.domain.jpa");
 
 
         return ret;
