@@ -53,6 +53,14 @@
             <artifactId>app-bootstrap-commons</artifactId>
             <version>${bootstrap.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>ro.teamnet.bootstrap</groupId>
+            <artifactId>app-bootstrap-dictionary</artifactId>
+            <version>${bootstrap.version}</version>
+        </dependency>
+
+
         <dependency>
             <groupId>ro.teamnet.bootstrap</groupId>
             <artifactId>app-bootstrap-security</artifactId>
