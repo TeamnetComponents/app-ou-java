@@ -1,10 +1,10 @@
-package ro.teamnet.ou.repository;
+package ro.teamnet.ou.repository.jpa;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ro.teamnet.bootstrap.domain.ApplicationRole;
 import ro.teamnet.bootstrap.extend.AppRepository;
-import ro.teamnet.ou.domain.Function;
+import ro.teamnet.ou.domain.jpa.Function;
 
 import java.util.Set;
 
