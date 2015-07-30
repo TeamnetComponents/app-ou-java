@@ -2,8 +2,7 @@ package ro.teamnet.ou.domain;
 
 import org.neo4j.graphdb.Direction;
 import org.springframework.data.neo4j.annotation.*;
-import ro.teamnet.ou.domain.neo.*;
-
+import ro.teamnet.ou.domain.neo.Function;
 
 import java.util.Set;
 
@@ -65,5 +64,13 @@ public class Account {
 
     public void setOrganizationalUnits(Set<ro.teamnet.ou.domain.neo.OrganizationalUnit> organizationalUnits) {
         this.organizationalUnits = organizationalUnits;
+    }
+
+    public Set<Function> getFunctions() {
+        return functions;
+    }
+
+    public void setFunctions(Set<Function> functions) {
+        this.functions = functions;
     }
 }

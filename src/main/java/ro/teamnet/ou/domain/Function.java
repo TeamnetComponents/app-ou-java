@@ -2,12 +2,15 @@ package ro.teamnet.ou.domain;
 
 
 import org.springframework.data.neo4j.annotation.*;
+import ro.teamnet.bootstrap.domain.ModuleRight;
 import ro.teamnet.bootstrap.domain.RoleBase;
 import ro.teamnet.ou.domain.neo.OrganizationalUnit;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @RelationshipEntity
 @Entity
@@ -53,6 +56,7 @@ public class Function extends RoleBase{
     @GraphProperty(propertyName = "active", defaultValue = "")
     protected Boolean active;
 
+    private Set<ModuleRight> moduleRights = new HashSet<>();
 
     public Account getAccount() {
         return account;
@@ -68,6 +72,55 @@ public class Function extends RoleBase{
 
     public void setOrganizationalUnit(OrganizationalUnit organizationalUnit) {
         this.organizationalUnit = organizationalUnit;
+    }
+
+    @Override
+    public Set<ModuleRight> getModuleRights() {
+        return moduleRights;
+    }
+
+    public void setModuleRights(Set<ModuleRight> moduleRights) {
+        this.moduleRights = moduleRights;
+    }
+
+    @Override
+    public Boolean getActive() {
+        return active;
+    }
+
+    @Override
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    @Override
+    public Date getValidTo() {
+        return validTo;
+    }
+
+    @Override
+    public void setValidTo(Date validTo) {
+        this.validTo = validTo;
+    }
+
+    @Override
+    public Date getValidFrom() {
+        return validFrom;
+    }
+
+    @Override
+    public void setValidFrom(Date validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Long getId() {
