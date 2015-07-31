@@ -6,13 +6,14 @@ import ro.teamnet.ou.domain.jpa.OrganizationalUnitFunction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
 @NodeEntity
 @Entity
 @Table(name = "T_ORGANIZATIONAL_UNIT")
-public class OrganizationalUnit{
+public class OrganizationalUnit implements Serializable {
 
     @GraphId
     @Id
@@ -83,5 +84,29 @@ public class OrganizationalUnit{
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Date getValidFrom() {
+        return validFrom;
+    }
+
+    public void setValidFrom(Date validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public Date getValidTo() {
+        return validTo;
+    }
+
+    public void setValidTo(Date validTo) {
+        this.validTo = validTo;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }

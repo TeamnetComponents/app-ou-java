@@ -1,16 +1,13 @@
 package ro.teamnet.ou.web.rest.dto;
 
-import ro.teamnet.bootstrap.web.rest.dto.ModuleRightDTO;
-import ro.teamnet.ou.domain.Account;
 import ro.teamnet.ou.domain.neo.OrganizationalUnit;
+import ro.teamnet.ou.domain.neo.Perspective;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
-
-public class FunctionDTO implements Serializable {
+public class OrganizationDTO implements Serializable {
 
     private Long id;
     private String code;
@@ -18,27 +15,24 @@ public class FunctionDTO implements Serializable {
     private Date validFrom;
     private Date validTo;
     private Boolean active;
-    private Set<ModuleRightDTO> moduleRights = new HashSet<>();
 
     private Long jpaId;
-    private Account account;
-    private OrganizationalUnit organizationalUnit;
+    private Set<Perspective> perspectives;
+    private Set<OrganizationalUnit> roots;
 
-    public FunctionDTO() {
-    }
+    public OrganizationDTO(){}
 
-    public FunctionDTO(Long id, String code, String description, Date validFrom, Date validTo, Boolean active, Long jpaId,
-                       Set<ModuleRightDTO> moduleRights, Account account, OrganizationalUnit organizationalUnit) {
+    public OrganizationDTO(Long id, String code, String description, Date validFrom, Date validTo, Boolean active,
+                           Long jpaId, Set<Perspective> perspectives, Set<OrganizationalUnit> roots){
         this.id = id;
         this.code = code;
         this.description = description;
         this.validFrom = validFrom;
         this.validTo = validTo;
         this.active = active;
-        this.moduleRights = moduleRights;
         this.jpaId = jpaId;
-        this.account = account;
-        this.organizationalUnit = organizationalUnit;
+        this.perspectives = perspectives;
+        this.roots = roots;
     }
 
     public Long getId() {
@@ -89,30 +83,6 @@ public class FunctionDTO implements Serializable {
         this.active = active;
     }
 
-    public void setModuleRights(Set<ModuleRightDTO> moduleRights) {
-        this.moduleRights = moduleRights;
-    }
-
-    public Set<ModuleRightDTO> getModuleRights() {
-        return moduleRights;
-    }
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
-
-    public OrganizationalUnit getOrganizationalUnit() {
-        return organizationalUnit;
-    }
-
-    public void setOrganizationalUnit(OrganizationalUnit organizationalUnit) {
-        this.organizationalUnit = organizationalUnit;
-    }
-
     public Long getJpaId() {
         return jpaId;
     }
@@ -121,21 +91,34 @@ public class FunctionDTO implements Serializable {
         this.jpaId = jpaId;
     }
 
+    public Set<Perspective> getPerspectives() {
+        return perspectives;
+    }
+
+    public void setPerspectives(Set<Perspective> perspectives) {
+        this.perspectives = perspectives;
+    }
+
+    public Set<OrganizationalUnit> getRoots() {
+        return roots;
+    }
+
+    public void setRoots(Set<OrganizationalUnit> roots) {
+        this.roots = roots;
+    }
+
     @Override
     public String toString() {
-        return "FunctionDTO{" +
+        return "OrganizationDTO{" +
                 "id=" + id +
                 ", code='" + code + '\'' +
                 ", description='" + description + '\'' +
                 ", validFrom=" + validFrom +
                 ", validTo=" + validTo +
                 ", active=" + active +
-                ", moduleRights=" + moduleRights +
                 ", jpaId=" + jpaId +
-                ", account=" + account +
-                ", organizationalUnit=" + organizationalUnit +
+                ", perspectives=" + perspectives +
+                ", roots=" + roots +
                 '}';
     }
 }
-
-
