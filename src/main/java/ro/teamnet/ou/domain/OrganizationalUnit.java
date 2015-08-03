@@ -6,13 +6,14 @@ import ro.teamnet.ou.domain.jpa.OrganizationalUnitFunction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
 @NodeEntity
 @Entity
 @Table(name = "T_ORGANIZATIONAL_UNIT")
-public class OrganizationalUnit{
+public class OrganizationalUnit implements Serializable{
 
     @GraphId
     @Id
