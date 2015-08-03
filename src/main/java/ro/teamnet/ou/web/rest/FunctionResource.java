@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ro.teamnet.ou.domain.jpa.Function;
+import ro.teamnet.ou.domain.Function;
 import ro.teamnet.ou.service.FunctionService;
 import ro.teamnet.ou.web.rest.dto.FunctionDTO;
 
