@@ -13,7 +13,7 @@ import java.util.Set;
 @NodeEntity
 @Entity
 @Table(name = "T_ORGANIZATIONAL_UNIT")
-public class OrganizationalUnit implements Serializable {
+public class OrganizationalUnit implements Serializable{
 
     @GraphId
     @Id

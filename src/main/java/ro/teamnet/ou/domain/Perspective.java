@@ -5,13 +5,14 @@ import org.springframework.data.neo4j.annotation.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Set;
 
 @RelationshipEntity
 @Entity
 @Table(name = "T_PERSPECTIVE")
 
-public class Perspective {
+public class Perspective implements Serializable {
     @GraphId
     @Id
     @Column(name = "ID_PERSPECTIVE")
