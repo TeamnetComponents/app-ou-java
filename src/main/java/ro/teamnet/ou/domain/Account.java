@@ -2,7 +2,6 @@ package ro.teamnet.ou.domain;
 
 import org.neo4j.graphdb.Direction;
 import org.springframework.data.neo4j.annotation.*;
-import ro.teamnet.ou.domain.neo.Function;
 
 import java.util.Set;
 
@@ -21,10 +20,9 @@ public class Account {
     @RelatedTo(type = "FUNCTION", direction = Direction.OUTGOING)
     private Set<ro.teamnet.ou.domain.neo.OrganizationalUnit> organizationalUnits;
 
-
     @Fetch
     @RelatedToVia(type = "FUNCTION")
-    private Set<ro.teamnet.ou.domain.neo.Function> functions;
+    private Set<ro.teamnet.ou.domain.Function> functions;
 
     public Long getId() {
         return id;

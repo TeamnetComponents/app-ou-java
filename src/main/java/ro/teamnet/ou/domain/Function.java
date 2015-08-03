@@ -1,6 +1,5 @@
 package ro.teamnet.ou.domain;
 
-
 import org.springframework.data.neo4j.annotation.*;
 import ro.teamnet.bootstrap.domain.ModuleRight;
 import ro.teamnet.bootstrap.domain.RoleBase;
@@ -22,12 +21,6 @@ public class Function extends RoleBase{
     @EndNode
     private ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnit;
 
-    @GraphId
-    @Id
-    @Column(name = "ID_ROLE")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
-
     @GraphProperty(propertyName = "code", defaultValue = "")
     @NotNull
     @Column(name = "CODE", length = 100, unique = true)
@@ -37,6 +30,7 @@ public class Function extends RoleBase{
     @GraphProperty(propertyName = "description", defaultValue = "")
     protected String description;
 
+    @GraphId
     @GraphProperty(propertyName = "jpaId", defaultValue = "")
     private Long jpaId;
 
@@ -121,14 +115,6 @@ public class Function extends RoleBase{
     @Override
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getCode() {

@@ -47,6 +47,7 @@ public class OrganizationalUnit implements Serializable{
     @GraphProperty(propertyName = "active", defaultValue = "")
     protected Boolean active;
 
+    @Transient
     private Set<OrganizationalUnitFunction> organizationalUnitFunctions;
 
     @RelatedTo(type="BELONGS_TO",direction = Direction.OUTGOING)
@@ -59,8 +60,8 @@ public class OrganizationalUnit implements Serializable{
     @RelatedTo(type = "FUNCTION", direction = Direction.INCOMING)
     private Set<Account> accounts;
 
-
-
+    @ManyToOne
+    private Perspective perspective;
 
     public Long getId() {
         return id;
@@ -84,29 +85,5 @@ public class OrganizationalUnit implements Serializable{
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Date getValidFrom() {
-        return validFrom;
-    }
-
-    public void setValidFrom(Date validFrom) {
-        this.validFrom = validFrom;
-    }
-
-    public Date getValidTo() {
-        return validTo;
-    }
-
-    public void setValidTo(Date validTo) {
-        this.validTo = validTo;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
     }
 }

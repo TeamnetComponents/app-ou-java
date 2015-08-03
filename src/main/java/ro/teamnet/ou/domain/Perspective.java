@@ -31,16 +31,14 @@ public class Perspective implements Serializable {
     @GraphProperty(propertyName = "jpaId", defaultValue = "")
     private Long jpaId;
 
+    @ManyToOne
     @StartNode
     private Organization organization;
 
     @EndNode
     private OrganizationalUnit organizationalUnit;
 
-
     @OneToMany(mappedBy = "perspective")
     @JsonManagedReference
     private Set<OrganizationalUnit> organizationalUnits;
-
-
 }
