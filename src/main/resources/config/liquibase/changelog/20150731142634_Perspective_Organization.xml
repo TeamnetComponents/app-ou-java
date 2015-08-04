@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+
+    <changeSet id="20150731142634" author="marian">
+
+        <addColumn tableName="T_PERSPECTIVE">
+            <column name="ID_ORGANIZATION" type="bigint"/>
+        </addColumn>
+
+        <addForeignKeyConstraint baseColumnNames="ID_ORGANIZATION"
+                                 baseTableName="T_PERSPECTIVE"
+                                 constraintName="fk_perspective_id_organization"
+                                 referencedColumnNames="ID_ORGANIZATION"
+                                 referencedTableName="T_ORGANIZATION"/>
+    </changeSet>
+
+</databaseChangeLog>
