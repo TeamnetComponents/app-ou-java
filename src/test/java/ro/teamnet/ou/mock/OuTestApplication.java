@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import ro.teamnet.bootstrap.config.*;
 import ro.teamnet.bootstrap.config.apidoc.SwaggerConfiguration;
 import ro.teamnet.bootstrap.config.metrics.JHipsterHealthIndicatorConfiguration;
@@ -17,13 +18,13 @@ import ro.teamnet.bootstrap.config.metrics.JHipsterHealthIndicatorConfiguration;
  * A main method is also provided and may be used for running the application.
  */
 @ComponentScan(
-        basePackages = {"ro.teamnet.bootstrap", "ro.teamnet.ou", "ro.teamnet.neo" },
+        basePackages = {"ro.teamnet.bootstrap", "ro.teamnet.ou", "ro.teamnet.neo"
+        },
         excludeFilters = @ComponentScan.Filter(
                 type = FilterType.ASSIGNABLE_TYPE,
                 value = {/* Components you wish to exclude */
-                         SwaggerConfiguration.class, //WebConfigurer.class, WebSecurityConfiguration.class,
-                        ThymeleafConfiguration.class, MetricsConfiguration.GraphiteRegistry.class, MetricsConfiguration.class,
-                        CacheConfiguration.class, AsyncConfiguration.class, LoggingAspectConfiguration.class,
+                        SwaggerConfiguration.class, WebConfigurer.class, WebSecurityConfiguration.class,
+                        ThymeleafConfiguration.class, AsyncConfiguration.class, LoggingAspectConfiguration.class,
                         JHipsterHealthIndicatorConfiguration.class, CloudDatabaseConfiguration.class, LocaleConfiguration.class,
                 }
         )
