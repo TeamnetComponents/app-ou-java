@@ -10,20 +10,20 @@
     <property name="activated" value="true" dbms="postgresql"/>
     <property name="activated" value="1" dbms="oracle"/>
 
-    <property name="pk_t_module" value="HIBERNATE_SEQUENCE.NEXTVAL" dbms="oracle"/>
-    <property name="pk_t_module" value="nextval('t_module_id_module_seq')" dbms="postgresql"/>
-    <property name="pk_t_module" value="null" dbms="!oracle,!postgresql"/>
+    <!--<property name="pk_t_module" value="HIBERNATE_SEQUENCE.NEXTVAL" dbms="oracle"/>-->
+    <!--<property name="pk_t_module" value="nextval('t_module_id_module_seq')" dbms="postgresql"/>-->
+    <!--<property name="pk_t_module" value="null" dbms="!oracle,!postgresql"/>-->
 
-    <property name="pk_t_module_right" value="HIBERNATE_SEQUENCE.NEXTVAL" dbms="oracle"/>
-    <property name="pk_t_module_right" value="nextval('t_module_right_id_module_right_seq')" dbms="postgresql"/>
-    <property name="pk_t_module_right" value="null" dbms="!oracle,!postgresql"/>
+    <!--<property name="pk_t_module_right" value="HIBERNATE_SEQUENCE.NEXTVAL" dbms="oracle"/>-->
+    <!--<property name="pk_t_module_right" value="nextval('t_module_right_id_module_right_seq')" dbms="postgresql"/>-->
+    <!--<property name="pk_t_module_right" value="null" dbms="!oracle,!postgresql"/>-->
 
     <!--
         Added the entity T_ORGANIZATIONAL_UNIT
     -->
     <changeSet id="20150731143012" author="marian">
         <createTable tableName="T_ORGANIZATIONAL_UNIT">
-            <column name="ID_ORGANIZATIONAL_UNIT" type="bigint" autoIncrement="true">
+            <column name="ID" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="CODE" type="varchar(100)">

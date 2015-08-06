@@ -3,14 +3,27 @@ package ro.teamnet.ou.domain.jpa;
 import ro.teamnet.bootstrap.domain.Account;
 import ro.teamnet.ou.domain.Function;
 
+import javax.persistence.*;
 import java.util.Set;
 
+@Entity
+@Table(name="T_ACCOUNT_FUNCTION")
 public class AccountFunction {
 
+    @Id
+    @Column(name="ID")
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name="ACCOUNT_ID", referencedColumnName = "ID")
     private Account account;
+
+    @ManyToOne
+    @JoinColumn(name="FUNCTION_ID", referencedColumnName = "ID")
     private Function function;
-    private Set<OrganizationalUnitFunction> organizationalUnitFunctions;
+
+
+    //private Set<OrganizationalUnitFunction> organizationalUnitFunctions;
 
 
     public Long getId() {
@@ -35,13 +48,5 @@ public class AccountFunction {
 
     public void setFunction(Function function) {
         this.function = function;
-    }
-
-    public Set<OrganizationalUnitFunction> getOrganizationalUnitFunctions() {
-        return organizationalUnitFunctions;
-    }
-
-    public void setOrganizationalUnitFunctions(Set<OrganizationalUnitFunction> organizationalUnitFunctions) {
-        this.organizationalUnitFunctions = organizationalUnitFunctions;
     }
 }

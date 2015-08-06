@@ -8,13 +8,13 @@
     <changeSet id="20150731142634" author="marian">
 
         <addColumn tableName="T_PERSPECTIVE">
-            <column name="ID_ORGANIZATION" type="bigint"/>
+            <column name="ORGANIZATION_ID" type="bigint"/>
         </addColumn>
 
-        <addForeignKeyConstraint baseColumnNames="ID_ORGANIZATION"
+        <addForeignKeyConstraint baseColumnNames="ORGANIZATION_ID"
                                  baseTableName="T_PERSPECTIVE"
                                  constraintName="fk_perspective_id_organization"
-                                 referencedColumnNames="ID_ORGANIZATION"
+                                 referencedColumnNames="ID"
                                  referencedTableName="T_ORGANIZATION"/>
     </changeSet>
 
