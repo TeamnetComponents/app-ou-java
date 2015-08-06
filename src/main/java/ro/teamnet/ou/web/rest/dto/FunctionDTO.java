@@ -1,7 +1,7 @@
 package ro.teamnet.ou.web.rest.dto;
 
 import ro.teamnet.bootstrap.web.rest.dto.ModuleRightDTO;
-import ro.teamnet.ou.domain.Account;
+import ro.teamnet.ou.domain.neo.Account;
 import ro.teamnet.ou.domain.neo.OrganizationalUnit;
 
 import java.io.Serializable;

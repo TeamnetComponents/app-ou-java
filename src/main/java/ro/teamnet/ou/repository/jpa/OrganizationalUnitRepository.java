@@ -1,7 +1,7 @@
 package ro.teamnet.ou.repository.jpa;
 
 import ro.teamnet.bootstrap.extend.AppRepository;
-import ro.teamnet.ou.domain.OrganizationalUnit;
+import ro.teamnet.ou.domain.jpa.OrganizationalUnit;
 
 /**
  * Created by Marian.Spoiala on 7/31/2015.

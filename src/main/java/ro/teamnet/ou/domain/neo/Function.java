@@ -1,8 +1,9 @@
-package ro.teamnet.ou.domain;
+package ro.teamnet.ou.domain.neo;
 
 import org.springframework.data.neo4j.annotation.*;
 import ro.teamnet.bootstrap.domain.ModuleRight;
 import ro.teamnet.bootstrap.domain.RoleBase;
+import ro.teamnet.ou.domain.neo.Account;
 import ro.teamnet.ou.domain.neo.OrganizationalUnit;
 
 import javax.persistence.*;

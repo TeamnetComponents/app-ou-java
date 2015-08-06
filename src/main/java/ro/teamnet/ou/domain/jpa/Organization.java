@@ -1,8 +1,6 @@
 package ro.teamnet.ou.domain.jpa;
 
 
-import ro.teamnet.ou.domain.Perspective;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;

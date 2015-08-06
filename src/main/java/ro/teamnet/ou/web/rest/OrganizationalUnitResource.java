@@ -2,7 +2,7 @@ package ro.teamnet.ou.web.rest;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ro.teamnet.ou.domain.OrganizationalUnit;
+import ro.teamnet.ou.domain.jpa.OrganizationalUnit;
 import ro.teamnet.ou.service.OrganizationalUnitService;
 
 import javax.inject.Inject;

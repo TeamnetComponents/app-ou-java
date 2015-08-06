@@ -1,8 +1,5 @@
 package ro.teamnet.ou.domain.jpa;
 
-import ro.teamnet.ou.domain.*;
-import ro.teamnet.ou.domain.Perspective;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;

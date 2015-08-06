@@ -1,4 +1,4 @@
-package ro.teamnet.ou.domain;
+package ro.teamnet.ou.domain.neo;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.data.neo4j.annotation.*;

@@ -1,8 +1,9 @@
 package ro.teamnet.ou.service;
 
-import ro.teamnet.bootstrap.extend.AppRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ro.teamnet.bootstrap.service.AbstractServiceImpl;
-import ro.teamnet.ou.domain.OrganizationalUnit;
+import ro.teamnet.ou.domain.jpa.OrganizationalUnit;
 import ro.teamnet.ou.repository.jpa.OrganizationalUnitRepository;
 
 import javax.inject.Inject;
@@ -10,9 +11,11 @@ import javax.inject.Inject;
 /**
  * Created by ionut.patrascu on 31.07.2015.
  */
+@Service
+@Transactional
 public class OrganizationalUnitServiceImpl extends AbstractServiceImpl<OrganizationalUnit, Long> implements OrganizationalUnitService {
 
-    private OrganizationalUnitRepository organizationalUnitRepository;
+    private final OrganizationalUnitRepository organizationalUnitRepository;
 
     @Inject
     public OrganizationalUnitServiceImpl(OrganizationalUnitRepository organizationalUnitRepository) {

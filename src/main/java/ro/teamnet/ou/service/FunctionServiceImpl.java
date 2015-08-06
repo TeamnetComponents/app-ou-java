@@ -10,7 +10,7 @@ import ro.teamnet.bootstrap.service.AbstractServiceImpl;
 import ro.teamnet.bootstrap.service.ModuleRightService;
 import ro.teamnet.bootstrap.web.rest.dto.ModuleRightDTO;
 
-import ro.teamnet.ou.domain.Function;
+import ro.teamnet.ou.domain.jpa.Function;
 import ro.teamnet.ou.repository.jpa.FunctionRepository;
 import ro.teamnet.ou.web.rest.dto.FunctionDTO;
 

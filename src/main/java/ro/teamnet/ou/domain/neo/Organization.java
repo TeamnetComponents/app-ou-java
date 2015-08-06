@@ -1,7 +1,6 @@
-package ro.teamnet.ou.domain;
+package ro.teamnet.ou.domain.neo;
 
 import org.springframework.data.neo4j.annotation.*;
-import ro.teamnet.ou.domain.neo.OrganizationalUnit;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -32,7 +31,7 @@ public class Organization implements Serializable{
 
     @RelatedToVia(type = "PERSPECTIVE")
     @OneToMany(mappedBy = "organization")
-    private Set<ro.teamnet.ou.domain.Perspective> perspectives;
+    private Set<Perspective> perspectives;
 
     @RelatedTo(type = "PERSPECTIVE")
     private Set<ro.teamnet.ou.domain.neo.OrganizationalUnit> roots;

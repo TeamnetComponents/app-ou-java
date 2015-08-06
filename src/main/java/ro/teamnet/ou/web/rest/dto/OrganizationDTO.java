@@ -1,6 +1,6 @@
 package ro.teamnet.ou.web.rest.dto;
 
-import ro.teamnet.ou.domain.Perspective;
+import ro.teamnet.ou.domain.neo.Perspective;
 import ro.teamnet.ou.domain.neo.OrganizationalUnit;
 
 

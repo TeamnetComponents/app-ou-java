@@ -1,10 +1,6 @@
 package ro.teamnet.ou.domain.jpa;
 
-import ro.teamnet.ou.domain.Function;
-import ro.teamnet.ou.domain.OrganizationalUnit;
-
 import javax.persistence.*;
-import java.util.Set;
 
 
 @Entity
@@ -21,7 +17,7 @@ public class OrganizationalUnitFunction {
     private OrganizationalUnit organizationalUnit;
 
     @ManyToOne
-    @JoinColumn(name="FUNCTION_ID", referencedColumnName = "ID")
+    @JoinColumn(name="FUNCTION_ID", referencedColumnName = "ID_ROLE")
     private Function ouFunction;
 
 

@@ -1,10 +1,8 @@
 package ro.teamnet.ou.domain.jpa;
 
 import ro.teamnet.bootstrap.domain.Account;
-import ro.teamnet.ou.domain.Function;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name="T_ACCOUNT_FUNCTION")
@@ -15,11 +13,11 @@ public class AccountFunction {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="ACCOUNT_ID", referencedColumnName = "ID")
+    @JoinColumn(name="ACCOUNT_ID", referencedColumnName = "ID_ACCOUNT")
     private Account account;
 
     @ManyToOne
-    @JoinColumn(name="FUNCTION_ID", referencedColumnName = "ID")
+    @JoinColumn(name="FUNCTION_ID", referencedColumnName = "ID_ROLE")
     private Function function;
 
 

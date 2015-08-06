@@ -1,4 +1,4 @@
-package ro.teamnet.ou.domain;
+package ro.teamnet.ou.domain.neo;
 
 import org.neo4j.graphdb.Direction;
 import org.springframework.data.neo4j.annotation.*;
@@ -22,7 +22,7 @@ public class Account {
 
     @Fetch
     @RelatedToVia(type = "FUNCTION")
-    private Set<ro.teamnet.ou.domain.Function> functions;
+    private Set<Function> functions;
 
     public Long getId() {
         return id;

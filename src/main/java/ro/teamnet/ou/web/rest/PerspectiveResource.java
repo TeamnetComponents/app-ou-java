@@ -2,7 +2,7 @@ package ro.teamnet.ou.web.rest;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ro.teamnet.ou.domain.Perspective;
+import ro.teamnet.ou.domain.jpa.Perspective;
 import ro.teamnet.ou.service.PerspectiveService;
 
 import javax.inject.Inject;
