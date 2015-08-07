@@ -1,57 +1,22 @@
 package ro.teamnet.ou.domain.neo;
 
 import org.springframework.data.neo4j.annotation.*;
-import ro.teamnet.bootstrap.domain.ModuleRight;
-import ro.teamnet.bootstrap.domain.RoleBase;
-import ro.teamnet.ou.domain.neo.Account;
-import ro.teamnet.ou.domain.neo.OrganizationalUnit;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @RelationshipEntity
-@Entity
-@DiscriminatorValue("FUNCTION")
-public class Function extends RoleBase{
+public class Function {
 
     @StartNode
     private Account account;
     @EndNode
-    private ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnit;
+    private OrganizationalUnit organizationalUnit;
 
     @GraphProperty(propertyName = "code", defaultValue = "")
-    @NotNull
-    @Column(name = "CODE", length = 100, unique = true)
     private String code;
-
-    @Column(name = "DESCRIPTION")
-    @GraphProperty(propertyName = "description", defaultValue = "")
-    protected String description;
 
     @GraphId
     @GraphProperty(propertyName = "jpaId", defaultValue = "")
     private Long jpaId;
 
-    @NotNull
-    @Column(name = "VALID_FROM")
-    @Temporal(TemporalType.DATE)
-    @GraphProperty(propertyName = "validFrom", defaultValue = "")
-    protected Date validFrom;
-
-    @NotNull
-    @Column(name = "VALID_TO")
-    @Temporal(TemporalType.DATE)
-    @GraphProperty(propertyName = "validTo", defaultValue = "")
-    protected Date validTo;
-
-    @NotNull @Column(name = "IS_ACTIVE")
-    @GraphProperty(propertyName = "active", defaultValue = "")
-    protected Boolean active;
-
-    private Set<ModuleRight> moduleRights = new HashSet<>();
 
     public Account getAccount() {
         return account;
@@ -69,54 +34,6 @@ public class Function extends RoleBase{
         this.organizationalUnit = organizationalUnit;
     }
 
-    @Override
-    public Set<ModuleRight> getModuleRights() {
-        return moduleRights;
-    }
-
-    public void setModuleRights(Set<ModuleRight> moduleRights) {
-        this.moduleRights = moduleRights;
-    }
-
-    @Override
-    public Boolean getActive() {
-        return active;
-    }
-
-    @Override
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
-    @Override
-    public Date getValidTo() {
-        return validTo;
-    }
-
-    @Override
-    public void setValidTo(Date validTo) {
-        this.validTo = validTo;
-    }
-
-    @Override
-    public Date getValidFrom() {
-        return validFrom;
-    }
-
-    @Override
-    public void setValidFrom(Date validFrom) {
-        this.validFrom = validFrom;
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
-    }
-
-    @Override
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public String getCode() {
         return code;

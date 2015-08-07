@@ -1,44 +1,63 @@
 package ro.teamnet.ou.domain.neo;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.data.neo4j.annotation.*;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Set;
 
 @RelationshipEntity
-@Entity
-@Table(name = "T_PERSPECTIVE")
-
 public class Perspective implements Serializable {
     @GraphId
-    @Id
-    @Column(name = "ID_PERSPECTIVE")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @GraphProperty(propertyName = "code", defaultValue = "")
-    @NotNull
-    @Column(name = "CODE", length = 100, unique = true)
     private String code;
-
-    @Column(name = "DESCRIPTION")
-    @GraphProperty(propertyName = "description", defaultValue = "")
-    protected String description;
 
     @GraphProperty(propertyName = "jpaId", defaultValue = "")
     private Long jpaId;
 
-    @ManyToOne
     @StartNode
     private Organization organization;
 
     @EndNode
     private OrganizationalUnit organizationalUnit;
 
-    @OneToMany(mappedBy = "perspective")
-    @JsonManagedReference
-    private Set<OrganizationalUnit> organizationalUnits;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public Long getJpaId() {
+        return jpaId;
+    }
+
+    public void setJpaId(Long jpaId) {
+        this.jpaId = jpaId;
+    }
+
+    public Organization getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
+    }
+
+    public OrganizationalUnit getOrganizationalUnit() {
+        return organizationalUnit;
+    }
+
+    public void setOrganizationalUnit(OrganizationalUnit organizationalUnit) {
+        this.organizationalUnit = organizationalUnit;
+    }
 }

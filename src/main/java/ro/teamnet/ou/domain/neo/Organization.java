@@ -2,39 +2,25 @@ package ro.teamnet.ou.domain.neo;
 
 import org.springframework.data.neo4j.annotation.*;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Set;
 
 @NodeEntity
-@Entity
-@Table(name = "T_ORGANIZATION")
 public class Organization implements Serializable{
     @GraphId
-    @Id
-    @Column(name = "ID_ORGANIZATION")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @GraphProperty(propertyName = "code", defaultValue = "")
-    @NotNull
-    @Column(name = "CODE", length = 100, unique = true)
     private String code;
-
-    @Column(name = "DESCRIPTION")
-    @GraphProperty(propertyName = "description", defaultValue = "")
-    protected String description;
 
     @GraphProperty(propertyName = "jpaId", defaultValue = "")
     private Long jpaId;
 
     @RelatedToVia(type = "PERSPECTIVE")
-    @OneToMany(mappedBy = "organization")
     private Set<Perspective> perspectives;
 
     @RelatedTo(type = "PERSPECTIVE")
-    private Set<ro.teamnet.ou.domain.neo.OrganizationalUnit> roots;
+    private Set<OrganizationalUnit> roots;
 
 
     public Long getId() {
@@ -51,14 +37,6 @@ public class Organization implements Serializable{
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Long getJpaId() {

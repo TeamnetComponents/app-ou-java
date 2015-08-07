@@ -1,10 +1,7 @@
 package ro.teamnet.ou.domain.neo;
 
 import org.neo4j.graphdb.Direction;
-import org.springframework.data.neo4j.annotation.Fetch;
-import org.springframework.data.neo4j.annotation.GraphId;
-import org.springframework.data.neo4j.annotation.NodeEntity;
-import org.springframework.data.neo4j.annotation.RelatedTo;
+import org.springframework.data.neo4j.annotation.*;
 
 import java.util.Set;
 
@@ -14,8 +11,10 @@ public class OrganizationalUnit {
     @GraphId
     private Long id;
 
+    @GraphProperty(propertyName = "jpaId", defaultValue = "")
     private Long jpaId;
 
+    @GraphProperty(propertyName = "code", defaultValue = "")
     private String code;
 
     @RelatedTo(type="BELONGS_TO",direction = Direction.OUTGOING)

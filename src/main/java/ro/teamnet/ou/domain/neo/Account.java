@@ -56,11 +56,11 @@ public class Account {
         this.lastName = lastName;
     }
 
-    public Set<ro.teamnet.ou.domain.neo.OrganizationalUnit> getOrganizationalUnits() {
+    public Set<OrganizationalUnit> getOrganizationalUnits() {
         return organizationalUnits;
     }
 
-    public void setOrganizationalUnits(Set<ro.teamnet.ou.domain.neo.OrganizationalUnit> organizationalUnits) {
+    public void setOrganizationalUnits(Set<OrganizationalUnit> organizationalUnits) {
         this.organizationalUnits = organizationalUnits;
     }
 
