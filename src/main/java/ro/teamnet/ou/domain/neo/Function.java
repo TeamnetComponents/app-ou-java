@@ -5,18 +5,28 @@ import org.springframework.data.neo4j.annotation.*;
 @RelationshipEntity
 public class Function {
 
+    @GraphId
+    private Long id;
+
     @StartNode
     private Account account;
+
     @EndNode
     private OrganizationalUnit organizationalUnit;
 
-    @GraphProperty(propertyName = "code", defaultValue = "")
+    @RelationshipType
     private String code;
 
-    @GraphId
-    @GraphProperty(propertyName = "jpaId", defaultValue = "")
+    @GraphProperty(propertyName = "jpaId")
     private Long jpaId;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Account getAccount() {
         return account;
@@ -33,7 +43,6 @@ public class Function {
     public void setOrganizationalUnit(OrganizationalUnit organizationalUnit) {
         this.organizationalUnit = organizationalUnit;
     }
-
 
     public String getCode() {
         return code;
