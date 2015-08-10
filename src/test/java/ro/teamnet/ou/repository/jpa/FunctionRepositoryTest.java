@@ -10,7 +10,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import ro.teamnet.ou.domain.jpa.Function;
+import ro.teamnet.ou.domain.neo.Account;
+import ro.teamnet.ou.domain.neo.OrganizationalUnit;
 import ro.teamnet.ou.mock.OuTestApplication;
+import ro.teamnet.ou.repository.neo.AccountNeoRepository;
+import ro.teamnet.ou.repository.neo.FunctionNeoRepository;
+import ro.teamnet.ou.repository.neo.OrganizationalUnitNeoRepository;
 import ro.teamnet.ou.service.FunctionService;
 
 import javax.inject.Inject;
@@ -31,11 +36,17 @@ public class FunctionRepositoryTest {
     @Inject
     private FunctionRepository functionRepository;
 
+    @Inject
+    private AccountNeoRepository accountNeoRepository;
+    @Inject
+    private OrganizationalUnitNeoRepository organizationalUnitNeoRepository;
+    @Inject
+    private FunctionNeoRepository functionNeoRepository;
+
     @Test
     @Transactional
     public void createFunctionTest() throws Exception {
         Assert.assertTrue(functionRepository.findAll().isEmpty());
-        System.out.println("abc");
         Function function = new Function();
         function.setCode(TEST_CODE);
         function.setValidFrom(new Date());
@@ -43,16 +54,37 @@ public class FunctionRepositoryTest {
         function.setActive(true);
 
         functionService.save(function);
-//        mockMvc.perform(post("/app/rest/function")
-//                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-//                .content(TestUtil.convertObjectToJsonBytes(function)))
-//                .andExpect(status().isOk());
-
         List<Function> all = functionRepository.findAll();
 
-        System.out.println(all.size());
         Assert.assertFalse(all.isEmpty());
         Assert.assertEquals(1, all.size());
         Assert.assertEquals(TEST_CODE, all.get(0).getCode());
+
+        long initialAccountCount = accountNeoRepository.count();
+        Account account = new Account();
+        account.setJpaId(1l);
+        account.setFirstName("TestFN");
+        account.setLastName("TestLN");
+        accountNeoRepository.save(account);
+        Assert.assertEquals(initialAccountCount + 1, accountNeoRepository.count());
+
+        long initialOuCount = organizationalUnitNeoRepository.count();
+        OrganizationalUnit ou = new OrganizationalUnit();
+        ou.setJpaId(1l);
+        ou.setCode("TestOU");
+        organizationalUnitNeoRepository.save(ou);
+        Assert.assertEquals(initialOuCount + 1, organizationalUnitNeoRepository.count());
+
+        accountNeoRepository.delete(account);
+        organizationalUnitNeoRepository.delete(ou);
+//        ro.teamnet.ou.domain.neo.Function neoFunction = new ro.teamnet.ou.domain.neo.Function();
+//        neoFunction.setJpaId(function.getId());
+//        neoFunction.setAccount(account);
+//        neoFunction.setOrganizationalUnit(ou);
+//        functionNeoRepository.save(neoFunction);
+//
+//        long count = functionNeoRepository.count();
+//        System.out.println(count);
+
     }
 }
