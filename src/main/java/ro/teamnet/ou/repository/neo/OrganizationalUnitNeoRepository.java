@@ -12,9 +12,9 @@ import java.util.List;
  */
 public interface OrganizationalUnitNeoRepository extends GraphRepository<OrganizationalUnit>, SchemaIndexRepository<OrganizationalUnit> {
 
-    @Query("start n=node({0}) match (n:OrganizationalUnit)<-[r*]-m return m")
+    @Query("start n=node({0}) return n UNION ALL start m=node({0}) match (m:OrganizationalUnit)<-[r*]-n return n")
     public List<OrganizationalUnit> getOrganizationalUnitTreeById(Long id);
 
-    @Query("start n=node({0}) match (n:OrganizationalUnit)<-[r*]-m return m.jpaId")
+    @Query("start n=node({0}) return n.jpaId UNION ALL start m=node({0}) match (m:OrganizationalUnit)<-[r*]-n return n.jpaId")
     public List<Long> getOrganizationalUnitTreeIdsById(Long id);
 }

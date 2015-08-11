@@ -87,9 +87,9 @@ public class OrganizationalUnitNeoRepositoryTest {
     @Transactional
     public void getOrganizationalUnitTreeById() {
         OrganizationalUnit organizationalUnit1 = ouNeoGenericService.createOrganizationalUnit("OrganizationalUnitTest1", 1l);
-        OrganizationalUnit organizationalUnit2 = ouNeoGenericService.createOrganizationalUnit("OrganizationalUnitTest2", 1l);
-        OrganizationalUnit organizationalUnit3 = ouNeoGenericService.createOrganizationalUnit("OrganizationalUnitTest3", 1l);
-        OrganizationalUnit organizationalUnit4 = ouNeoGenericService.createOrganizationalUnit("OrganizationalUnitTest4", 1l);
+        OrganizationalUnit organizationalUnit2 = ouNeoGenericService.createOrganizationalUnit("OrganizationalUnitTest2", 2l);
+        OrganizationalUnit organizationalUnit3 = ouNeoGenericService.createOrganizationalUnit("OrganizationalUnitTest3", 3l);
+        OrganizationalUnit organizationalUnit4 = ouNeoGenericService.createOrganizationalUnit("OrganizationalUnitTest4", 4l);
 
         organizationalUnit1 = organizationalUnitNeoRepository.save(organizationalUnit1);
 
@@ -101,7 +101,33 @@ public class OrganizationalUnitNeoRepositoryTest {
         organizationalUnit4 = organizationalUnitNeoRepository.save(organizationalUnit4);
 
         List<OrganizationalUnit> lista = organizationalUnitNeoRepository.getOrganizationalUnitTreeById(organizationalUnit1.getId());
-        assertThat(lista.size()).isEqualTo(3);
+        assertThat(lista.size()).isEqualTo(4);
+
+        organizationalUnitNeoRepository.delete(organizationalUnit1);
+        organizationalUnitNeoRepository.delete(organizationalUnit2);
+        organizationalUnitNeoRepository.delete(organizationalUnit3);
+        organizationalUnitNeoRepository.delete(organizationalUnit4);
+    }
+
+    @Test
+    @Transactional
+    public void getOrganizationalUnitTreeIdsById() {
+        OrganizationalUnit organizationalUnit1 = ouNeoGenericService.createOrganizationalUnit("OrganizationalUnitTest1", 1l);
+        OrganizationalUnit organizationalUnit2 = ouNeoGenericService.createOrganizationalUnit("OrganizationalUnitTest2", 2l);
+        OrganizationalUnit organizationalUnit3 = ouNeoGenericService.createOrganizationalUnit("OrganizationalUnitTest3", 3l);
+        OrganizationalUnit organizationalUnit4 = ouNeoGenericService.createOrganizationalUnit("OrganizationalUnitTest4", 4l);
+
+        organizationalUnit1 = organizationalUnitNeoRepository.save(organizationalUnit1);
+
+        organizationalUnit2.setParent(organizationalUnit1);
+        organizationalUnit3.setParent(organizationalUnit1);
+        organizationalUnit4.setParent(organizationalUnit2);
+        organizationalUnit2 = organizationalUnitNeoRepository.save(organizationalUnit2);
+        organizationalUnit3 = organizationalUnitNeoRepository.save(organizationalUnit3);
+        organizationalUnit4 = organizationalUnitNeoRepository.save(organizationalUnit4);
+
+        List<Long> lista = organizationalUnitNeoRepository.getOrganizationalUnitTreeIdsById(organizationalUnit1.getId());
+        assertThat(lista.size()).isEqualTo(4);
 
         organizationalUnitNeoRepository.delete(organizationalUnit1);
         organizationalUnitNeoRepository.delete(organizationalUnit2);
