@@ -18,6 +18,8 @@ import ro.teamnet.ou.util.OuNeoUtilImpl;
 
 import javax.inject.Inject;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -79,5 +81,31 @@ public class OrganizationalUnitNeoRepositoryTest {
         OrganizationalUnit organizationalUnitFound = organizationalUnitNeoRepository.findOne(testOrganizationalUnit.getId());
 
         Assert.assertEquals(null, organizationalUnitFound);
+    }
+
+    @Test
+    @Transactional
+    public void getOrganizationalUnitTreeById() {
+        OrganizationalUnit organizationalUnit1 = ouNeoGenericService.createOrganizationalUnit("OrganizationalUnitTest1", 1l);
+        OrganizationalUnit organizationalUnit2 = ouNeoGenericService.createOrganizationalUnit("OrganizationalUnitTest2", 1l);
+        OrganizationalUnit organizationalUnit3 = ouNeoGenericService.createOrganizationalUnit("OrganizationalUnitTest3", 1l);
+        OrganizationalUnit organizationalUnit4 = ouNeoGenericService.createOrganizationalUnit("OrganizationalUnitTest4", 1l);
+
+        organizationalUnit1 = organizationalUnitNeoRepository.save(organizationalUnit1);
+
+        organizationalUnit2.setParent(organizationalUnit1);
+        organizationalUnit3.setParent(organizationalUnit1);
+        organizationalUnit4.setParent(organizationalUnit2);
+        organizationalUnit2 = organizationalUnitNeoRepository.save(organizationalUnit2);
+        organizationalUnit3 = organizationalUnitNeoRepository.save(organizationalUnit3);
+        organizationalUnit4 = organizationalUnitNeoRepository.save(organizationalUnit4);
+
+        List<OrganizationalUnit> lista = organizationalUnitNeoRepository.getOrganizationalUnitTreeById(organizationalUnit1.getId());
+        assertThat(lista.size()).isEqualTo(3);
+
+        organizationalUnitNeoRepository.delete(organizationalUnit1);
+        organizationalUnitNeoRepository.delete(organizationalUnit2);
+        organizationalUnitNeoRepository.delete(organizationalUnit3);
+        organizationalUnitNeoRepository.delete(organizationalUnit4);
     }
 }
