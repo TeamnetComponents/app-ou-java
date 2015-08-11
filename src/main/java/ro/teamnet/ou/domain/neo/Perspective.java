@@ -4,7 +4,7 @@ import org.springframework.data.neo4j.annotation.*;
 
 import java.io.Serializable;
 
-@RelationshipEntity
+@RelationshipEntity(type = "PERSPECTIVE")
 public class Perspective implements Serializable {
     @GraphId
     private Long id;

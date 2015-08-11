@@ -2,7 +2,7 @@ package ro.teamnet.ou.domain.neo;
 
 import org.springframework.data.neo4j.annotation.*;
 
-@RelationshipEntity
+@RelationshipEntity(type = "FUNCTION")
 public class Function {
 
     @GraphId
@@ -14,7 +14,7 @@ public class Function {
     @EndNode
     private OrganizationalUnit organizationalUnit;
 
-    @RelationshipType
+    @GraphProperty(propertyName = "code")
     private String code;
 
     @GraphProperty(propertyName = "jpaId")
