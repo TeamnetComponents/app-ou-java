@@ -9,7 +9,7 @@ public class Perspective implements Serializable {
     @GraphId
     private Long id;
 
-    @GraphProperty(propertyName = "code", defaultValue = "")
+    @RelationshipType
     private String code;
 
     @GraphProperty(propertyName = "jpaId", defaultValue = "")
