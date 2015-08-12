@@ -1,8 +1,6 @@
 package ro.teamnet.ou.service;
 
-import ro.teamnet.bootstrap.service.AbstractService;
 import ro.teamnet.ou.domain.jpa.Organization;
-import ro.teamnet.ou.domain.jpa.Perspective;
 import ro.teamnet.ou.web.rest.dto.OrganizationDTO;
 import ro.teamnet.ou.web.rest.dto.PerspectiveDTO;
 
@@ -14,25 +12,26 @@ import java.util.Set;
  * Created by ionut.patrascu on 31.07.2015.
  */
 public interface OrganizationService {
-//        extends AbstractService<Organization,Long> {
+
+    OrganizationDTO create(OrganizationDTO organizationDTO);
+
+    OrganizationDTO update(Organization organization, ro.teamnet.ou.domain.neo.Organization organizationNeo, OrganizationDTO organizationDTO);
 
     OrganizationDTO createOrganizationDTO(Long id, String code, String description, Date validFrom, Date validTo, Set<PerspectiveDTO> perspectiveDTOSet);
 
     OrganizationDTO toOrganizationDTO(Organization organization, ro.teamnet.ou.domain.neo.Organization organizationNeo);
 
+    Set<OrganizationDTO> getAllOrganizationDTO();
+
     Organization updateOrganization(Organization organization, OrganizationDTO organizationDTO);
-
-    ro.teamnet.ou.domain.neo.Organization updateOrganizationNeo(ro.teamnet.ou.domain.neo.Organization organization, OrganizationDTO organizationDTO);
-
-    Organization findOrganizationById(Long id);
-
-    ro.teamnet.ou.domain.neo.Organization findOrganizationNeoById(Long id);
 
     List<Organization> getAllOrganization();
 
-    List<ro.teamnet.ou.domain.neo.Organization> gelAllOrganizationNeo();
+    Organization findOrganizationById(Long id);
 
-    OrganizationDTO create(OrganizationDTO organizationDTO);
+    ro.teamnet.ou.domain.neo.Organization updateOrganizationNeo(ro.teamnet.ou.domain.neo.Organization organization, OrganizationDTO organizationDTO);
 
-    OrganizationDTO update(Organization organization, ro.teamnet.ou.domain.neo.Organization organizationNeo, OrganizationDTO organizationDTO);
+    ro.teamnet.ou.domain.neo.Organization findOrganizationNeoById(Long id);
+
+    List<ro.teamnet.ou.domain.neo.Organization> getAllOrganizationNeo();
 }

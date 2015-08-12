@@ -20,7 +20,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -29,7 +28,6 @@ import java.util.Set;
 @RestController
 @RequestMapping("/app/rest/organization")
 public class OrganizationResource {
-    //extends ro.teamnet.bootstrap.web.rest.AbstractResource<Organization,Long>{
 
     private final Logger log = LoggerFactory.getLogger(OrganizationResource.class);
     @Inject
@@ -85,18 +83,8 @@ public class OrganizationResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<OrganizationDTO>> getAll() {
-        log.debug("REST request to get all: {}");
-
-        List<Organization> organizationList = organizationService.getAllOrganization();
-        List<ro.teamnet.ou.domain.neo.Organization> organizationListNeo = organizationService.gelAllOrganizationNeo();
-        Set<OrganizationDTO> organizationDTOs = new HashSet<>();
-        if(organizationList != null && organizationListNeo != null) {
-            for (int i = 0; i < organizationList.size(); i++) {
-                organizationDTOs.add(organizationService.toOrganizationDTO(organizationList.get(i), organizationListNeo.get(i)));
-            }
-        }
-
-        return new ResponseEntity<Set<OrganizationDTO>>(organizationDTOs, HttpStatus.OK);
+        log.debug("REST request to get all: OrganizationDTOs");
+        return new ResponseEntity<Set<OrganizationDTO>>(organizationService.getAllOrganizationDTO(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/createOrganization",
