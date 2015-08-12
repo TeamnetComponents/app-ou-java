@@ -35,4 +35,43 @@ public class Perspective implements Serializable {
     @JsonManagedReference
     private Set<OrganizationalUnit> organizationalUnits;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Organization getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
+    }
+
+    public Set<OrganizationalUnit> getOrganizationalUnits() {
+        return organizationalUnits;
+    }
+
+    public void setOrganizationalUnits(Set<OrganizationalUnit> organizationalUnits) {
+        this.organizationalUnits = organizationalUnits;
+    }
 }

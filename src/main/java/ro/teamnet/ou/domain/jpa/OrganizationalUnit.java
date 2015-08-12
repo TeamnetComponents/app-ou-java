@@ -1,7 +1,9 @@
 package ro.teamnet.ou.domain.jpa;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -18,6 +20,22 @@ public class OrganizationalUnit implements Serializable{
 
     @Column(name="CODE", length = 100, unique = true)
     private String code;
+
+    @Column(name = "DESCRIPTION")
+    private String description;
+
+    @NotNull
+    @Column(name = "VALID_FROM")
+    @Temporal(TemporalType.DATE)
+    protected Date validFrom;
+
+    @NotNull
+    @Column(name = "VALID_TO")
+    @Temporal(TemporalType.DATE)
+    protected Date validTo;
+
+    @NotNull @Column(name = "IS_ACTIVE")
+    protected Boolean active;
 
     @ManyToOne
     @JoinColumn(name = "PARENT")
@@ -68,5 +86,37 @@ public class OrganizationalUnit implements Serializable{
 
     public void setChildren(Set<OrganizationalUnit> children) {
         this.children = children;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Date getValidFrom() {
+        return validFrom;
+    }
+
+    public void setValidFrom(Date validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public Date getValidTo() {
+        return validTo;
+    }
+
+    public void setValidTo(Date validTo) {
+        this.validTo = validTo;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }

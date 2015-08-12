@@ -1,9 +1,13 @@
 package ro.teamnet.ou.domain.jpa;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -25,8 +29,21 @@ public class Organization implements Serializable {
     @Column(name = "DESCRIPTION")
     protected String description;
 
+    @NotNull
+    @Column(name = "VALID_FROM")
+    @Temporal(TemporalType.DATE)
+    protected Date validFrom;
+
+    @NotNull
+    @Column(name = "VALID_TO")
+    @Temporal(TemporalType.DATE)
+    protected Date validTo;
+
+    @NotNull @Column(name = "IS_ACTIVE")
+    protected Boolean active;
+
     @OneToMany(mappedBy = "organization")
-    private Set<Perspective> perspectives;
+    private Set<Perspective> perspectives = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -58,5 +75,29 @@ public class Organization implements Serializable {
 
     public void setPerspectives(Set<Perspective> perspectives) {
         this.perspectives = perspectives;
+    }
+
+    public Date getValidFrom() {
+        return validFrom;
+    }
+
+    public void setValidFrom(Date validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public Date getValidTo() {
+        return validTo;
+    }
+
+    public void setValidTo(Date validTo) {
+        this.validTo = validTo;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }

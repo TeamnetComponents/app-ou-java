@@ -1,9 +1,5 @@
 package ro.teamnet.ou.web.rest.dto;
 
-import ro.teamnet.ou.domain.neo.Perspective;
-import ro.teamnet.ou.domain.neo.OrganizationalUnit;
-
-
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -11,27 +7,27 @@ import java.util.Set;
 public class OrganizationDTO implements Serializable {
 
     private Long id;
+    private Long jpaId;
     private String code;
     private String description;
     private Date validFrom;
     private Date validTo;
     private Boolean active;
+    private Set<PerspectiveDTO> perspectives;
+    private Set<OrganizationalUnitDTO> roots;
 
-    private Long jpaId;
-    private Set<Perspective> perspectives;
-    private Set<OrganizationalUnit> roots;
+    public OrganizationDTO() {
+    }
 
-    public OrganizationDTO(){}
-
-    public OrganizationDTO(Long id, String code, String description, Date validFrom, Date validTo, Boolean active,
-                           Long jpaId, Set<Perspective> perspectives, Set<OrganizationalUnit> roots){
+    public OrganizationDTO(Long id, Long jpaId, String code, String description, Date validFrom, Date validTo, Boolean active,
+                           Set<PerspectiveDTO> perspectives, Set<OrganizationalUnitDTO> roots) {
         this.id = id;
+        this.jpaId = jpaId;
         this.code = code;
         this.description = description;
         this.validFrom = validFrom;
         this.validTo = validTo;
         this.active = active;
-        this.jpaId = jpaId;
         this.perspectives = perspectives;
         this.roots = roots;
     }
@@ -42,6 +38,14 @@ public class OrganizationDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getJpaId() {
+        return jpaId;
+    }
+
+    public void setJpaId(Long jpaId) {
+        this.jpaId = jpaId;
     }
 
     public String getCode() {
@@ -84,27 +88,19 @@ public class OrganizationDTO implements Serializable {
         this.active = active;
     }
 
-    public Long getJpaId() {
-        return jpaId;
-    }
-
-    public void setJpaId(Long jpaId) {
-        this.jpaId = jpaId;
-    }
-
-    public Set<Perspective> getPerspectives() {
+    public Set<PerspectiveDTO> getPerspectives() {
         return perspectives;
     }
 
-    public void setPerspectives(Set<Perspective> perspectives) {
+    public void setPerspectives(Set<PerspectiveDTO> perspectives) {
         this.perspectives = perspectives;
     }
 
-    public Set<OrganizationalUnit> getRoots() {
+    public Set<OrganizationalUnitDTO> getRoots() {
         return roots;
     }
 
-    public void setRoots(Set<OrganizationalUnit> roots) {
+    public void setRoots(Set<OrganizationalUnitDTO> roots) {
         this.roots = roots;
     }
 
@@ -112,12 +108,12 @@ public class OrganizationDTO implements Serializable {
     public String toString() {
         return "OrganizationDTO{" +
                 "id=" + id +
+                ", jpaId=" + jpaId +
                 ", code='" + code + '\'' +
                 ", description='" + description + '\'' +
                 ", validFrom=" + validFrom +
                 ", validTo=" + validTo +
                 ", active=" + active +
-                ", jpaId=" + jpaId +
                 ", perspectives=" + perspectives +
                 ", roots=" + roots +
                 '}';
