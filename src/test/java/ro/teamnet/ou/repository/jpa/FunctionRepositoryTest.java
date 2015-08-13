@@ -22,6 +22,7 @@ import ro.teamnet.ou.service.FunctionService;
 import javax.inject.Inject;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = OuTestApplication.class)
@@ -89,8 +90,9 @@ public class FunctionRepositoryTest {
         Assert.assertEquals(initialFunctionCount + 1, functionNeoRepository.count());
 
         Iterable<ro.teamnet.ou.domain.neo.Function> accountFunctions = neo4jOperations.getRelationshipsBetween(account,
-                ou, ro.teamnet.ou.domain.neo.Function.class, TESTER);
+                ou, ro.teamnet.ou.domain.neo.Function.class, "");
 
+        Set<ro.teamnet.ou.domain.neo.Function> functions = accountNeoRepository.findOne(account.getId()).getFunctions();
         int functionCount = 0;
         for (ro.teamnet.ou.domain.neo.Function accountFunction : accountFunctions) {
             functionCount++;
@@ -99,9 +101,9 @@ public class FunctionRepositoryTest {
         }
         Assert.assertEquals(1, functionCount);
 
-        functionNeoRepository.delete(neoFunction);
-        accountNeoRepository.delete(account);
-        organizationalUnitNeoRepository.delete(ou);
+//        functionNeoRepository.delete(neoFunction);
+//        accountNeoRepository.delete(account);
+//        organizationalUnitNeoRepository.delete(ou);
 
     }
 }
