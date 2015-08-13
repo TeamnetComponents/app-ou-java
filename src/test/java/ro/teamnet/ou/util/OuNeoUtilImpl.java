@@ -62,8 +62,7 @@ public class OuNeoUtilImpl implements OuNeoUtil {
     @Override
     public Account createAccount(String firstName, String lastName, Long jpaId) {
         Account account = new Account();
-        account.setFirstName(firstName);
-        account.setLastName(lastName);
+        account.setUsername(firstName + '.' + lastName);
         account.setJpaId(jpaId);
         return account;
     }

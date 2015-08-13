@@ -67,8 +67,7 @@ public class FunctionRepositoryTest {
         long initialAccountCount = accountNeoRepository.count();
         Account account = new Account();
         account.setJpaId(1l);
-        account.setFirstName("Ion");
-        account.setLastName("Popescu");
+        account.setUsername("Ion.Popescu");
         accountNeoRepository.save(account);
         Assert.assertEquals(initialAccountCount + 1, accountNeoRepository.count());
 

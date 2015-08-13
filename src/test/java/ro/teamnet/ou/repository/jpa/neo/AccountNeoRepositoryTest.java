@@ -49,7 +49,7 @@ public class AccountNeoRepositoryTest {
         Account accountFound = accountNeoRepository.findOne(testAccount.getId());
 
         assertThat(testAccount.getId()).isEqualTo(accountFound.getId());
-        assertThat(testAccount.getFirstName()).isEqualTo(accountFound.getFirstName());
+        assertThat(testAccount.getUsername()).isEqualTo(accountFound.getUsername());
 
         accountNeoRepository.delete(accountFound);
     }
@@ -59,13 +59,13 @@ public class AccountNeoRepositoryTest {
     public void updateAccount() {
         Account testAccount = accountNeoRepository.save(account);
 
-        testAccount.setLastName("PrenumeUpdated");
+        testAccount.setUsername("UsernameUpdated");
         accountNeoRepository.save(testAccount);
 
         Account accountFound = accountNeoRepository.findOne(testAccount.getId());
 
         assertThat(testAccount.getId()).isEqualTo(accountFound.getId());
-        assertThat(testAccount.getFirstName()).isEqualTo(accountFound.getFirstName());
+        assertThat(testAccount.getUsername()).isEqualTo(accountFound.getUsername());
 
         accountNeoRepository.delete(accountFound);
     }
