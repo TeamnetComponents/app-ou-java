@@ -10,9 +10,7 @@ import java.util.Set;
  */
 public interface OrganizationService {
 
-    OrganizationDTO create(OrganizationDTO organizationDTO);
-
-    OrganizationDTO update(OrganizationDTO organizationDTO);
+    OrganizationDTO save(OrganizationDTO organizationDTO);
 
     Set<OrganizationDTO> getAllOrganizationDTOs();
 

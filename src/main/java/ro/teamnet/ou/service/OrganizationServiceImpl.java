@@ -25,25 +25,13 @@ public class OrganizationServiceImpl implements OrganizationService {
     public OrganizationNeoRepository organizationNeoRepository;
 
     @Override
-    public OrganizationDTO create(OrganizationDTO organizationDTO) {
+    public OrganizationDTO save(OrganizationDTO organizationDTO) {
 
         Organization organization = OrganizationMapper.toJPA(organizationDTO);
         organization = organizationRepository.save(organization);
 
         ro.teamnet.ou.domain.neo.Organization organizationNeo = OrganizationMapper.toNeo(organizationDTO);
         organizationNeo.setJpaId(organization.getId());
-        organizationNeo = organizationNeoRepository.save(organizationNeo);
-
-        return OrganizationMapper.toDTO(organization, organizationNeo);
-    }
-
-    @Override
-    public OrganizationDTO update(OrganizationDTO organizationDTO) {
-
-        Organization organization = OrganizationMapper.toJPA(organizationDTO);
-        organization = organizationRepository.save(organization);
-
-        ro.teamnet.ou.domain.neo.Organization organizationNeo = OrganizationMapper.toNeo(organizationDTO);
         organizationNeo = organizationNeoRepository.save(organizationNeo);
 
         return OrganizationMapper.toDTO(organization, organizationNeo);

@@ -6,7 +6,7 @@ import java.util.Set;
 
 public class OrganizationDTO implements Serializable {
 
-    private Long id;
+    private Long neoId;
     private Long jpaId;
     private String code;
     private String description;
@@ -19,9 +19,9 @@ public class OrganizationDTO implements Serializable {
     public OrganizationDTO() {
     }
 
-    public OrganizationDTO(Long id, Long jpaId, String code, String description, Date validFrom, Date validTo, Boolean active,
+    public OrganizationDTO(Long neoId, Long jpaId, String code, String description, Date validFrom, Date validTo, Boolean active,
                            Set<PerspectiveDTO> perspectives, Set<OrganizationalUnitDTO> roots) {
-        this.id = id;
+        this.neoId = neoId;
         this.jpaId = jpaId;
         this.code = code;
         this.description = description;
@@ -32,12 +32,12 @@ public class OrganizationDTO implements Serializable {
         this.roots = roots;
     }
 
-    public Long getId() {
-        return id;
+    public Long getNeoId() {
+        return neoId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setNeoId(Long neoId) {
+        this.neoId = neoId;
     }
 
     public Long getJpaId() {
@@ -107,7 +107,7 @@ public class OrganizationDTO implements Serializable {
     @Override
     public String toString() {
         return "OrganizationDTO{" +
-                "id=" + id +
+                "id=" + neoId +
                 ", jpaId=" + jpaId +
                 ", code='" + code + '\'' +
                 ", description='" + description + '\'' +
