@@ -37,6 +37,15 @@ public class OrganizationServiceImpl implements OrganizationService {
         return OrganizationMapper.toDTO(organization, organizationNeo);
     }
 
+    @Override
+    public void delete(OrganizationDTO organizationDTO) {
+        Organization organization = OrganizationMapper.toJPA(organizationDTO);
+        organizationRepository.delete(organization);
+
+        ro.teamnet.ou.domain.neo.Organization organizationNeo = OrganizationMapper.toNeo(organizationDTO);
+        organizationNeoRepository.delete(organizationNeo);
+    }
+
     /**
      * Metoda ce returneaza lista cu toate OrganizationDTO, obtinuta prin combinarea datelor
      * din jpa si neo.

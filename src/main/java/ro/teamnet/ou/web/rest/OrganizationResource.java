@@ -47,6 +47,15 @@ public class OrganizationResource {
         return new ResponseEntity<>(organizationDTO, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/deleteOrganization",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method = RequestMethod.POST)
+    public void deleteOrganization(@RequestBody OrganizationDTO organizationDTO) {
+
+        organizationService.delete(organizationDTO);
+    }
+
     @RequestMapping(value = "/getOrganizationById/{id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
