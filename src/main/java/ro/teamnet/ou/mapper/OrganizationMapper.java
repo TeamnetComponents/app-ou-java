@@ -14,7 +14,7 @@ import java.util.Set;
 
 public class OrganizationMapper {
 
-    public static Organization from(OrganizationDTO organizationDTO) {
+    public static Organization toJPA(OrganizationDTO organizationDTO) {
         Organization organization = new Organization();
 
         organization.setId(organizationDTO.getId());
@@ -36,7 +36,7 @@ public class OrganizationMapper {
         return organization;
     }
 
-    public static ro.teamnet.ou.domain.neo.Organization fromNeo(OrganizationDTO organizationDTO) {
+    public static ro.teamnet.ou.domain.neo.Organization toNeo(OrganizationDTO organizationDTO) {
         ro.teamnet.ou.domain.neo.Organization organization = new ro.teamnet.ou.domain.neo.Organization();
 
         organization.setId(organizationDTO.getId());
@@ -64,7 +64,7 @@ public class OrganizationMapper {
         return organization;
     }
 
-    public static OrganizationDTO from(Organization organization, ro.teamnet.ou.domain.neo.Organization organizationNeo) {
+    public static OrganizationDTO toDTO(Organization organization, ro.teamnet.ou.domain.neo.Organization organizationNeo) {
         OrganizationDTO organizationDTO = new OrganizationDTO();
 
         organizationDTO.setId(organization.getId());

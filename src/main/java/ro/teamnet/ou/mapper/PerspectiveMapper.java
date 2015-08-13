@@ -16,7 +16,7 @@ public class PerspectiveMapper {
         perspective.setId(perspectiveDTO.getId());
         perspective.setCode(perspectiveDTO.getCode());
         perspective.setDescription(perspectiveDTO.getDescription());
-        perspective.setOrganization(OrganizationMapper.from(perspectiveDTO.getOrganization()));
+        perspective.setOrganization(OrganizationMapper.toJPA(perspectiveDTO.getOrganization()));
         Set<OrganizationalUnit> organizationalUnitSet = new HashSet<>();
         if(organizationalUnitSet != null) {
             for (OrganizationalUnitDTO organizationalUnitDTO : perspectiveDTO.getOrganizationalUnitSet()) {
@@ -34,7 +34,7 @@ public class PerspectiveMapper {
         perspective.setId(perspectiveDTO.getId());
         perspective.setJpaId(perspectiveDTO.getJpaId());
         perspective.setCode(perspectiveDTO.getCode());
-        perspective.setOrganization(OrganizationMapper.fromNeo(perspectiveDTO.getOrganization()));
+        perspective.setOrganization(OrganizationMapper.toNeo(perspectiveDTO.getOrganization()));
         perspective.setOrganizationalUnit(OrganizationalUnitMapper.fromNeo(perspectiveDTO.getOrganizationalUnit()));
 
         return perspective;
@@ -47,7 +47,7 @@ public class PerspectiveMapper {
         perspectiveDTO.setCode(perspective.getCode());
         perspectiveDTO.setDescription(perspective.getDescription());
         perspectiveDTO.setJpaId(perspectiveNeo.getJpaId());
-        perspectiveDTO.setOrganization(OrganizationMapper.from(perspective.getOrganization(), perspectiveNeo.getOrganization()));
+        perspectiveDTO.setOrganization(OrganizationMapper.toDTO(perspective.getOrganization(), perspectiveNeo.getOrganization()));
         perspectiveDTO.setOrganizationalUnit(OrganizationalUnitMapper.from(null, perspectiveNeo.getOrganizationalUnit()));
 
         Set<OrganizationalUnitDTO> organizationalUnitDTOs = new HashSet<>();

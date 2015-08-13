@@ -16,7 +16,5 @@ public interface OrganizationService {
 
     Set<OrganizationDTO> getAllOrganizationDTOs();
 
-    OrganizationDTO toOrganizationDTO(Organization organization, ro.teamnet.ou.domain.neo.Organization organizationNeo);
-
     OrganizationDTO findOrganizationDTOById(Long id);
 }
