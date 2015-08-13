@@ -30,78 +30,55 @@ import java.util.Set;
 public class OrganizationResource {
 
     private final Logger log = LoggerFactory.getLogger(OrganizationResource.class);
+
     @Inject
     private OrganizationService organizationService;
-    @Inject
-    private OrganizationalUnitService organizationalUnitService;
-    @Inject
-    private PerspectiveService perspectiveService;
-
-//    @Inject
-//    public OrganizationResource(OrganizationService organizationService) {
-//        super(organizationService);
-//        this.organizationService = organizationService;
-//    }
-
-    @RequestMapping(value = "/{id}",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OrganizationDTO> getById(@PathVariable Long id) {
-        log.debug("REST request to get  : {}", id);
-
-        Organization organization = organizationService.findOrganizationById(id);
-        ro.teamnet.ou.domain.neo.Organization organizationNeo = organizationService.findOrganizationNeoById(id);
-        OrganizationDTO organizationDTO = organizationService.toOrganizationDTO(organization, organizationNeo);
-
-        if (organization == null) {
-            return new ResponseEntity<OrganizationDTO>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<OrganizationDTO>(organizationDTO, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/{id}",
-            method = RequestMethod.PUT,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OrganizationDTO> update(@PathVariable Long id, @RequestBody OrganizationDTO organizationDTO) {
-        log.debug("REST request to update the function : {}", id);
-
-        Organization organization = organizationService.findOrganizationById(id);
-        ro.teamnet.ou.domain.neo.Organization organizationNeo = organizationService.findOrganizationNeoById(id);
-        if (organization == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        OrganizationDTO dto = organizationService.update(organization, organizationNeo, organizationDTO);
-//        organizationService.updateOrganization(organization, organizationDTO);
-//        organizationService.updateOrganizationNeo(organizationNeo, organizationDTO);
-
-        return new ResponseEntity<>(dto, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/getAll",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Set<OrganizationDTO>> getAll() {
-        log.debug("REST request to get all: OrganizationDTOs");
-        return new ResponseEntity<Set<OrganizationDTO>>(organizationService.getAllOrganizationDTO(), HttpStatus.OK);
-    }
 
     @RequestMapping(value = "/createOrganization",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE,
             method = RequestMethod.POST)
-    @Timed
-    public ResponseEntity<OrganizationDTO> saveAccount(@RequestBody OrganizationDTO organizationDTO) {
+    public ResponseEntity<OrganizationDTO> saveOrganization(@RequestBody OrganizationDTO organizationDTO) {
 
         organizationDTO = organizationService.create(organizationDTO);
         if (organizationDTO == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(organizationDTO, HttpStatus.OK);
     }
 
-    private Set<OrganizationDTO> checkConnectionWithFrontend() {
+    @RequestMapping(value = "/updateOrganization",
+            method = RequestMethod.PUT,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<OrganizationDTO> update(@RequestBody OrganizationDTO organizationDTO) {
+
+        log.debug("REST request to update Organization : {}");
+        OrganizationDTO dto = organizationService.update(organizationDTO);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/getOrganizationById/{id}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<OrganizationDTO> getById(@PathVariable Long id) {
+
+        log.debug("REST request to get Organization by id : {}", id);
+        return new ResponseEntity<OrganizationDTO>(organizationService.findOrganizationDTOById(id), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/getAllOrganizations",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Set<OrganizationDTO>> getAll() {
+
+        log.debug("REST request to get all: OrganizationDTOs");
+        return new ResponseEntity<Set<OrganizationDTO>>(organizationService.getAllOrganizationDTOs(), HttpStatus.OK);
+    }
+
+
+
+    /*private Set<OrganizationDTO> checkConnectionWithFrontend() {
 
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy'T'HH:mm:ss.Z");
@@ -149,5 +126,5 @@ public class OrganizationResource {
         organizationDTOs.add(organizationDTO1);
 
         return organizationDTOs;
-    }
+    }*/
 }
