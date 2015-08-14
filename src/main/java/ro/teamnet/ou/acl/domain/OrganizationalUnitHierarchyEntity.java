@@ -14,12 +14,15 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 @FilterDef(
-        name = "filterByOwnerOrganizationalUnits",
-        parameters = @ParamDef(name = "ownerOrganizationalUnitIds", type = "long"),
+        name = OrganizationalUnitHierarchyEntity.FILTER_BY_OWNER_ORGANIZATIONAL_UNITS,
+        parameters = @ParamDef(name = OrganizationalUnitHierarchyEntity.OWNER_ORGANIZATIONAL_UNIT_IDS, type = "long"),
         defaultCondition = "OWNER_OU_ID in (:ownerOrganizationalUnitIds)"
 )
-@Filter(name = "filterByOwnerOrganizationalUnits")
+@Filter(name = OrganizationalUnitHierarchyEntity.FILTER_BY_OWNER_ORGANIZATIONAL_UNITS)
 public abstract class OrganizationalUnitHierarchyEntity {
+
+    public static final String FILTER_BY_OWNER_ORGANIZATIONAL_UNITS = "filterByOwnerOrganizationalUnits";
+    public static final String OWNER_ORGANIZATIONAL_UNIT_IDS = "ownerOrganizationalUnitIds";
 
     @Column(name = "OWNER_OU_ID", nullable = false)
     private Long ownerOrganizationalUnitId;

@@ -25,26 +25,24 @@ import ro.teamnet.ou.plugin.OuNeo4jResourcePropertiesPathPlugin;
 public class OuDatabaseConfiguration {
 
 
-
     @Bean
     public JpaPackagesToScanPlugin jpaPackagesToScanPlugin() {
-        return DefaultPackagesToScanPlugin
-                .instance().addPackage("ro.teamnet.ou.domain.jpa");
+        return DefaultPackagesToScanPlugin.instance()
+                .addPackage("ro.teamnet.ou.domain.jpa")
+                .addPackage("ro.teamnet.ou.acl.domain");
     }
 
     @Bean
     public NeoPackagesToScanPlugin neoPackagesToScanPlugin() {
-        return DefaultNeoPackagesToScanPlugin
-                .instance().addPackage("ro.teamnet.ou.domain.neo");
+        return DefaultNeoPackagesToScanPlugin.instance()
+                .addPackage("ro.teamnet.ou.domain.neo");
     }
 
     @Bean
     @Order(100)
-    public Neo4jResourcePropertiesPathPlugin ouNeo4jResourcePropertiesPathPlugin(){
+    public Neo4jResourcePropertiesPathPlugin ouNeo4jResourcePropertiesPathPlugin() {
         return new OuNeo4jResourcePropertiesPathPlugin();
     }
-
-
 
 
 }
