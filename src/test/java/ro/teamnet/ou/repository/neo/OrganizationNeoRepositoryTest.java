@@ -1,4 +1,4 @@
-package ro.teamnet.ou.repository.jpa.neo;
+package ro.teamnet.ou.repository.neo;
 
 import org.junit.Assert;
 import org.junit.Before;

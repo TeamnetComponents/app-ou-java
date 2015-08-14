@@ -1,4 +1,4 @@
-package ro.teamnet.ou.repository.jpa.neo;
+package ro.teamnet.ou.repository.neo;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -12,7 +12,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import ro.teamnet.ou.domain.neo.Account;
 import ro.teamnet.ou.mock.OuTestApplication;
-import ro.teamnet.ou.repository.neo.AccountNeoRepository;
 import ro.teamnet.ou.util.OuNeoUtil;
 import ro.teamnet.ou.util.OuNeoUtilImpl;
 
