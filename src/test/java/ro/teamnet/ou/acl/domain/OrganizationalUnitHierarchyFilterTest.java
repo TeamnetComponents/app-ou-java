@@ -122,7 +122,7 @@ public class OrganizationalUnitHierarchyFilterTest {
         all = repository.findAll();
         Assert.assertEquals(5, all.size());
         for (OUHierarchyTestEntity testEntity : all) {
-            Assert.assertTrue(testEntity.getOwnerOrganizationalUnitId() < 0);
+            Assert.assertTrue(testEntity.getOwnerOrganizationalUnitId() <= ROOT_OU_ID);
         }
         ouNeoRepository.delete(rootOu);
         ouNeoRepository.delete(childOu);
@@ -177,7 +177,7 @@ public class OrganizationalUnitHierarchyFilterTest {
         all = repository.findAll();
         Assert.assertEquals(12, all.size());
         for (OUHierarchyTestEntity testEntity : all) {
-            Assert.assertTrue(testEntity.getOwnerOrganizationalUnitId() < 0);
+            Assert.assertTrue(testEntity.getOwnerOrganizationalUnitId() <= ROOT_OU_ID);
         }
         ouNeoRepository.delete(rootOu);
         ouNeoRepository.delete(child1Ou);
@@ -186,4 +186,82 @@ public class OrganizationalUnitHierarchyFilterTest {
         ouNeoRepository.delete(grandchild2Ou);
     }
 
+    @Test
+    @Transactional
+    public void testOrganizationalUnitHierarchyFilterForSubtree() {
+        long ROOT_OU_ID = -1000L;
+        long CHILD1_OU_ID = -1100L;
+        long GRANDCHILD11_OU_ID = -1110L;
+        long GRANDCHILD12_OU_ID = -1120L;
+        long CHILD2_OU_ID = -1200L;
+        long GRANDCHILD21_OU_ID = -1210L;
+        long GRANDCHILD22_OU_ID = -1220L;
+        long GRANDCHILD23_OU_ID = -1230L;
+        long CHILD3_OU_ID = -1300L;
+        long GRANDCHILD31_OU_ID = -1310L;
+
+        OrganizationalUnit rootOu = saveOuToNeo(ROOT_OU_ID);
+        OrganizationalUnit child1Ou = saveOuToNeo(CHILD1_OU_ID);
+        OrganizationalUnit child2Ou = saveOuToNeo(CHILD2_OU_ID);
+        OrganizationalUnit child3Ou = saveOuToNeo(CHILD3_OU_ID);
+        OrganizationalUnit grandchild11Ou = saveOuToNeo(GRANDCHILD11_OU_ID);
+        OrganizationalUnit grandchild12Ou = saveOuToNeo(GRANDCHILD12_OU_ID);
+        OrganizationalUnit grandchild21Ou = saveOuToNeo(GRANDCHILD21_OU_ID);
+        OrganizationalUnit grandchild22Ou = saveOuToNeo(GRANDCHILD22_OU_ID);
+        OrganizationalUnit grandchild23Ou = saveOuToNeo(GRANDCHILD23_OU_ID);
+        OrganizationalUnit grandchild31Ou = saveOuToNeo(GRANDCHILD31_OU_ID);
+        child1Ou.setParent(rootOu);
+        ouNeoRepository.save(child1Ou);
+        child2Ou.setParent(rootOu);
+        ouNeoRepository.save(child2Ou);
+        child3Ou.setParent(rootOu);
+        ouNeoRepository.save(child3Ou);
+        grandchild11Ou.setParent(child1Ou);
+        ouNeoRepository.save(grandchild11Ou);
+        grandchild12Ou.setParent(child1Ou);
+        ouNeoRepository.save(grandchild12Ou);
+        grandchild21Ou.setParent(child2Ou);
+        ouNeoRepository.save(grandchild21Ou);
+        grandchild22Ou.setParent(child2Ou);
+        ouNeoRepository.save(grandchild22Ou);
+        grandchild23Ou.setParent(child2Ou);
+        ouNeoRepository.save(grandchild23Ou);
+        grandchild31Ou.setParent(child3Ou);
+        ouNeoRepository.save(grandchild31Ou);
+
+        saveNewTestEntity(ROOT_OU_ID);
+        saveNewTestEntity(ROOT_OU_ID);
+        saveNewTestEntity(CHILD1_OU_ID);
+        saveNewTestEntity(CHILD2_OU_ID);
+        saveNewTestEntity(CHILD3_OU_ID);
+        saveNewTestEntity(CHILD3_OU_ID);
+        saveNewTestEntity(GRANDCHILD11_OU_ID);
+        saveNewTestEntity(GRANDCHILD12_OU_ID);
+        saveNewTestEntity(GRANDCHILD21_OU_ID);
+        saveNewTestEntity(GRANDCHILD22_OU_ID);
+        saveNewTestEntity(GRANDCHILD23_OU_ID);
+        saveNewTestEntity(GRANDCHILD31_OU_ID);
+        saveNewTestEntity(GRANDCHILD31_OU_ID);
+        saveNewTestEntity(2L);
+        saveNewTestEntity(3L);
+        List<OUHierarchyTestEntity> all = repository.findAll();
+        Assert.assertEquals(15, all.size());
+        advice.setupOrganizationalUnitHierarchyFilter(Arrays.asList(CHILD1_OU_ID, CHILD2_OU_ID));
+        all = repository.findAll();
+        Assert.assertEquals(7, all.size());
+        for (OUHierarchyTestEntity testEntity : all) {
+            Assert.assertTrue(testEntity.getOwnerOrganizationalUnitId() <= CHILD1_OU_ID);
+            Assert.assertTrue(testEntity.getOwnerOrganizationalUnitId() > CHILD3_OU_ID);
+        }
+        ouNeoRepository.delete(rootOu);
+        ouNeoRepository.delete(child1Ou);
+        ouNeoRepository.delete(child2Ou);
+        ouNeoRepository.delete(child3Ou);
+        ouNeoRepository.delete(grandchild11Ou);
+        ouNeoRepository.delete(grandchild12Ou);
+        ouNeoRepository.delete(grandchild21Ou);
+        ouNeoRepository.delete(grandchild22Ou);
+        ouNeoRepository.delete(grandchild23Ou);
+        ouNeoRepository.delete(grandchild31Ou);
+    }
 }
