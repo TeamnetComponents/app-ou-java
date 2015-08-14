@@ -66,7 +66,7 @@ public class FunctionRepositoryTest {
 
         long initialAccountCount = accountNeoRepository.count();
         Account account = new Account();
-        account.setJpaId(1l);
+        account.setJpaId(2l);
         account.setUsername("Ion.Popescu");
         accountNeoRepository.save(account);
         Assert.assertEquals(initialAccountCount + 1, accountNeoRepository.count());
@@ -100,9 +100,9 @@ public class FunctionRepositoryTest {
         }
         Assert.assertEquals(1, functionCount);
 
-//        functionNeoRepository.delete(neoFunction);
-//        accountNeoRepository.delete(account);
-//        organizationalUnitNeoRepository.delete(ou);
+        functionNeoRepository.delete(neoFunction);
+        accountNeoRepository.delete(account);
+        organizationalUnitNeoRepository.delete(ou);
 
     }
 }

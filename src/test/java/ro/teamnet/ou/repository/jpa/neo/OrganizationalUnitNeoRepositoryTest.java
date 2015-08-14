@@ -111,7 +111,7 @@ public class OrganizationalUnitNeoRepositoryTest {
 
     @Test
     @Transactional
-    public void getOrganizationalUnitTreeIdsById() {
+    public void getOrganizationalUnitSubTreeJpaIdsByRootJpaId() {
         OrganizationalUnit organizationalUnit1 = ouNeoGenericService.createOrganizationalUnit("OrganizationalUnitTest1", 1l);
         OrganizationalUnit organizationalUnit2 = ouNeoGenericService.createOrganizationalUnit("OrganizationalUnitTest2", 2l);
         OrganizationalUnit organizationalUnit3 = ouNeoGenericService.createOrganizationalUnit("OrganizationalUnitTest3", 3l);
@@ -126,8 +126,8 @@ public class OrganizationalUnitNeoRepositoryTest {
         organizationalUnit3 = organizationalUnitNeoRepository.save(organizationalUnit3);
         organizationalUnit4 = organizationalUnitNeoRepository.save(organizationalUnit4);
 
-        List<Long> lista = organizationalUnitNeoRepository.getOrganizationalUnitTreeIdsById(organizationalUnit1.getId());
-        assertThat(lista.size()).isEqualTo(4);
+        List<Long> lista = organizationalUnitNeoRepository.getOrganizationalUnitSubTreeJpaIdsByRootJpaId(organizationalUnit1.getJpaId());
+        assertThat(lista.size()).isEqualTo(3);
 
         organizationalUnitNeoRepository.delete(organizationalUnit1);
         organizationalUnitNeoRepository.delete(organizationalUnit2);

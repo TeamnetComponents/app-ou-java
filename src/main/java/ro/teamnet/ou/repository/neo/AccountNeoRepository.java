@@ -8,4 +8,5 @@ import ro.teamnet.ou.domain.neo.Account;
  * Created by ionut.patrascu on 31.07.2015.
  */
 public interface AccountNeoRepository extends GraphRepository<Account>, SchemaIndexRepository<Account> {
+    Account findByJpaId(Long jpaId);
 }
