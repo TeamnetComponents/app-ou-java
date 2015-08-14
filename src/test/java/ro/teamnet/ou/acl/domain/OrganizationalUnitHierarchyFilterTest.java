@@ -38,7 +38,7 @@ public class OrganizationalUnitHierarchyFilterTest {
 
     @Test
     @Transactional
-    public void testOrganizationalUnitHierarchyFilterForRootWithNoChildren() throws Exception {
+    public void testOrganizationalUnitHierarchyFilterForRootWithNoChildren() {
         long OWNER_OU_ID = -1000L;
         saveNewTestEntity(OWNER_OU_ID);
         saveNewTestEntity(OWNER_OU_ID);
@@ -62,7 +62,7 @@ public class OrganizationalUnitHierarchyFilterTest {
 
     @Test
     @Transactional
-    public void testOrganizationalUnitHierarchyFilterForRootWithNoChildrenOnTwoEntities() throws Exception {
+    public void testOrganizationalUnitHierarchyFilterForRootWithNoChildrenOnTwoEntities() {
         long OWNER_OU_ID = -1000L;
         saveNewTestEntity(OWNER_OU_ID);
         saveNewTestEntity(OWNER_OU_ID);
@@ -100,7 +100,7 @@ public class OrganizationalUnitHierarchyFilterTest {
 
     @Test
     @Transactional
-    public void testOrganizationalUnitHierarchyFilterForRootWithOneChild() throws Exception {
+    public void testOrganizationalUnitHierarchyFilterForRootWithOneChild() {
         long ROOT_OU_ID = -1000L;
         long CHILD_OU_ID = -1100L;
 
@@ -128,9 +128,15 @@ public class OrganizationalUnitHierarchyFilterTest {
         ouNeoRepository.delete(childOu);
     }
 
+    private OrganizationalUnit saveOuToNeo(long jpaId) {
+        OrganizationalUnit ou = new OrganizationalUnit();
+        ou.setJpaId(jpaId);
+        return ouNeoRepository.save(ou);
+    }
+
     @Test
     @Transactional
-    public void testOrganizationalUnitHierarchyFilterForRootWithMultipleDescendants() throws Exception {
+    public void testOrganizationalUnitHierarchyFilterForRootWithMultipleDescendants() {
         long ROOT_OU_ID = -1000L;
         long CHILD1_OU_ID = -1100L;
         long GRANDCHILD1_OU_ID = -1110L;
@@ -180,9 +186,4 @@ public class OrganizationalUnitHierarchyFilterTest {
         ouNeoRepository.delete(grandchild2Ou);
     }
 
-    private OrganizationalUnit saveOuToNeo(long jpaId) {
-        OrganizationalUnit ou = new OrganizationalUnit();
-        ou.setJpaId(jpaId);
-        return ouNeoRepository.save(ou);
-    }
 }
