@@ -18,6 +18,7 @@ import ro.teamnet.ou.repository.neo.OrganizationalUnitNeoRepository;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -46,7 +47,7 @@ public class OrganizationalUnitHierarchyFilterTest {
         saveNewTestEntity(3L);
         List<OUHierarchyTestEntity> all = repository.findAll();
         Assert.assertEquals(4, all.size());
-        advice.setupOrganizationalUnitHierarchyFilter(Arrays.asList(OWNER_OU_ID));
+        advice.setupOrganizationalUnitHierarchyFilter(Collections.singletonList(OWNER_OU_ID));
         all = repository.findAll();
         Assert.assertEquals(2, all.size());
         for (OUHierarchyTestEntity testEntity : all) {
@@ -79,7 +80,7 @@ public class OrganizationalUnitHierarchyFilterTest {
         Assert.assertEquals(4, all.size());
         List<OUHierarchyTest2Entity> all2 = repository2.findAll();
         Assert.assertEquals(7, all2.size());
-        advice.setupOrganizationalUnitHierarchyFilter(Arrays.asList(OWNER_OU_ID));
+        advice.setupOrganizationalUnitHierarchyFilter(Collections.singletonList(OWNER_OU_ID));
         all = repository.findAll();
         all2 = repository2.findAll();
         Assert.assertEquals(2, all.size());
@@ -118,7 +119,7 @@ public class OrganizationalUnitHierarchyFilterTest {
         saveNewTestEntity(3L);
         List<OUHierarchyTestEntity> all = repository.findAll();
         Assert.assertEquals(7, all.size());
-        advice.setupOrganizationalUnitHierarchyFilter(Arrays.asList(ROOT_OU_ID));
+        advice.setupOrganizationalUnitHierarchyFilter(Collections.singletonList(ROOT_OU_ID));
         all = repository.findAll();
         Assert.assertEquals(5, all.size());
         for (OUHierarchyTestEntity testEntity : all) {
@@ -173,7 +174,7 @@ public class OrganizationalUnitHierarchyFilterTest {
         saveNewTestEntity(3L);
         List<OUHierarchyTestEntity> all = repository.findAll();
         Assert.assertEquals(14, all.size());
-        advice.setupOrganizationalUnitHierarchyFilter(Arrays.asList(ROOT_OU_ID));
+        advice.setupOrganizationalUnitHierarchyFilter(Collections.singletonList(ROOT_OU_ID));
         all = repository.findAll();
         Assert.assertEquals(12, all.size());
         for (OUHierarchyTestEntity testEntity : all) {
