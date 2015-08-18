@@ -16,7 +16,7 @@ import ro.teamnet.ou.util.OuNeoUtil;
 import ro.teamnet.ou.util.OuNeoUtilImpl;
 
 import javax.inject.Inject;
-import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -98,7 +98,7 @@ public class OrganizationalUnitNeoRepositoryTest {
         organizationalUnit3 = organizationalUnitNeoRepository.save(organizationalUnit3);
         organizationalUnit4 = organizationalUnitNeoRepository.save(organizationalUnit4);
 
-        List<OrganizationalUnit> lista = organizationalUnitNeoRepository.getOrganizationalUnitTreeById(organizationalUnit1.getId());
+        Set<OrganizationalUnit> lista = organizationalUnitNeoRepository.getOrganizationalUnitTreeById(organizationalUnit1.getId());
         assertThat(lista.size()).isEqualTo(4);
 
         organizationalUnitNeoRepository.delete(organizationalUnit1);
@@ -124,7 +124,7 @@ public class OrganizationalUnitNeoRepositoryTest {
         organizationalUnit3 = organizationalUnitNeoRepository.save(organizationalUnit3);
         organizationalUnit4 = organizationalUnitNeoRepository.save(organizationalUnit4);
 
-        List<Long> lista = organizationalUnitNeoRepository.getOrganizationalUnitSubTreeJpaIdsByRootJpaId(organizationalUnit1.getJpaId());
+        Set<Long> lista = organizationalUnitNeoRepository.getOrganizationalUnitSubTreeJpaIdsByRootJpaId(organizationalUnit1.getJpaId());
         assertThat(lista.size()).isEqualTo(3);
 
         organizationalUnitNeoRepository.delete(organizationalUnit1);

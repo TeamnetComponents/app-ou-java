@@ -1,11 +1,15 @@
 package ro.teamnet.ou.acl.aop;
 
-import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.core.userdetails.UserDetails;
+import ro.teamnet.bootstrap.extend.AppRepository;
 import ro.teamnet.ou.acl.domain.OrganizationalUnitHierarchyEntity;
-import ro.teamnet.ou.acl.domain.OrganizationalUnitUserDetails;
 import ro.teamnet.ou.acl.service.OrganizationalUnitHierarchyFilterAdvice;
 import ro.teamnet.ou.acl.service.OrganizationalUnitUserDetailsPlugin;
 
@@ -17,19 +21,23 @@ import javax.inject.Inject;
  * @see OrganizationalUnitUserDetailsPlugin#loadUserDetails(UserDetails)
  */
 @Aspect
+@Order(10000)
 public class OrganizationalUnitHierarchyFilterAspect {
 
+    private final Logger log = LoggerFactory.getLogger(getClass());
     @Inject
     OrganizationalUnitHierarchyFilterAdvice filterAdvice;
 
-    @Pointcut("execution(* ro.teamnet.ou.acl.service.OrganizationalUnitUserDetailsPlugin.loadUserDetails(..))")
-    public void onLoadUserDetails() {
+    @Pointcut("execution(* *..*Repository*.*(..))")
+    public void onRepositoryMethods() {
     }
 
-    @AfterReturning(pointcut = "onLoadUserDetails()", returning = "userDetails")
-    public void enableFilter(OrganizationalUnitUserDetails userDetails) {
-        filterAdvice.setupOrganizationalUnitHierarchyFilter(userDetails.getOrganizationalUnitIds());
+    @Before("onRepositoryMethods()")
+    public void aroundRepositoryMethods(JoinPoint jp) throws Throwable {
+        log.debug("before repository method - begin");
+        if (filterAdvice == null || !(jp.getTarget() instanceof AppRepository)) {
+            return;
+        }
+        filterAdvice.setupOrganizationalUnitHierarchyFilter();
     }
-
-
 }
