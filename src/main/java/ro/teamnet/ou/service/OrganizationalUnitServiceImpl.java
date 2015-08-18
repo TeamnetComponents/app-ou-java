@@ -21,111 +21,83 @@ import java.util.*;
 @Service
 @Transactional
 public class OrganizationalUnitServiceImpl implements OrganizationalUnitService {
-//extends AbstractServiceImpl<OrganizationalUnit, Long> implements OrganizationalUnitService {
 
-    @Inject
+
     private OrganizationalUnitRepository organizationalUnitRepository;
-    @Inject
+
     private OrganizationalUnitNeoRepository organizationalUnitNeoRepository;
-    @Inject
+
     public PerspectiveRepository perspectiveRepository;
 
-//    private final OrganizationalUnitRepository organizationalUnitRepository;
-//    @Inject
-//    public OrganizationalUnitServiceImpl(OrganizationalUnitRepository organizationalUnitRepository) {
-//        super(organizationalUnitRepository);
-//        this.organizationalUnitRepository = organizationalUnitRepository;
+    @Inject
+    public OrganizationalUnitServiceImpl (OrganizationalUnitRepository organizationalUnitRepository, OrganizationalUnitNeoRepository organizationalUnitNeoRepository,
+                                          PerspectiveRepository perspectiveRepository){
+        this.organizationalUnitRepository = organizationalUnitRepository;
+        this.organizationalUnitNeoRepository = organizationalUnitNeoRepository;
+        this.perspectiveRepository = perspectiveRepository;
+    }
+
+
+//    @Override
+//    public OrganizationalUnitDTO createOrganizationalUnitDTO(Long id, String code, String description, Date validFrom, Date validTo, PerspectiveDTO perspectiveDTO,
+//                                                             OrganizationalUnitDTO parent, Set<OrganizationalUnitDTO> children) {
+//        OrganizationalUnitDTO organizationalUnitDTO = new OrganizationalUnitDTO();
+//        organizationalUnitDTO.setId(id);
+//        organizationalUnitDTO.setCode(code);
+//        organizationalUnitDTO.setDescription(description);
+//        organizationalUnitDTO.setValidFrom(validFrom);
+//        organizationalUnitDTO.setValidTo(validTo);
+//        organizationalUnitDTO.setPerspective(perspectiveDTO);
+//        organizationalUnitDTO.setParent(parent);
+//        organizationalUnitDTO.setChildren(children);
+//
+//        return organizationalUnitDTO;
 //    }
 
-    @Override
-    public OrganizationalUnitDTO createOrganizationalUnitDTO(Long id, String code, String description, Date validFrom, Date validTo, PerspectiveDTO perspectiveDTO,
-                                                             OrganizationalUnitDTO parent, Set<OrganizationalUnitDTO> children) {
-        OrganizationalUnitDTO organizationalUnitDTO = new OrganizationalUnitDTO();
-        organizationalUnitDTO.setId(id);
-        organizationalUnitDTO.setCode(code);
-        organizationalUnitDTO.setDescription(description);
-        organizationalUnitDTO.setValidFrom(validFrom);
-        organizationalUnitDTO.setValidTo(validTo);
-        organizationalUnitDTO.setPerspective(perspectiveDTO);
-        organizationalUnitDTO.setParent(parent);
-        organizationalUnitDTO.setChildren(children);
 
-        return organizationalUnitDTO;
+    @Override
+    @Transactional
+    public OrganizationalUnitDTO findOrganizationalUnitById(Long id) {
+
+        OrganizationalUnit organizationalUnit = organizationalUnitRepository.findOne(id);
+        ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnitNeo = organizationalUnitNeoRepository.findOne(id);
+
+        return OrganizationalUnitMapper.toDTO(organizationalUnit,organizationalUnitNeo);
     }
 
     @Override
     @Transactional
-    public OrganizationalUnit updateOrganizationalUnit(OrganizationalUnit organizationalUnit, OrganizationalUnitDTO organizationalUnitDTO) {
+    public Set<OrganizationalUnitDTO> getAllOrganizationalUnit() {
+        List<OrganizationalUnit> organizationalUnits = organizationalUnitRepository.findAll();
+        List<ro.teamnet.ou.domain.neo.OrganizationalUnit> organizationalUnitsNeo = organizationalUnitNeoRepository.getAllOrganizationalUnits();
 
-        organizationalUnit = OrganizationalUnitMapper.from(organizationalUnitDTO);
-        return organizationalUnitRepository.save(organizationalUnit);
-    }
-
-    @Override
-    @Transactional
-    public OrganizationalUnitDTO toOrganizationalUnitDTO(OrganizationalUnit organizationalUnit, ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnitNeo) {
-
-        OrganizationalUnitDTO organizationalUnitDTO = OrganizationalUnitMapper.from(organizationalUnit, organizationalUnitNeo);
-        return organizationalUnitDTO;
-    }
-
-    @Override
-    @Transactional
-    public ro.teamnet.ou.domain.neo.OrganizationalUnit updateOrganizationalUnitNeo(ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnit, OrganizationalUnitDTO organizationalUnitDTO) {
-
-        organizationalUnit = OrganizationalUnitMapper.fromNeo(organizationalUnitDTO);
-        return organizationalUnitNeoRepository.save(organizationalUnit);
-    }
-
-    @Override
-    @Transactional
-    public OrganizationalUnit findOrganizationalUnitById(Long id) {
-        return organizationalUnitRepository.findOne(id);
-    }
-
-    @Override
-    @Transactional
-    public ro.teamnet.ou.domain.neo.OrganizationalUnit findOrganizationalUnitNeoById(Long id) {
-        return organizationalUnitNeoRepository.findOne(id);
-    }
-
-    @Override
-    @Transactional
-    public List<OrganizationalUnit> getAllOrganizationalUnit() {
-        return organizationalUnitRepository.findAll();
-    }
-
-    @Override
-    @Transactional
-    public List<ro.teamnet.ou.domain.neo.OrganizationalUnit> getAllOrganizationalUnitNeo() {
-        Result<ro.teamnet.ou.domain.neo.OrganizationalUnit> result = organizationalUnitNeoRepository.findAll();
-        List<ro.teamnet.ou.domain.neo.OrganizationalUnit> organizationalUnitList = new ArrayList<>();
-        for (ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnit : result) {
-            organizationalUnitList.add(organizationalUnit);
+        Set<OrganizationalUnitDTO> organizationalUnitDTOs = new HashSet<>();
+        if(organizationalUnits != null && organizationalUnitsNeo != null){
+            for(int i = 0; i < organizationalUnits.size(); i++){
+                for(int j = 0; j < organizationalUnitsNeo.size(); j++){
+                    if(organizationalUnits.get(i).getId().equals(organizationalUnitsNeo.get(j).getJpaId())){
+                        organizationalUnitDTOs.add(OrganizationalUnitMapper.toDTO(organizationalUnits.get(i), organizationalUnitsNeo.get(j)));
+                    }
+                }
+            }
         }
-        return organizationalUnitList;
+
+        return organizationalUnitDTOs;
     }
 
     @Override
     @Transactional
-    public OrganizationalUnitDTO create(OrganizationalUnitDTO organizationalUnitDTO) {
+    public OrganizationalUnitDTO save(OrganizationalUnitDTO organizationalUnitDTO) {
 
-        OrganizationalUnit organizationalUnit = new OrganizationalUnit();
-        organizationalUnit = this.updateOrganizationalUnit(organizationalUnit, organizationalUnitDTO);
-        ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnitNeo = new ro.teamnet.ou.domain.neo.OrganizationalUnit();
+        OrganizationalUnit organizationalUnit = OrganizationalUnitMapper.toJPA(organizationalUnitDTO);
+        organizationalUnitRepository.save(organizationalUnit);
+
+        ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnitNeo = OrganizationalUnitMapper.toNeo(organizationalUnitDTO);
         organizationalUnitDTO.setJpaId(organizationalUnit.getId());
-        organizationalUnitNeo = this.updateOrganizationalUnitNeo(organizationalUnitNeo, organizationalUnitDTO);
+        organizationalUnitNeoRepository.save(organizationalUnitNeo);
 
-        return this.toOrganizationalUnitDTO(organizationalUnit, organizationalUnitNeo);
+        return OrganizationalUnitMapper.toDTO(organizationalUnit, organizationalUnitNeo);
     }
 
-    @Override
-    @Transactional
-    public OrganizationalUnitDTO update(OrganizationalUnit organizationalUnit, ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnitNeo, OrganizationalUnitDTO organizationalUnitDTO) {
 
-        this.updateOrganizationalUnit(organizationalUnit, organizationalUnitDTO);
-        this.updateOrganizationalUnitNeo(organizationalUnitNeo, organizationalUnitDTO);
-
-        return this.toOrganizationalUnitDTO(organizationalUnit, organizationalUnitNeo);
-    }
 }

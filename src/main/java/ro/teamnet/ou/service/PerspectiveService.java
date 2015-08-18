@@ -13,25 +13,14 @@ import java.util.Set;
  * Created by ionut.patrascu on 31.07.2015.
  */
 public interface PerspectiveService {
-//extends AbstractService<Perspective, Long> {
 
-    PerspectiveDTO createPerspectiveDTO(Long id, String code, String description, OrganizationDTO organizationDTO, Set<OrganizationalUnitDTO> organizationalUnitDTOSet);
+//    PerspectiveDTO createPerspectiveDTO(Long jpaId, Long neoId, String code, String description, OrganizationDTO organizationDTO, Set<OrganizationalUnitDTO> organizationalUnitDTOSet);
 
-    PerspectiveDTO toPerspectiveDTO(Perspective perspective, ro.teamnet.ou.domain.neo.Perspective perspectiveNeo);
+    PerspectiveDTO findPerspectiveById(Long id);
 
-    Perspective updatePerspective(Perspective perspective, PerspectiveDTO perspectiveDTO);
+    Set<PerspectiveDTO> getAllPerspectives();
 
-    ro.teamnet.ou.domain.neo.Perspective updatePerspectiveNeo(ro.teamnet.ou.domain.neo.Perspective perspective, PerspectiveDTO perspectiveDTO);
+    PerspectiveDTO save(PerspectiveDTO perspectiveDTO);
 
-    Perspective findPerspectiveById(Long id);
-
-    ro.teamnet.ou.domain.neo.Perspective findPerspectiveNeoById(Long id);
-
-    List<Perspective> getAllPerspectives();
-
-    List<ro.teamnet.ou.domain.neo.Perspective> getAllPerspectivesNeo();
-
-    PerspectiveDTO create(PerspectiveDTO perspectiveDTO);
-
-    PerspectiveDTO update(Perspective perspective, ro.teamnet.ou.domain.neo.Perspective perspectiveNeo, PerspectiveDTO perspectiveDTO);
+   // PerspectiveDTO update(PerspectiveDTO perspectiveDTO);
 }

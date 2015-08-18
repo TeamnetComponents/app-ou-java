@@ -13,6 +13,7 @@ import ro.teamnet.ou.web.rest.dto.PerspectiveDTO;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -22,104 +23,66 @@ import java.util.Set;
 @Service
 @Transactional
 public class PerspectiveServiceImpl implements PerspectiveService {
-//extends AbstractServiceImpl<Perspective, Long> implements PerspectiveService {
 
     @Inject
     private PerspectiveRepository perspectiveRepository;
     @Inject
     private PerspectiveNeoRepository perspectiveNeoRepository;
 
-//    @Inject
-//    public PerspectiveServiceImpl(PerspectiveRepository perspectiveRepository) {
-//        super(perspectiveRepository);
-//        this.perspectiveRepository = perspectiveRepository;
+
+
+//    @Override
+//    public PerspectiveDTO createPerspectiveDTO(Long jpaId, Long neoId, String code, String description, OrganizationDTO organizationDTO, Set<OrganizationalUnitDTO> organizationalUnitDTOSet) {
+//        PerspectiveDTO perspectiveDTO = new PerspectiveDTO();
+//        perspectiveDTO.setJpaId(jpaId);
+//        perspectiveDTO.setNeoId(neoId);
+//        perspectiveDTO.setCode(code);
+//        perspectiveDTO.setDescription(description);
+//        perspectiveDTO.setOrganization(organizationDTO);
+//        perspectiveDTO.setOrganizationalUnitSet(organizationalUnitDTOSet);
+//
+//        return perspectiveDTO;
 //    }
 
     @Override
-    public PerspectiveDTO createPerspectiveDTO(Long id, String code, String description, OrganizationDTO organizationDTO, Set<OrganizationalUnitDTO> organizationalUnitDTOSet) {
-        PerspectiveDTO perspectiveDTO = new PerspectiveDTO();
-        perspectiveDTO.setId(id);
-        perspectiveDTO.setCode(code);
-        perspectiveDTO.setDescription(description);
-        perspectiveDTO.setOrganization(organizationDTO);
-        perspectiveDTO.setOrganizationalUnitSet(organizationalUnitDTOSet);
+    @Transactional
+    public PerspectiveDTO findPerspectiveById(Long id) {
 
-        return perspectiveDTO;
+        Perspective perspective = perspectiveRepository.findOne(id);
+        ro.teamnet.ou.domain.neo.Perspective perspectiveNeo = perspectiveNeoRepository.findOne(id);
+
+        return PerspectiveMapper.toDTO(perspective, perspectiveNeo);
     }
 
     @Override
     @Transactional
-    public PerspectiveDTO toPerspectiveDTO(Perspective perspective, ro.teamnet.ou.domain.neo.Perspective perspectiveNeo) {
+    public Set<PerspectiveDTO> getAllPerspectives() {
+        List<Perspective> perspectiveList = perspectiveRepository.findAll();
+        List<ro.teamnet.ou.domain.neo.Perspective> perspectiveListNeo = perspectiveNeoRepository.getAllPerspectives();
 
-        PerspectiveDTO perspectiveDTO = PerspectiveMapper.from(perspective, perspectiveNeo);
-        return perspectiveDTO;
-    }
-
-    @Override
-    @Transactional
-    public Perspective updatePerspective(Perspective perspective, PerspectiveDTO perspectiveDTO) {
-
-        perspective = PerspectiveMapper.from(perspectiveDTO);
-        return perspectiveRepository.save(perspective);
-    }
-
-    @Override
-    @Transactional
-    public ro.teamnet.ou.domain.neo.Perspective updatePerspectiveNeo(ro.teamnet.ou.domain.neo.Perspective perspective, PerspectiveDTO perspectiveDTO) {
-
-        perspective = PerspectiveMapper.fromNeo(perspectiveDTO);
-        return perspectiveNeoRepository.save(perspective);
-    }
-
-    @Override
-    @Transactional
-    public Perspective findPerspectiveById(Long id) {
-        return perspectiveRepository.findOne(id);
-    }
-
-    @Override
-    @Transactional
-    public ro.teamnet.ou.domain.neo.Perspective findPerspectiveNeoById(Long id) {
-        return perspectiveNeoRepository.findOne(id);
-    }
-
-    @Override
-    @Transactional
-    public List<Perspective> getAllPerspectives() {
-        return perspectiveRepository.findAll();
-    }
-
-    @Override
-    @Transactional
-    public List<ro.teamnet.ou.domain.neo.Perspective> getAllPerspectivesNeo() {
-        Result<ro.teamnet.ou.domain.neo.Perspective> result = perspectiveNeoRepository.findAll();
-        List<ro.teamnet.ou.domain.neo.Perspective> perspectiveList = new ArrayList<>();
-        for (ro.teamnet.ou.domain.neo.Perspective perspective : result) {
-            perspectiveList.add(perspective);
+        Set<PerspectiveDTO> perspectiveDTOs = new HashSet<>();
+        if (perspectiveList != null && perspectiveListNeo != null) {
+            for (int i = 0; i < perspectiveList.size(); i++) {
+                for (int j=0; j < perspectiveListNeo.size(); j++) {
+                    if (perspectiveList.get(i).getId().equals(perspectiveListNeo.get(j).getJpaId())) {
+                        perspectiveDTOs.add(PerspectiveMapper.toDTO(perspectiveList.get(i), perspectiveListNeo.get(j)));
+                    }
+                }
+            }
         }
-        return perspectiveList;
-    }
+        return perspectiveDTOs;
+        }
 
     @Override
     @Transactional
-    public PerspectiveDTO create(PerspectiveDTO perspectiveDTO) {
+    public PerspectiveDTO save(PerspectiveDTO perspectiveDTO) {
 
-        Perspective perspective = new Perspective();
-        perspective = this.updatePerspective(perspective, perspectiveDTO);
-        ro.teamnet.ou.domain.neo.Perspective perspectiveNeo = new ro.teamnet.ou.domain.neo.Perspective();
+        Perspective perspective = PerspectiveMapper.toJPA(perspectiveDTO);
+        perspectiveRepository.save(perspective);
         perspectiveDTO.setJpaId(perspective.getId());
-        perspectiveNeo = this.updatePerspectiveNeo(perspectiveNeo, perspectiveDTO);
-
-        return this.toPerspectiveDTO(perspective, perspectiveNeo);
+        ro.teamnet.ou.domain.neo.Perspective perspectiveNeo = PerspectiveMapper.toNeo(perspectiveDTO);
+        perspectiveNeoRepository.save(perspectiveNeo);
+        return PerspectiveMapper.toDTO(perspective, perspectiveNeo);
     }
 
-    @Override
-    @Transactional
-    public PerspectiveDTO update(Perspective perspective, ro.teamnet.ou.domain.neo.Perspective perspectiveNeo, PerspectiveDTO perspectiveDTO) {
-
-        this.updatePerspective(perspective, perspectiveDTO);
-        this.updatePerspectiveNeo(perspectiveNeo, perspectiveDTO);
-
-        return this.toPerspectiveDTO(perspective, perspectiveNeo);
-    }
 }

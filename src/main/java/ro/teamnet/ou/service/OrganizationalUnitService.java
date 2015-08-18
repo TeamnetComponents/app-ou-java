@@ -16,25 +16,13 @@ import java.util.Set;
 public interface OrganizationalUnitService {
 //extends AbstractService<OrganizationalUnit, Long> {
 
-    OrganizationalUnitDTO createOrganizationalUnitDTO(Long id, String code, String description, Date validFrom, Date validTo, PerspectiveDTO perspectiveDTO,
-                                                             OrganizationalUnitDTO parent, Set<OrganizationalUnitDTO> children);
+//    OrganizationalUnitDTO createOrganizationalUnitDTO(Long id, String code, String description, Date validFrom, Date validTo, PerspectiveDTO perspectiveDTO,
+//                                                             OrganizationalUnitDTO parent, Set<OrganizationalUnitDTO> children);
 
-    OrganizationalUnitDTO toOrganizationalUnitDTO(OrganizationalUnit organizationalUnit,
-                                                         ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnitNeo);
+    OrganizationalUnitDTO findOrganizationalUnitById(Long id);
 
-    OrganizationalUnit updateOrganizationalUnit(OrganizationalUnit organizationalUnit, OrganizationalUnitDTO organizationalUnitDTO);
+    Set<OrganizationalUnitDTO> getAllOrganizationalUnit();
 
-    ro.teamnet.ou.domain.neo.OrganizationalUnit updateOrganizationalUnitNeo(ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnit, OrganizationalUnitDTO organizationalUnitDTO);
+    OrganizationalUnitDTO save(OrganizationalUnitDTO organizationalUnitDTO);
 
-    OrganizationalUnit findOrganizationalUnitById(Long id);
-
-    ro.teamnet.ou.domain.neo.OrganizationalUnit findOrganizationalUnitNeoById(Long id);
-
-    List<OrganizationalUnit> getAllOrganizationalUnit();
-
-    List<ro.teamnet.ou.domain.neo.OrganizationalUnit> getAllOrganizationalUnitNeo();
-
-    OrganizationalUnitDTO create(OrganizationalUnitDTO organizationalUnitDTO);
-
-    public OrganizationalUnitDTO update(OrganizationalUnit organizationalUnit, ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUniNeo, OrganizationalUnitDTO organizationalUnitDTO);
 }

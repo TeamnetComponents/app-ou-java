@@ -28,7 +28,7 @@ public class OrganizationMapper {
         Set<PerspectiveDTO> perspectiveDTOSet = organizationDTO.getPerspectives();
         if (perspectiveDTOSet != null) {
             for (PerspectiveDTO perspectiveDTO : perspectiveDTOSet) {
-                perspectiveSet.add(PerspectiveMapper.from(perspectiveDTO));
+                perspectiveSet.add(PerspectiveMapper.toJPA(perspectiveDTO));
             }
         }
         organization.setPerspectives(perspectiveSet);
@@ -47,7 +47,7 @@ public class OrganizationMapper {
         Set<PerspectiveDTO> perspectiveDTOs = organizationDTO.getPerspectives();
         if (perspectiveDTOs != null) {
             for (PerspectiveDTO perspectiveDTO : perspectiveDTOs) {
-                perspectiveSet.add(PerspectiveMapper.fromNeo(perspectiveDTO));
+                perspectiveSet.add(PerspectiveMapper.toNeo(perspectiveDTO));
             }
         }
         organization.setPerspectives(perspectiveSet);
@@ -56,7 +56,7 @@ public class OrganizationMapper {
         Set<OrganizationalUnitDTO> organizationalUnitDTOs = organizationDTO.getRoots();
         if (organizationalUnitDTOs != null) {
             for (OrganizationalUnitDTO organizationalUnitDTO : organizationalUnitDTOs) {
-                organizationalUnitSet.add(OrganizationalUnitMapper.fromNeo(organizationalUnitDTO));
+                organizationalUnitSet.add(OrganizationalUnitMapper.toNeo(organizationalUnitDTO));
             }
         }
         organization.setRoots(organizationalUnitSet);
@@ -80,7 +80,7 @@ public class OrganizationMapper {
         List<ro.teamnet.ou.domain.neo.Perspective> perspectiveNeoList = new ArrayList<>(organizationNeo.getPerspectives());
         if (perspectiveList != null) {
             for (int i = 0; i < perspectiveList.size(); i++) {
-                perspectiveDTOs.add(PerspectiveMapper.from(perspectiveList.get(i), perspectiveNeoList.get(i)));
+                perspectiveDTOs.add(PerspectiveMapper.toDTO(perspectiveList.get(i), perspectiveNeoList.get(i)));
             }
         }
         organizationDTO.setPerspectives(perspectiveDTOs);
@@ -89,7 +89,7 @@ public class OrganizationMapper {
         Set<OrganizationalUnit> organizationalUnitSet = organizationNeo.getRoots();
         if (organizationalUnitSet != null) {
             for (OrganizationalUnit organizationalUnit : organizationalUnitSet) {
-                organizationalUnitDTOs.add(OrganizationalUnitMapper.from(null, organizationalUnit));
+                organizationalUnitDTOs.add(OrganizationalUnitMapper.toDTO(null, organizationalUnit));
             }
         }
         organizationDTO.setRoots(organizationalUnitDTOs);

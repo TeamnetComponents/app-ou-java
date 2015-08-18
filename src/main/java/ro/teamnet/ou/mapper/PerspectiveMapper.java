@@ -10,17 +10,17 @@ import java.util.Set;
 
 public class PerspectiveMapper {
 
-    public static Perspective from(PerspectiveDTO perspectiveDTO) {
+    public static Perspective toJPA(PerspectiveDTO perspectiveDTO) {
         Perspective perspective = new Perspective();
 
-        perspective.setId(perspectiveDTO.getId());
+        perspective.setId(perspectiveDTO.getJpaId());
         perspective.setCode(perspectiveDTO.getCode());
         perspective.setDescription(perspectiveDTO.getDescription());
         perspective.setOrganization(OrganizationMapper.toJPA(perspectiveDTO.getOrganization()));
         Set<OrganizationalUnit> organizationalUnitSet = new HashSet<>();
         if(organizationalUnitSet != null) {
             for (OrganizationalUnitDTO organizationalUnitDTO : perspectiveDTO.getOrganizationalUnitSet()) {
-                organizationalUnitSet.add(OrganizationalUnitMapper.from(organizationalUnitDTO));
+                organizationalUnitSet.add(OrganizationalUnitMapper.toJPA(organizationalUnitDTO));
             }
         }
         perspective.setOrganizationalUnits(organizationalUnitSet);
@@ -28,32 +28,32 @@ public class PerspectiveMapper {
         return perspective;
     }
 
-    public static ro.teamnet.ou.domain.neo.Perspective fromNeo(PerspectiveDTO perspectiveDTO) {
+    public static ro.teamnet.ou.domain.neo.Perspective toNeo(PerspectiveDTO perspectiveDTO) {
         ro.teamnet.ou.domain.neo.Perspective perspective = new ro.teamnet.ou.domain.neo.Perspective();
 
-        perspective.setId(perspectiveDTO.getId());
+        perspective.setId(perspectiveDTO.getNeoId());
         perspective.setJpaId(perspectiveDTO.getJpaId());
         perspective.setCode(perspectiveDTO.getCode());
         perspective.setOrganization(OrganizationMapper.toNeo(perspectiveDTO.getOrganization()));
-        perspective.setOrganizationalUnit(OrganizationalUnitMapper.fromNeo(perspectiveDTO.getOrganizationalUnit()));
+        perspective.setOrganizationalUnit(OrganizationalUnitMapper.toNeo(perspectiveDTO.getOrganizationalUnit()));
 
         return perspective;
     }
 
-    public static PerspectiveDTO from(Perspective perspective, ro.teamnet.ou.domain.neo.Perspective perspectiveNeo) {
+    public static PerspectiveDTO toDTO(Perspective perspective, ro.teamnet.ou.domain.neo.Perspective perspectiveNeo) {
         PerspectiveDTO perspectiveDTO = new PerspectiveDTO();
 
-        perspectiveDTO.setId(perspective.getId());
+        perspectiveDTO.setNeoId(perspectiveNeo.getId());
+        perspectiveDTO.setJpaId(perspectiveNeo.getJpaId());
         perspectiveDTO.setCode(perspective.getCode());
         perspectiveDTO.setDescription(perspective.getDescription());
-        perspectiveDTO.setJpaId(perspectiveNeo.getJpaId());
         perspectiveDTO.setOrganization(OrganizationMapper.toDTO(perspective.getOrganization(), perspectiveNeo.getOrganization()));
-        perspectiveDTO.setOrganizationalUnit(OrganizationalUnitMapper.from(null, perspectiveNeo.getOrganizationalUnit()));
+        perspectiveDTO.setOrganizationalUnit(OrganizationalUnitMapper.toDTO(null, perspectiveNeo.getOrganizationalUnit()));
 
         Set<OrganizationalUnitDTO> organizationalUnitDTOs = new HashSet<>();
         if(organizationalUnitDTOs != null) {
             for (OrganizationalUnit organizationalUnit : perspective.getOrganizationalUnits()) {
-                organizationalUnitDTOs.add(OrganizationalUnitMapper.from(organizationalUnit, null));
+                organizationalUnitDTOs.add(OrganizationalUnitMapper.toDTO(organizationalUnit, null));
             }
         }
         perspectiveDTO.setOrganizationalUnitSet(organizationalUnitDTOs);

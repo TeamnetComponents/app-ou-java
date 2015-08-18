@@ -27,19 +27,11 @@ import java.util.Set;
 @RestController
 @RequestMapping("/app/rest/perspective")
 public class PerspectiveResource {
-    //extends ro.teamnet.bootstrap.web.rest.AbstractResource<PerspectiveDTO, Long>{
 
     private final Logger log = LoggerFactory.getLogger(PerspectiveResource.class);
     @Inject
     private PerspectiveService perspectiveService;
-    @Inject
-    private OrganizationService organizationService;
 
-//    @Inject
-//    public PerspectiveResource(PerspectiveService perspectiveService) {
-//        super(perspectiveService);
-//        this.perspectiveService = perspectiveService;
-//    }
 
     @RequestMapping(value = "/{id}",
             method = RequestMethod.GET,
@@ -47,13 +39,7 @@ public class PerspectiveResource {
     @Timed
     public ResponseEntity<PerspectiveDTO> getById(@PathVariable Long id) {
         log.debug("REST request to get  : {}", id);
-
-        Perspective perspective = perspectiveService.findPerspectiveById(id);
-        ro.teamnet.ou.domain.neo.Perspective perspectiveNeo = perspectiveService.findPerspectiveNeoById(id);
-        if(perspective == null || perspectiveNeo == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        PerspectiveDTO perspectiveDTO = perspectiveService.toPerspectiveDTO(perspective, perspectiveNeo);
+        PerspectiveDTO perspectiveDTO = perspectiveService.findPerspectiveById(id);
 
         return new ResponseEntity<>(perspectiveDTO, HttpStatus.OK);
     }
@@ -65,16 +51,7 @@ public class PerspectiveResource {
     public ResponseEntity<PerspectiveDTO> update(@PathVariable Long id, @RequestBody PerspectiveDTO perspectiveDTO) {
         log.debug("REST request to update the function : {}", id);
 
-        Perspective perspective = perspectiveService.findPerspectiveById(id);
-        ro.teamnet.ou.domain.neo.Perspective perspectiveNeo = perspectiveService.findPerspectiveNeoById(id);
-        if (perspective == null || perspectiveNeo == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        perspectiveService.update(perspective, perspectiveNeo, perspectiveDTO);
-//        perspectiveService.updatePerspective(perspective, perspectiveDTO);
-//        perspectiveService.updatePerspectiveNeo(perspectiveNeo, perspectiveDTO);
-//        perspectiveService.toPerspectiveDTO(perspective, perspectiveNeo);
+        perspectiveService.save(perspectiveDTO);
 
         return new ResponseEntity<>(perspectiveDTO, HttpStatus.OK);
     }
@@ -85,16 +62,7 @@ public class PerspectiveResource {
     @Timed
     public ResponseEntity<Set<PerspectiveDTO>> getAll() {
         log.debug("REST request to get all: {}");
-
-        List<Perspective> perspectiveList = perspectiveService.getAllPerspectives();
-        List<ro.teamnet.ou.domain.neo.Perspective> perspectiveListNeo = perspectiveService.getAllPerspectivesNeo();
-        Set<PerspectiveDTO> perspectiveDTOs = new HashSet<>();
-        if(perspectiveList != null && perspectiveListNeo != null) {
-            for (int i = 0; i < perspectiveList.size(); i++) {
-                perspectiveDTOs.add(perspectiveService.toPerspectiveDTO(perspectiveList.get(i), perspectiveListNeo.get(i)));
-            }
-        }
-
-        return new ResponseEntity<Set<PerspectiveDTO>>(perspectiveDTOs, HttpStatus.OK);
+        Set<PerspectiveDTO> perspectiveDTOs = perspectiveService.getAllPerspectives();
+        return new ResponseEntity<>(perspectiveDTOs, HttpStatus.OK);
     }
 }

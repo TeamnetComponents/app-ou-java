@@ -46,15 +46,7 @@ public class OrganizationalUnitResource {
     @Timed
     public ResponseEntity<Set<OrganizationalUnitDTO>> getAllOu() {
         log.debug("REST request to get all: {}");
-
-        List<OrganizationalUnit> organizationalUnitList = organizationalUnitService.getAllOrganizationalUnit();
-        List<ro.teamnet.ou.domain.neo.OrganizationalUnit> organizationalUnitListNeo = organizationalUnitService.getAllOrganizationalUnitNeo();
-        Set<OrganizationalUnitDTO> organizationalUnitDTOs = new HashSet<>();
-        if(organizationalUnitList != null && organizationalUnitListNeo != null) {
-            for (int i = 0; i < organizationalUnitList.size(); i++) {
-                organizationalUnitDTOs.add(organizationalUnitService.toOrganizationalUnitDTO(organizationalUnitList.get(i), organizationalUnitListNeo.get(i)));
-            }
-        }
+        Set<OrganizationalUnitDTO> organizationalUnitDTOs = organizationalUnitService.getAllOrganizationalUnit();
 
         return new ResponseEntity<Set<OrganizationalUnitDTO>>(organizationalUnitDTOs, HttpStatus.OK);
     }
@@ -66,13 +58,8 @@ public class OrganizationalUnitResource {
     public ResponseEntity<OrganizationalUnitDTO> getById(@PathVariable Long id) {
         log.debug("REST request to get  : {}", id);
 
-        OrganizationalUnit organizationalUnit = organizationalUnitService.findOrganizationalUnitById(id);
-        ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnitNeo = organizationalUnitService.findOrganizationalUnitNeoById(id);
-        OrganizationalUnitDTO organizationalUnitDTO = organizationalUnitService.toOrganizationalUnitDTO(organizationalUnit, organizationalUnitNeo);
+        OrganizationalUnitDTO organizationalUnitDTO = organizationalUnitService.findOrganizationalUnitById(id);
 
-        if (organizationalUnit == null) {
-            return new ResponseEntity<OrganizationalUnitDTO>(HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<OrganizationalUnitDTO>(organizationalUnitDTO, HttpStatus.OK);
     }
 
@@ -81,18 +68,8 @@ public class OrganizationalUnitResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OrganizationalUnitDTO> update(@PathVariable Long id, @RequestBody OrganizationalUnitDTO organizationalUnitDTO) {
         log.debug("REST request to update the function : {}", id);
+        OrganizationalUnitDTO organizationalUnitDTOResp = organizationalUnitService.save(organizationalUnitDTO);
 
-        OrganizationalUnit organizationalUnit = organizationalUnitService.findOrganizationalUnitById(id);
-        ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnitNeo = organizationalUnitService.findOrganizationalUnitNeoById(id);
-
-        if (organizationalUnit == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        organizationalUnitDTO = organizationalUnitService.update(organizationalUnit, organizationalUnitNeo, organizationalUnitDTO);
-//        organizationalUnitService.updateOrganizationalUnit(organizationalUnit, organizationalUnitDTO);
-//        organizationalUnitService.updateOrganizationalUnitNeo(organizationalUnitNeo, organizationalUnitDTO);
-
-        return new ResponseEntity<>(organizationalUnitDTO, HttpStatus.OK);
+        return new ResponseEntity<>(organizationalUnitDTOResp, HttpStatus.OK);
     }
 }
