@@ -1,5 +1,6 @@
 package ro.teamnet.ou.service;
 
+import org.springframework.data.neo4j.conversion.Result;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.teamnet.ou.domain.jpa.Perspective;
@@ -24,7 +25,6 @@ public class PerspectiveServiceImpl implements PerspectiveService {
     private PerspectiveRepository perspectiveRepository;
     @Inject
     private PerspectiveNeoRepository perspectiveNeoRepository;
-
 
 
 //    @Override
@@ -53,21 +53,20 @@ public class PerspectiveServiceImpl implements PerspectiveService {
     @Override
     @Transactional
     public Set<PerspectiveDTO> getAllPerspectives() {
-        List<Perspective> perspectiveList = perspectiveRepository.findAll();
-        List<ro.teamnet.ou.domain.neo.Perspective> perspectiveListNeo = perspectiveNeoRepository.getAllPerspectives();
+        List<Perspective> perspectives = perspectiveRepository.findAll();
+        Result<ro.teamnet.ou.domain.neo.Perspective> neoPerspectives = perspectiveNeoRepository.findAll();
 
         Set<PerspectiveDTO> perspectiveDTOs = new HashSet<>();
-        if (perspectiveList != null && perspectiveListNeo != null) {
-            for (int i = 0; i < perspectiveList.size(); i++) {
-                for (int j=0; j < perspectiveListNeo.size(); j++) {
-                    if (perspectiveList.get(i).getId().equals(perspectiveListNeo.get(j).getJpaId())) {
-                        perspectiveDTOs.add(PerspectiveMapper.toDTO(perspectiveList.get(i), perspectiveListNeo.get(j)));
-                    }
+        for (Perspective perspective : perspectives) {
+            for (ro.teamnet.ou.domain.neo.Perspective neoPerspective : neoPerspectives) {
+                if (perspective.getId().equals(neoPerspective.getJpaId())) {
+                    perspectiveDTOs.add(PerspectiveMapper.toDTO(perspective, neoPerspective));
                 }
             }
         }
+
         return perspectiveDTOs;
-        }
+    }
 
     @Override
     @Transactional
