@@ -76,7 +76,12 @@ public class FunctionRepositoryTest {
         ou.setJpaId(1l);
         ou.setCode("DEP_TESTARE");
         organizationalUnitNeoRepository.save(ou);
-        Assert.assertEquals(initialOuCount + 1, organizationalUnitNeoRepository.count());
+        OrganizationalUnit childOu = new OrganizationalUnit();
+        childOu.setJpaId(2l);
+        childOu.setCode("DEP_TESTARE_COPIL");
+        childOu.setParent(ou);
+        organizationalUnitNeoRepository.save(childOu);
+        Assert.assertEquals(initialOuCount + 2, organizationalUnitNeoRepository.count());
 
 
         long initialFunctionCount = functionNeoRepository.count();
@@ -102,6 +107,7 @@ public class FunctionRepositoryTest {
 
         functionNeoRepository.delete(neoFunction);
         accountNeoRepository.delete(account);
+        organizationalUnitNeoRepository.delete(childOu);
         organizationalUnitNeoRepository.delete(ou);
 
     }

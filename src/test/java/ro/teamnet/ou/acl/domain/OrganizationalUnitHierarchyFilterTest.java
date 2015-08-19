@@ -1,14 +1,16 @@
 package ro.teamnet.ou.acl.domain;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import ro.teamnet.ou.acl.service.OrganizationalUnitHierarchyFilterAdvice;
+import ro.teamnet.ou.acl.service.OrganizationalUnitHierarchyFilterAdviceImpl;
 import ro.teamnet.ou.domain.neo.OrganizationalUnit;
 import ro.teamnet.ou.mock.OuTestApplication;
 import ro.teamnet.ou.repository.jpa.OUHierarchyTest2EntityRepository;
@@ -33,9 +35,14 @@ public class OrganizationalUnitHierarchyFilterTest {
     @Inject
     private OUHierarchyTest2EntityRepository repository2;
     @Inject
-    private OrganizationalUnitHierarchyFilterAdvice advice;
+    private OrganizationalUnitHierarchyFilterAdviceImpl advice;
     @Inject
     private OrganizationalUnitNeoRepository ouNeoRepository;
+
+    @Before
+    public void setUp() {
+        advice = Mockito.spy(advice);
+    }
 
     @Test
     @Transactional
@@ -47,7 +54,8 @@ public class OrganizationalUnitHierarchyFilterTest {
         saveNewTestEntity(3L);
         List<OUHierarchyTestEntity> all = repository.findAll();
         Assert.assertEquals(4, all.size());
-        advice.setupOrganizationalUnitHierarchyFilter(Collections.singletonList(OWNER_OU_ID));
+        Mockito.doReturn(Collections.singletonList(OWNER_OU_ID)).when(advice).getAuthenticatedUserOUIds();
+        advice.setupOrganizationalUnitHierarchyFilter();
         all = repository.findAll();
         Assert.assertEquals(2, all.size());
         for (OUHierarchyTestEntity testEntity : all) {
@@ -80,7 +88,8 @@ public class OrganizationalUnitHierarchyFilterTest {
         Assert.assertEquals(4, all.size());
         List<OUHierarchyTest2Entity> all2 = repository2.findAll();
         Assert.assertEquals(7, all2.size());
-        advice.setupOrganizationalUnitHierarchyFilter(Collections.singletonList(OWNER_OU_ID));
+        Mockito.doReturn(Collections.singletonList(OWNER_OU_ID)).when(advice).getAuthenticatedUserOUIds();
+        advice.setupOrganizationalUnitHierarchyFilter();
         all = repository.findAll();
         all2 = repository2.findAll();
         Assert.assertEquals(2, all.size());
@@ -119,7 +128,8 @@ public class OrganizationalUnitHierarchyFilterTest {
         saveNewTestEntity(3L);
         List<OUHierarchyTestEntity> all = repository.findAll();
         Assert.assertEquals(7, all.size());
-        advice.setupOrganizationalUnitHierarchyFilter(Collections.singletonList(ROOT_OU_ID));
+        Mockito.doReturn(Collections.singletonList(ROOT_OU_ID)).when(advice).getAuthenticatedUserOUIds();
+        advice.setupOrganizationalUnitHierarchyFilter();
         all = repository.findAll();
         Assert.assertEquals(5, all.size());
         for (OUHierarchyTestEntity testEntity : all) {
@@ -174,7 +184,8 @@ public class OrganizationalUnitHierarchyFilterTest {
         saveNewTestEntity(3L);
         List<OUHierarchyTestEntity> all = repository.findAll();
         Assert.assertEquals(14, all.size());
-        advice.setupOrganizationalUnitHierarchyFilter(Collections.singletonList(ROOT_OU_ID));
+        Mockito.doReturn(Collections.singletonList(ROOT_OU_ID)).when(advice).getAuthenticatedUserOUIds();
+        advice.setupOrganizationalUnitHierarchyFilter();
         all = repository.findAll();
         Assert.assertEquals(12, all.size());
         for (OUHierarchyTestEntity testEntity : all) {
@@ -247,7 +258,8 @@ public class OrganizationalUnitHierarchyFilterTest {
         saveNewTestEntity(3L);
         List<OUHierarchyTestEntity> all = repository.findAll();
         Assert.assertEquals(15, all.size());
-        advice.setupOrganizationalUnitHierarchyFilter(Arrays.asList(CHILD1_OU_ID, CHILD2_OU_ID));
+        Mockito.doReturn(Arrays.asList(CHILD1_OU_ID, CHILD2_OU_ID)).when(advice).getAuthenticatedUserOUIds();
+        advice.setupOrganizationalUnitHierarchyFilter();
         all = repository.findAll();
         Assert.assertEquals(7, all.size());
         for (OUHierarchyTestEntity testEntity : all) {
