@@ -32,7 +32,12 @@ public class OrganizationalUnitHierarchyFilterAspect {
     public void onRepositoryMethods() {
     }
 
-    @Before("onRepositoryMethods()")
+    @Pointcut("within(ro.teamnet.bootstrap.extend.AppRepositoryFactoryBean)" +
+            "|| within(org.springframework*..*.*)")
+    public void withinRepositoryBeansOrConfigurationClasses(){
+    }
+
+    @Before("onRepositoryMethods() && !withinRepositoryBeansOrConfigurationClasses()")
     public void aroundRepositoryMethods(JoinPoint jp) throws Throwable {
         log.debug("before repository method - begin");
         if (filterAdvice == null || !(jp.getTarget() instanceof AppRepository)) {
