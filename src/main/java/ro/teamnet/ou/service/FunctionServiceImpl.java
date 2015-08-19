@@ -131,8 +131,10 @@ public class FunctionServiceImpl implements FunctionService {
 
     @Override
     public void delete(Long id) {
-        functionRepository.delete(id);
-        functionNeoRepository.delete(id);
+        Function function = functionRepository.findOne(id);
+        functionRepository.delete(function);
+        ro.teamnet.ou.domain.neo.Function functionNeo = functionNeoRepository.findByJpaId(id);
+        functionNeoRepository.delete(functionNeo);
     }
 
 

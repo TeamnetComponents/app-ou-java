@@ -98,6 +98,12 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
 
         return OrganizationalUnitMapper.toDTO(organizationalUnit, organizationalUnitNeo);
     }
-
+    @Override
+    public void delete(Long id) {
+        OrganizationalUnit organizationalUnit = organizationalUnitRepository.findOne(id);
+        organizationalUnitRepository.delete(organizationalUnit);
+        ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnitNeo = organizationalUnitNeoRepository.findByJpaId(id);
+        organizationalUnitNeoRepository.delete(organizationalUnitNeo);
+    }
 
 }

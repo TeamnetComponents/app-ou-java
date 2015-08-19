@@ -20,7 +20,7 @@ public interface OrganizationalUnitNeoRepository extends GraphRepository<Organiz
     Set<Long> getOrganizationalUnitSubTreeJpaIdsByRootJpaId(Long jpaId);
 
     @Query("MATCH (organizationalUnit:OrganizationalUnit) RETURN organizationalUnit")
-    List<OrganizationalUnit> getAllOrganizationalUnits();
+    Set<OrganizationalUnit> getAllOrganizationalUnits();
     
     @Query("MATCH (organizationalUnit:OrganizationalUnit {jpaId:{0}}) RETURN organizationalUnit")
     OrganizationalUnit findByJpaId(Long jpaId);
