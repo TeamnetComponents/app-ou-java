@@ -46,12 +46,12 @@ public class PerspectiveMapper {
         perspectiveDTO.setCode(perspective.getCode());
         perspectiveDTO.setDescription(perspective.getDescription());
         perspectiveDTO.setOrganization(OrganizationMapper.toDTO(perspective.getOrganization(), perspectiveNeo.getOrganization()));
-        perspectiveDTO.setOrganizationalUnit(OrganizationalUnitMapper.toDTO(null, perspectiveNeo.getOrganizationalUnit()));
+        perspectiveDTO.setOrganizationalUnit(OrganizationalUnitMapper.toDTO(perspectiveNeo.getOrganizationalUnit()));
 
         Set<OrganizationalUnitDTO> organizationalUnitDTOs = new HashSet<>();
         if(organizationalUnitDTOs != null) {
             for (OrganizationalUnit organizationalUnit : perspective.getOrganizationalUnits()) {
-                organizationalUnitDTOs.add(OrganizationalUnitMapper.toDTO(organizationalUnit, null));
+                organizationalUnitDTOs.add(OrganizationalUnitMapper.toDTO(organizationalUnit));
             }
         }
         perspectiveDTO.setOrganizationalUnitSet(organizationalUnitDTOs);

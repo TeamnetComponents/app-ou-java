@@ -87,7 +87,7 @@ public class OrganizationMapper {
         Set<OrganizationalUnit> organizationalUnitSet = organizationNeo.getRoots();
         if (organizationalUnitSet != null) {
             for (OrganizationalUnit organizationalUnit : organizationalUnitSet) {
-                organizationalUnitDTOs.add(OrganizationalUnitMapper.toDTO(null, organizationalUnit));
+                organizationalUnitDTOs.add(OrganizationalUnitMapper.toDTO(organizationalUnit));
             }
         }
         organizationDTO.setRoots(organizationalUnitDTOs);

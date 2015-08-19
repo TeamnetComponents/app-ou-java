@@ -58,7 +58,7 @@ public class OrganizationalUnitResource {
     public ResponseEntity<OrganizationalUnitDTO> getById(@PathVariable Long id) {
         log.debug("REST request to get  : {}", id);
 
-        OrganizationalUnitDTO organizationalUnitDTO = organizationalUnitService.findOrganizationalUnitById(id);
+        OrganizationalUnitDTO organizationalUnitDTO = organizationalUnitService.getOneById(id);
 
         return new ResponseEntity<OrganizationalUnitDTO>(organizationalUnitDTO, HttpStatus.OK);
     }

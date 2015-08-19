@@ -30,6 +30,10 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
     @Inject
     public PerspectiveRepository perspectiveRepository;
 
+    public OrganizationalUnitServiceImpl() {
+
+    };
+    
     public OrganizationalUnitServiceImpl (OrganizationalUnitRepository organizationalUnitRepository, OrganizationalUnitNeoRepository organizationalUnitNeoRepository,
                                           PerspectiveRepository perspectiveRepository){
         this.organizationalUnitRepository = organizationalUnitRepository;
