@@ -18,7 +18,7 @@ public class OrganizationalUnitFunction {
 
     @ManyToOne
     @JoinColumn(name="FUNCTION_ID", referencedColumnName = "ID_ROLE")
-    private Function ouFunction;
+    private Function function;
 
 
     //private Set<AccountFunction> accountFunctions;
@@ -39,11 +39,11 @@ public class OrganizationalUnitFunction {
         this.organizationalUnit = organizationalUnit;
     }
 
-    public Function getOuFunction() {
-        return ouFunction;
+    public Function getFunction() {
+        return function;
     }
 
-    public void setOuFunction(Function ouFunction) {
-        this.ouFunction = ouFunction;
+    public void setFunction(Function ouFunction) {
+        this.function = ouFunction;
     }
 }

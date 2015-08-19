@@ -21,14 +21,15 @@ import java.util.Set;
 @Transactional
 public class OrganizationalUnitServiceImpl implements OrganizationalUnitService {
 
-
+    @Inject
     private OrganizationalUnitRepository organizationalUnitRepository;
 
+    @Inject
     private OrganizationalUnitNeoRepository organizationalUnitNeoRepository;
 
+    @Inject
     public PerspectiveRepository perspectiveRepository;
 
-    @Inject
     public OrganizationalUnitServiceImpl (OrganizationalUnitRepository organizationalUnitRepository, OrganizationalUnitNeoRepository organizationalUnitNeoRepository,
                                           PerspectiveRepository perspectiveRepository){
         this.organizationalUnitRepository = organizationalUnitRepository;
@@ -36,32 +37,44 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
         this.perspectiveRepository = perspectiveRepository;
     }
 
+    @Override
+    @Transactional
+    public OrganizationalUnitDTO save(OrganizationalUnitDTO organizationalUnitDTO) {
 
-//    @Override
-//    public OrganizationalUnitDTO createOrganizationalUnitDTO(Long id, String code, String description, Date validFrom, Date validTo, PerspectiveDTO perspectiveDTO,
-//                                                             OrganizationalUnitDTO parent, Set<OrganizationalUnitDTO> children) {
-//        OrganizationalUnitDTO organizationalUnitDTO = new OrganizationalUnitDTO();
-//        organizationalUnitDTO.setId(id);
-//        organizationalUnitDTO.setCode(code);
-//        organizationalUnitDTO.setDescription(description);
-//        organizationalUnitDTO.setValidFrom(validFrom);
-//        organizationalUnitDTO.setValidTo(validTo);
-//        organizationalUnitDTO.setPerspective(perspectiveDTO);
-//        organizationalUnitDTO.setParent(parent);
-//        organizationalUnitDTO.setChildren(children);
-//
-//        return organizationalUnitDTO;
-//    }
+        OrganizationalUnit organizationalUnit = OrganizationalUnitMapper.toJPA(organizationalUnitDTO);
+        organizationalUnitRepository.save(organizationalUnit);
 
+        ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnitNeo = OrganizationalUnitMapper.toNeo(organizationalUnitDTO);
+        organizationalUnitNeo.setJpaId(organizationalUnit.getId());
+
+        Long neoId = organizationalUnitNeoRepository.findByJpaId(organizationalUnit.getId()).getId();
+        organizationalUnitNeo.setId(neoId);
+
+        organizationalUnitNeoRepository.save(organizationalUnitNeo);
+
+        return OrganizationalUnitMapper.toDTO(organizationalUnit);
+    }
+
+    @Override
+    public void delete(Long id) {
+        OrganizationalUnit organizationalUnit = organizationalUnitRepository.findOne(id);
+        organizationalUnitRepository.delete(organizationalUnit);
+
+        ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnitNeo = organizationalUnitNeoRepository.findByJpaId(id);
+        Long neoId = organizationalUnitNeoRepository.findByJpaId(id).getId();
+        organizationalUnitNeo.setId(neoId);
+
+        organizationalUnitNeoRepository.delete(organizationalUnitNeo);
+    }
 
     @Override
     @Transactional
-    public OrganizationalUnitDTO findOrganizationalUnitById(Long id) {
+    public OrganizationalUnitDTO getOneById(Long id) {
 
         OrganizationalUnit organizationalUnit = organizationalUnitRepository.findOne(id);
         ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnitNeo = organizationalUnitNeoRepository.findOne(id);
 
-        return OrganizationalUnitMapper.toDTO(organizationalUnit,organizationalUnitNeo);
+        return OrganizationalUnitMapper.toDTO(organizationalUnit);
     }
 
     @Override
@@ -75,34 +88,13 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
             for (OrganizationalUnit organizationalUnit : organizationalUnits) {
                 for (ro.teamnet.ou.domain.neo.OrganizationalUnit neoOu : organizationalUnitsNeo) {
                     if(organizationalUnit.getId().equals(neoOu.getJpaId())){
-                        organizationalUnitDTOs.add(OrganizationalUnitMapper.toDTO(organizationalUnit, neoOu));
+                        organizationalUnitDTOs.add(OrganizationalUnitMapper.toDTO(organizationalUnit));
                     }
                 }
             }
         }
 
         return organizationalUnitDTOs;
-    }
-
-    @Override
-    @Transactional
-    public OrganizationalUnitDTO save(OrganizationalUnitDTO organizationalUnitDTO) {
-
-        OrganizationalUnit organizationalUnit = OrganizationalUnitMapper.toJPA(organizationalUnitDTO);
-        organizationalUnitRepository.save(organizationalUnit);
-
-        ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnitNeo = OrganizationalUnitMapper.toNeo(organizationalUnitDTO);
-        organizationalUnitDTO.setId(organizationalUnit.getId());
-        organizationalUnitNeoRepository.save(organizationalUnitNeo);
-
-        return OrganizationalUnitMapper.toDTO(organizationalUnit, organizationalUnitNeo);
-    }
-    @Override
-    public void delete(Long id) {
-        OrganizationalUnit organizationalUnit = organizationalUnitRepository.findOne(id);
-        organizationalUnitRepository.delete(organizationalUnit);
-        ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnitNeo = organizationalUnitNeoRepository.findByJpaId(id);
-        organizationalUnitNeoRepository.delete(organizationalUnitNeo);
     }
 
 }

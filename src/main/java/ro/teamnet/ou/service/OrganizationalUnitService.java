@@ -14,16 +14,13 @@ import java.util.Set;
  * Created by ionut.patrascu on 31.07.2015.
  */
 public interface OrganizationalUnitService {
-//extends AbstractService<OrganizationalUnit, Long> {
-
-//    OrganizationalUnitDTO createOrganizationalUnitDTO(Long id, String code, String description, Date validFrom, Date validTo, PerspectiveDTO perspectiveDTO,
-//                                                             OrganizationalUnitDTO parent, Set<OrganizationalUnitDTO> children);
-    OrganizationalUnitDTO findOrganizationalUnitById(Long id);
-
-    Set<OrganizationalUnitDTO> getAllOrganizationalUnit();
 
     OrganizationalUnitDTO save(OrganizationalUnitDTO organizationalUnitDTO);
 
     void delete(Long id);
+
+    OrganizationalUnitDTO getOneById(Long id);
+
+    Set<OrganizationalUnitDTO> getAllOrganizationalUnit();
 
 }

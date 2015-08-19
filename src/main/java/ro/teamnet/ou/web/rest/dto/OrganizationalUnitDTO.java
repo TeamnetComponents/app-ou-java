@@ -1,5 +1,6 @@
 package ro.teamnet.ou.web.rest.dto;
 
+import ro.teamnet.bootstrap.web.rest.dto.AccountDTO;
 import ro.teamnet.ou.domain.neo.Account;
 
 import java.io.Serializable;
@@ -21,7 +22,7 @@ public class OrganizationalUnitDTO implements Serializable {
     private Set<OrganizationalUnitDTO> children = new HashSet<>();
 
 
-    private Set<Account> accounts = new HashSet<>();
+    private Set<AccountDTO> accounts = new HashSet<>();
 //    private Set<OrganizationalUnitFunction> organizationalUnitFunctions = new HashSet<>();
 
     public OrganizationalUnitDTO() {
@@ -29,7 +30,7 @@ public class OrganizationalUnitDTO implements Serializable {
 
     public OrganizationalUnitDTO(String code, String description, Date validFrom, Date validTo,
                                  Boolean active, Long id, PerspectiveDTO perspective, OrganizationalUnitDTO parent,
-                                 Set<OrganizationalUnitDTO> children, Set<Account> accounts) {
+                                 Set<OrganizationalUnitDTO> children, Set<AccountDTO> accounts) {
 
         this.code = code;
         this.description = description;
@@ -115,11 +116,11 @@ public class OrganizationalUnitDTO implements Serializable {
         this.id = id;
     }
 
-    public Set<Account> getAccounts() {
+    public Set<AccountDTO> getAccounts() {
         return accounts;
     }
 
-    public void setAccounts(Set<Account> accounts) {
+    public void setAccounts(Set<AccountDTO> accounts) {
         this.accounts = accounts;
     }
 

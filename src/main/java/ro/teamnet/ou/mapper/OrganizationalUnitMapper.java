@@ -54,33 +54,60 @@ public class OrganizationalUnitMapper {
         }
 
         organizationalUnit.setChildren(organizationalUnitSet);
+/*
         organizationalUnit.setAccounts(organizationalUnitDTO.getAccounts());
+*/
 
         return organizationalUnit;
     }
 
-    public static OrganizationalUnitDTO toDTO(OrganizationalUnit organizationalUnit, ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnitNeo) {
+    public static OrganizationalUnitDTO toDTO(OrganizationalUnit organizationalUnit) {
+
         OrganizationalUnitDTO organizationalUnitDTO = new OrganizationalUnitDTO();
 
-        organizationalUnitDTO.setId(organizationalUnitNeo.getJpaId());
+        organizationalUnitDTO.setId(organizationalUnit.getId());
         organizationalUnitDTO.setCode(organizationalUnit.getCode());
         organizationalUnitDTO.setDescription(organizationalUnit.getDescription());
         organizationalUnitDTO.setValidFrom(organizationalUnit.getValidFrom());
         organizationalUnitDTO.setValidTo(organizationalUnit.getValidTo());
         organizationalUnitDTO.setActive(organizationalUnit.getActive());
-        if(organizationalUnit.getParent() != null && organizationalUnitNeo.getParent() != null)
-            organizationalUnitDTO.setParent(OrganizationalUnitMapper.toDTO(organizationalUnit.getParent(), organizationalUnitNeo.getParent()));
 
-        organizationalUnitDTO.setAccounts(organizationalUnitNeo.getAccounts());
+        if(organizationalUnit.getParent() != null)
+            organizationalUnitDTO.setParent(OrganizationalUnitMapper.toDTO(organizationalUnit.getParent()));
+
         if(organizationalUnit.getPerspective() != null)
             organizationalUnitDTO.setPerspective(PerspectiveMapper.toDTO(organizationalUnit.getPerspective(), null));
 
         Set<OrganizationalUnitDTO> organizationalUnitDTOs = new HashSet<>();
         List<OrganizationalUnit> organizationalUnitList = new ArrayList<>(organizationalUnit.getChildren());
-        List<ro.teamnet.ou.domain.neo.OrganizationalUnit> organizationalUnitNeoList = new ArrayList<>(organizationalUnitNeo.getChildren());
         if(organizationalUnitList != null) {
-            for (int i = 0; i < organizationalUnitList.size(); i++) {
-                organizationalUnitDTOs.add(OrganizationalUnitMapper.toDTO(organizationalUnitList.get(i), organizationalUnitNeoList.get(i)));
+            for (OrganizationalUnit ou : organizationalUnitList) {
+                organizationalUnitDTOs.add(OrganizationalUnitMapper.toDTO(ou));
+            }
+        }
+        organizationalUnitDTO.setChildren(organizationalUnitDTOs);
+
+        return organizationalUnitDTO;
+    }
+
+    public static OrganizationalUnitDTO toDTO(ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnitNeo) {
+
+        OrganizationalUnitDTO organizationalUnitDTO = new OrganizationalUnitDTO();
+
+        organizationalUnitDTO.setId(organizationalUnitNeo.getJpaId());
+        organizationalUnitDTO.setCode(organizationalUnitNeo.getCode());
+
+        if(organizationalUnitNeo.getParent() != null)
+            organizationalUnitDTO.setParent(OrganizationalUnitMapper.toDTO(organizationalUnitNeo.getParent()));
+
+        //organizationalUnitDTO.setAccounts(organizationalUnitNeo.getAccounts());
+
+        Set<OrganizationalUnitDTO> organizationalUnitDTOs = new HashSet<>();
+        List<ro.teamnet.ou.domain.neo.OrganizationalUnit> organizationalUnitNeoList = new ArrayList<>(organizationalUnitNeo.getChildren());
+
+        if(organizationalUnitNeoList != null) {
+            for (ro.teamnet.ou.domain.neo.OrganizationalUnit ouNeo : organizationalUnitNeoList) {
+                organizationalUnitDTOs.add(OrganizationalUnitMapper.toDTO(ouNeo));
             }
         }
         organizationalUnitDTO.setChildren(organizationalUnitDTOs);

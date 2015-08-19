@@ -30,7 +30,7 @@ public class PerspectiveServiceImpl implements PerspectiveService {
 //    @Override
 //    public PerspectiveDTO createPerspectiveDTO(Long jpaId, Long neoId, String code, String description, OrganizationDTO organizationDTO, Set<OrganizationalUnitDTO> organizationalUnitDTOSet) {
 //        PerspectiveDTO perspectiveDTO = new PerspectiveDTO();
-//        perspectiveDTO.setJpaId(jpaId);
+//        perspectiveDTO.setId(jpaId);
 //        perspectiveDTO.setNeoId(neoId);
 //        perspectiveDTO.setCode(code);
 //        perspectiveDTO.setDescription(description);
