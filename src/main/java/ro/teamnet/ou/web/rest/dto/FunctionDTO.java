@@ -13,8 +13,7 @@ import java.util.Set;
 public class FunctionDTO implements Serializable {
 
 
-    private Long neoId;
-    private Long jpaId;
+    private Long id;
     private String code;
     private String description;
     private Date validFrom;
@@ -28,26 +27,25 @@ public class FunctionDTO implements Serializable {
     public FunctionDTO() {
     }
 
-    public FunctionDTO(Long neoId, String code, String description, Date validFrom, Date validTo, Boolean active, Long jpaId,
+    public FunctionDTO(Long id, String code, String description, Date validFrom, Date validTo, Boolean active,
                        Set<ModuleRightDTO> moduleRights, Account account, OrganizationalUnit organizationalUnit) {
-        this.neoId = neoId;
+        this.id = id;
         this.code = code;
         this.description = description;
         this.validFrom = validFrom;
         this.validTo = validTo;
         this.active = active;
         this.moduleRights = moduleRights;
-        this.jpaId = jpaId;
         this.account = account;
         this.organizationalUnit = organizationalUnit;
     }
 
-    public Long getNeoId() {
-        return neoId;
+    public Long getId() {
+        return id;
     }
 
-    public void setNeoId(Long neoId) {
-        this.neoId = neoId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getCode() {
@@ -114,19 +112,11 @@ public class FunctionDTO implements Serializable {
         this.organizationalUnit = organizationalUnit;
     }
 
-    public Long getJpaId() {
-        return jpaId;
-    }
-
-    public void setJpaId(Long jpaId) {
-        this.jpaId = jpaId;
-    }
 
     @Override
     public String toString() {
         return "FunctionDTO{" +
-                "neoId=" + neoId +
-                ", jpaId=" + jpaId +
+                "id=" + id +
                 ", code='" + code + '\'' +
                 ", description='" + description + '\'' +
                 ", validFrom=" + validFrom +
