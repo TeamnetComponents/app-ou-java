@@ -5,11 +5,9 @@ import java.util.Set;
 
 public class PerspectiveDTO implements Serializable {
 
-    private Long neoId;
-    private Long jpaId;
+    private Long id;
     private String code;
     private String description;
-
 
     private OrganizationDTO organization;
     private OrganizationalUnitDTO organizationalUnit;
@@ -17,9 +15,10 @@ public class PerspectiveDTO implements Serializable {
 
     public PerspectiveDTO(){}
 
-    public PerspectiveDTO(Long neoId, String code, String description, OrganizationDTO organization,
+    public PerspectiveDTO(Long id, String code, String description, OrganizationDTO organization,
                           OrganizationalUnitDTO organizationalUnit, Set<OrganizationalUnitDTO> organizationalUnitSet){
-        this.neoId = neoId;
+
+        this.id = id;
         this.code = code;
         this.description = description;
         this.organization = organization;
@@ -44,12 +43,12 @@ public class PerspectiveDTO implements Serializable {
         this.description = description;
     }
 
-    public Long getJpaId() {
-        return jpaId;
+    public Long getId() {
+        return id;
     }
 
-    public void setJpaId(Long jpaId) {
-        this.jpaId = jpaId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public OrganizationDTO getOrganization() {
@@ -76,19 +75,10 @@ public class PerspectiveDTO implements Serializable {
         this.organizationalUnitSet = organizationalUnitSet;
     }
 
-    public Long getNeoId() {
-        return neoId;
-    }
-
-    public void setNeoId(Long neoId) {
-        this.neoId = neoId;
-    }
-
     @Override
     public String toString() {
         return "PerspectiveDTO{" +
-                "neoId=" + neoId +
-                ", jpaId=" + jpaId +
+                ", id=" + id +
                 ", code='" + code + '\'' +
                 ", description='" + description + '\'' +
                 ", organization=" + organization +

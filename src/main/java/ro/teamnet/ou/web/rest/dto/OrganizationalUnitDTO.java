@@ -9,8 +9,7 @@ import java.util.Set;
 
 public class OrganizationalUnitDTO implements Serializable {
 
-    private Long neoId;
-    private Long jpaId;
+    private Long id;
     private String code;
     private String description;
     private Date validFrom;
@@ -28,28 +27,20 @@ public class OrganizationalUnitDTO implements Serializable {
     public OrganizationalUnitDTO() {
     }
 
-    public OrganizationalUnitDTO(Long neoId, String code, String description, Date validFrom, Date validTo,
-                                 Boolean active, Long jpaId, PerspectiveDTO perspective, OrganizationalUnitDTO parent,
+    public OrganizationalUnitDTO(String code, String description, Date validFrom, Date validTo,
+                                 Boolean active, Long id, PerspectiveDTO perspective, OrganizationalUnitDTO parent,
                                  Set<OrganizationalUnitDTO> children, Set<Account> accounts) {
-        this.neoId = neoId;
+
         this.code = code;
         this.description = description;
         this.validFrom = validFrom;
         this.validTo = validTo;
         this.active = active;
-        this.jpaId = jpaId;
+        this.id = id;
         this.perspective = perspective;
         this.parent = parent;
         this.children = children;
         this.accounts = accounts;
-    }
-
-    public Long getNeoId() {
-        return neoId;
-    }
-
-    public void setNeoId(Long neoId) {
-        this.neoId = neoId;
     }
 
     public String getCode() {
@@ -116,12 +107,12 @@ public class OrganizationalUnitDTO implements Serializable {
         this.children = children;
     }
 
-    public Long getJpaId() {
-        return jpaId;
+    public Long getId() {
+        return id;
     }
 
-    public void setJpaId(Long jpaId) {
-        this.jpaId = jpaId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Set<Account> getAccounts() {
@@ -135,8 +126,7 @@ public class OrganizationalUnitDTO implements Serializable {
     @Override
     public String toString() {
         return "OrganizationalUnitDTO{" +
-                "neoId=" + neoId +
-                ", jpaId=" + jpaId +
+                ", id=" + id +
                 ", code='" + code + '\'' +
                 ", description='" + description + '\'' +
                 ", validFrom=" + validFrom +
