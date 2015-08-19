@@ -17,7 +17,7 @@ public class OrganizationMapper {
     public static Organization toJPA(OrganizationDTO organizationDTO) {
         Organization organization = new Organization();
 
-        organization.setId(organizationDTO.getJpaId());
+        organization.setId(organizationDTO.getId());
         organization.setCode(organizationDTO.getCode());
         organization.setDescription(organizationDTO.getDescription());
         organization.setValidFrom(organizationDTO.getValidFrom());
@@ -39,8 +39,7 @@ public class OrganizationMapper {
     public static ro.teamnet.ou.domain.neo.Organization toNeo(OrganizationDTO organizationDTO) {
         ro.teamnet.ou.domain.neo.Organization organization = new ro.teamnet.ou.domain.neo.Organization();
 
-        organization.setId(organizationDTO.getNeoId());
-        organization.setJpaId(organizationDTO.getJpaId());
+        organization.setJpaId(organizationDTO.getId());
         organization.setCode(organizationDTO.getCode());
 
         Set<ro.teamnet.ou.domain.neo.Perspective> perspectiveSet = new HashSet<>();
@@ -67,8 +66,7 @@ public class OrganizationMapper {
     public static OrganizationDTO toDTO(Organization organization, ro.teamnet.ou.domain.neo.Organization organizationNeo) {
         OrganizationDTO organizationDTO = new OrganizationDTO();
 
-        organizationDTO.setNeoId(organizationNeo.getId());
-        organizationDTO.setJpaId(organizationNeo.getJpaId());
+        organizationDTO.setId(organizationNeo.getJpaId());
         organizationDTO.setCode(organization.getCode());
         organizationDTO.setDescription(organization.getDescription());
         organizationDTO.setValidFrom(organization.getValidFrom());

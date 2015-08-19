@@ -13,7 +13,7 @@ public class FunctionMapper {
     public static Function toJpa(FunctionDTO functionDTO) {
         Function function = new Function();
 
-        function.setId(functionDTO.getJpaId());
+        function.setId(functionDTO.getId());
         function.setCode(functionDTO.getCode());
         function.setDescription(functionDTO.getDescription());
         function.setValidFrom(functionDTO.getValidFrom());
@@ -35,10 +35,9 @@ public class FunctionMapper {
     public static ro.teamnet.ou.domain.neo.Function toNeo(FunctionDTO functionDTO) {
         ro.teamnet.ou.domain.neo.Function function = new ro.teamnet.ou.domain.neo.Function();
 
-        function.setId(functionDTO.getJpaId());
         function.setCode(functionDTO.getCode());
         function.setAccount(functionDTO.getAccount());
-        function.setJpaId(functionDTO.getJpaId());
+        function.setJpaId(functionDTO.getId());
         function.setOrganizationalUnit(functionDTO.getOrganizationalUnit());
 
         return function;
@@ -47,8 +46,7 @@ public class FunctionMapper {
     public static FunctionDTO toDTO(Function function, ro.teamnet.ou.domain.neo.Function functionNeo) {
         FunctionDTO functionDTO = new FunctionDTO();
 
-        functionDTO.setNeoId(functionNeo.getId());
-        functionDTO.setJpaId(functionNeo.getJpaId());
+        functionDTO.setId(functionNeo.getJpaId());
         functionDTO.setOrganizationalUnit(functionNeo.getOrganizationalUnit());
         functionDTO.setAccount(functionNeo.getAccount());
         functionDTO.setActive(function.getActive());

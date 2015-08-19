@@ -6,8 +6,7 @@ import java.util.Set;
 
 public class OrganizationDTO implements Serializable {
 
-    private Long neoId;
-    private Long jpaId;
+    private Long id;
     private String code;
     private String description;
     private Date validFrom;
@@ -19,10 +18,9 @@ public class OrganizationDTO implements Serializable {
     public OrganizationDTO() {
     }
 
-    public OrganizationDTO(Long neoId, Long jpaId, String code, String description, Date validFrom, Date validTo, Boolean active,
+    public OrganizationDTO(Long id, String code, String description, Date validFrom, Date validTo, Boolean active,
                            Set<PerspectiveDTO> perspectives, Set<OrganizationalUnitDTO> roots) {
-        this.neoId = neoId;
-        this.jpaId = jpaId;
+        this.id = id;
         this.code = code;
         this.description = description;
         this.validFrom = validFrom;
@@ -32,20 +30,12 @@ public class OrganizationDTO implements Serializable {
         this.roots = roots;
     }
 
-    public Long getNeoId() {
-        return neoId;
+    public Long getId() {
+        return id;
     }
 
-    public void setNeoId(Long neoId) {
-        this.neoId = neoId;
-    }
-
-    public Long getJpaId() {
-        return jpaId;
-    }
-
-    public void setJpaId(Long jpaId) {
-        this.jpaId = jpaId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getCode() {
@@ -107,8 +97,7 @@ public class OrganizationDTO implements Serializable {
     @Override
     public String toString() {
         return "OrganizationDTO{" +
-                "id=" + neoId +
-                ", jpaId=" + jpaId +
+                "id=" + id +
                 ", code='" + code + '\'' +
                 ", description='" + description + '\'' +
                 ", validFrom=" + validFrom +
