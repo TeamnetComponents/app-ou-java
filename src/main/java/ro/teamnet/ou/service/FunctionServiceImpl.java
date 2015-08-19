@@ -1,15 +1,12 @@
 package ro.teamnet.ou.service;
 
+import org.springframework.data.neo4j.conversion.Result;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.teamnet.bootstrap.domain.Module;
 import ro.teamnet.bootstrap.domain.ModuleRight;
-import ro.teamnet.bootstrap.domain.util.ModuleRightTypeEnum;
 import ro.teamnet.bootstrap.repository.ModuleRepository;
-import ro.teamnet.bootstrap.service.AbstractServiceImpl;
 import ro.teamnet.bootstrap.service.ModuleRightService;
-import ro.teamnet.bootstrap.web.rest.dto.ModuleRightDTO;
-
 import ro.teamnet.ou.domain.jpa.Function;
 import ro.teamnet.ou.mapper.FunctionMapper;
 import ro.teamnet.ou.repository.jpa.FunctionRepository;
@@ -17,7 +14,8 @@ import ro.teamnet.ou.repository.neo.FunctionNeoRepository;
 import ro.teamnet.ou.web.rest.dto.FunctionDTO;
 
 import javax.inject.Inject;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Service class for managing  ModuleRights.
@@ -110,22 +108,17 @@ public class FunctionServiceImpl implements FunctionService {
 
     @Override
     public Set<FunctionDTO> getAllWithModuleRights() {
-        Set<Function> functionList = functionRepository.getAllWithModuleRights();
-        Set<ro.teamnet.ou.domain.neo.Function> functionListNeo = functionNeoRepository.getAllFunctions();
+        Set<Function> functions = functionRepository.getAllWithModuleRights();
+        Result<ro.teamnet.ou.domain.neo.Function> neoFunctions = functionNeoRepository.findAll();
 
-        Iterator<Function> iteratorJpa = functionList.iterator();
-        Iterator<ro.teamnet.ou.domain.neo.Function> iteratorNeo = functionListNeo.iterator();
         Set<FunctionDTO> functionDTOSet = new HashSet<>();
-        while (iteratorJpa.hasNext()){
-            Function function = iteratorJpa.next();
-            while (iteratorNeo.hasNext()){
-                ro.teamnet.ou.domain.neo.Function functionNeo = iteratorNeo.next();
-                if(function.getId() == functionNeo.getJpaId()){
-                    functionDTOSet.add(FunctionMapper.toDTO(function,functionNeo));
+        for (Function function : functions) {
+            for (ro.teamnet.ou.domain.neo.Function neoFunction : neoFunctions) {
+                if(function.getId() == neoFunction.getJpaId()){
+                    functionDTOSet.add(FunctionMapper.toDTO(function,neoFunction));
                 }
             }
         }
-
         return functionDTOSet;
     }
 
