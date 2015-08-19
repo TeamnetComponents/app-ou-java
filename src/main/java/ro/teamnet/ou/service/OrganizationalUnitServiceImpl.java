@@ -1,19 +1,18 @@
 package ro.teamnet.ou.service;
 
-import org.springframework.data.neo4j.conversion.Result;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.teamnet.ou.domain.jpa.OrganizationalUnit;
-import ro.teamnet.ou.domain.jpa.Perspective;
 import ro.teamnet.ou.mapper.OrganizationalUnitMapper;
 import ro.teamnet.ou.repository.jpa.OrganizationalUnitRepository;
 import ro.teamnet.ou.repository.jpa.PerspectiveRepository;
 import ro.teamnet.ou.repository.neo.OrganizationalUnitNeoRepository;
 import ro.teamnet.ou.web.rest.dto.OrganizationalUnitDTO;
-import ro.teamnet.ou.web.rest.dto.PerspectiveDTO;
 
 import javax.inject.Inject;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by ionut.patrascu on 31.07.2015.
@@ -93,7 +92,7 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
         organizationalUnitRepository.save(organizationalUnit);
 
         ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnitNeo = OrganizationalUnitMapper.toNeo(organizationalUnitDTO);
-        organizationalUnitDTO.setJpaId(organizationalUnit.getId());
+        organizationalUnitDTO.setId(organizationalUnit.getId());
         organizationalUnitNeoRepository.save(organizationalUnitNeo);
 
         return OrganizationalUnitMapper.toDTO(organizationalUnit, organizationalUnitNeo);

@@ -1,18 +1,14 @@
 package ro.teamnet.ou.service;
 
-import org.springframework.data.neo4j.conversion.Result;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.teamnet.ou.domain.jpa.Perspective;
 import ro.teamnet.ou.mapper.PerspectiveMapper;
 import ro.teamnet.ou.repository.jpa.PerspectiveRepository;
 import ro.teamnet.ou.repository.neo.PerspectiveNeoRepository;
-import ro.teamnet.ou.web.rest.dto.OrganizationDTO;
-import ro.teamnet.ou.web.rest.dto.OrganizationalUnitDTO;
 import ro.teamnet.ou.web.rest.dto.PerspectiveDTO;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -79,7 +75,7 @@ public class PerspectiveServiceImpl implements PerspectiveService {
 
         Perspective perspective = PerspectiveMapper.toJPA(perspectiveDTO);
         perspectiveRepository.save(perspective);
-        perspectiveDTO.setJpaId(perspective.getId());
+        perspectiveDTO.setId(perspective.getId());
         ro.teamnet.ou.domain.neo.Perspective perspectiveNeo = PerspectiveMapper.toNeo(perspectiveDTO);
         perspectiveNeoRepository.save(perspectiveNeo);
         return PerspectiveMapper.toDTO(perspective, perspectiveNeo);
