@@ -65,4 +65,13 @@ public class PerspectiveResource {
         Set<PerspectiveDTO> perspectiveDTOs = perspectiveService.getAllPerspectives();
         return new ResponseEntity<>(perspectiveDTOs, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/{id}",
+            method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public void delete(@PathVariable Long id) {
+        log.debug("REST request to delete : {}", id);
+        perspectiveService.delete(id);
+    }
 }

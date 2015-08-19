@@ -6,18 +6,17 @@ import ro.teamnet.ou.web.rest.dto.FunctionDTO;
 
 import java.util.Set;
 
-public interface FunctionService extends AbstractService<Function,Long> {
+public interface FunctionService {
 
-    public Function getOne(Long id);
+    public FunctionDTO save(FunctionDTO function);
 
-    public Function update(Function function);
+   // public Function update(Function applicationRole, FunctionDTO functionDTO);
 
-    public Function update(Function applicationRole, FunctionDTO functionDTO);
+   // public Boolean updateRoleById(Long id, FunctionDTO functionDTO);
 
-    public Boolean updateRoleById(Long id, FunctionDTO functionDTO);
+    public FunctionDTO getOneById(Long id);
 
-    public Function getOneById(Long id);
+    Set<FunctionDTO> getAllWithModuleRights();
 
-    Set<Function> getAllWithModuleRights();
-
+    void delete(Long id);
 }

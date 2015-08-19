@@ -13,7 +13,7 @@ public class OrganizationalUnitMapper {
     public static OrganizationalUnit toJPA(OrganizationalUnitDTO organizationalUnitDTO) {
         OrganizationalUnit organizationalUnit = new OrganizationalUnit();
 
-        organizationalUnit.setId(organizationalUnitDTO.getId());
+        organizationalUnit.setId(organizationalUnitDTO.getJpaId());
         organizationalUnit.setCode(organizationalUnitDTO.getCode());
         organizationalUnit.setDescription(organizationalUnitDTO.getDescription());
         organizationalUnit.setValidFrom(organizationalUnitDTO.getValidFrom());
@@ -40,7 +40,7 @@ public class OrganizationalUnitMapper {
     public static ro.teamnet.ou.domain.neo.OrganizationalUnit toNeo(OrganizationalUnitDTO organizationalUnitDTO) {
         ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnit = new ro.teamnet.ou.domain.neo.OrganizationalUnit();
 
-        organizationalUnit.setId(organizationalUnitDTO.getId());
+        organizationalUnit.setId(organizationalUnitDTO.getNeoId());
         organizationalUnit.setJpaId(organizationalUnitDTO.getJpaId());
         organizationalUnit.setCode(organizationalUnitDTO.getCode());
         if(organizationalUnitDTO.getParent() != null)
@@ -63,8 +63,8 @@ public class OrganizationalUnitMapper {
     public static OrganizationalUnitDTO toDTO(OrganizationalUnit organizationalUnit, ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnitNeo) {
         OrganizationalUnitDTO organizationalUnitDTO = new OrganizationalUnitDTO();
 
-        organizationalUnitDTO.setId(organizationalUnit.getId());
-        organizationalUnitDTO.setJpaId(organizationalUnit.getId());
+        organizationalUnitDTO.setNeoId(organizationalUnitNeo.getId());
+        organizationalUnitDTO.setJpaId(organizationalUnitNeo.getJpaId());
         organizationalUnitDTO.setCode(organizationalUnit.getCode());
         organizationalUnitDTO.setDescription(organizationalUnit.getDescription());
         organizationalUnitDTO.setValidFrom(organizationalUnit.getValidFrom());

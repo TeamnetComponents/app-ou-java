@@ -12,7 +12,7 @@ public interface OrganizationService {
 
     OrganizationDTO save(OrganizationDTO organizationDTO);
 
-    void delete(OrganizationDTO organizationDTO);
+    void delete(Long id);
 
     Set<OrganizationDTO> getAllOrganizationDTOs();
 

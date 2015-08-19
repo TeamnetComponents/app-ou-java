@@ -12,7 +12,9 @@ import java.util.Set;
 
 public class FunctionDTO implements Serializable {
 
-    private Long id;
+
+    private Long neoId;
+    private Long jpaId;
     private String code;
     private String description;
     private Date validFrom;
@@ -20,16 +22,15 @@ public class FunctionDTO implements Serializable {
     private Boolean active;
     private Set<ModuleRightDTO> moduleRights = new HashSet<>();
 
-    private Long jpaId;
     private Account account;
     private OrganizationalUnit organizationalUnit;
 
     public FunctionDTO() {
     }
 
-    public FunctionDTO(Long id, String code, String description, Date validFrom, Date validTo, Boolean active, Long jpaId,
+    public FunctionDTO(Long neoId, String code, String description, Date validFrom, Date validTo, Boolean active, Long jpaId,
                        Set<ModuleRightDTO> moduleRights, Account account, OrganizationalUnit organizationalUnit) {
-        this.id = id;
+        this.neoId = neoId;
         this.code = code;
         this.description = description;
         this.validFrom = validFrom;
@@ -41,12 +42,12 @@ public class FunctionDTO implements Serializable {
         this.organizationalUnit = organizationalUnit;
     }
 
-    public Long getId() {
-        return id;
+    public Long getNeoId() {
+        return neoId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setNeoId(Long neoId) {
+        this.neoId = neoId;
     }
 
     public String getCode() {
@@ -124,14 +125,14 @@ public class FunctionDTO implements Serializable {
     @Override
     public String toString() {
         return "FunctionDTO{" +
-                "id=" + id +
+                "neoId=" + neoId +
+                ", jpaId=" + jpaId +
                 ", code='" + code + '\'' +
                 ", description='" + description + '\'' +
                 ", validFrom=" + validFrom +
                 ", validTo=" + validTo +
                 ", active=" + active +
                 ", moduleRights=" + moduleRights +
-                ", jpaId=" + jpaId +
                 ", account=" + account +
                 ", organizationalUnit=" + organizationalUnit +
                 '}';

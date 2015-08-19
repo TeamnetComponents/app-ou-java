@@ -10,10 +10,10 @@ import java.util.Set;
 
 public class FunctionMapper {
 
-    public static Function from(FunctionDTO functionDTO) {
+    public static Function toJpa(FunctionDTO functionDTO) {
         Function function = new Function();
 
-        function.setId(functionDTO.getId());
+        function.setId(functionDTO.getJpaId());
         function.setCode(functionDTO.getCode());
         function.setDescription(functionDTO.getDescription());
         function.setValidFrom(functionDTO.getValidFrom());
@@ -32,10 +32,10 @@ public class FunctionMapper {
         return function;
     }
 
-    public static ro.teamnet.ou.domain.neo.Function fromNeo(FunctionDTO functionDTO) {
+    public static ro.teamnet.ou.domain.neo.Function toNeo(FunctionDTO functionDTO) {
         ro.teamnet.ou.domain.neo.Function function = new ro.teamnet.ou.domain.neo.Function();
 
-        function.setId(functionDTO.getId());
+        function.setId(functionDTO.getJpaId());
         function.setCode(functionDTO.getCode());
         function.setAccount(functionDTO.getAccount());
         function.setJpaId(functionDTO.getJpaId());
@@ -44,10 +44,10 @@ public class FunctionMapper {
         return function;
     }
 
-    public static FunctionDTO from(Function function, ro.teamnet.ou.domain.neo.Function functionNeo) {
+    public static FunctionDTO toDTO(Function function, ro.teamnet.ou.domain.neo.Function functionNeo) {
         FunctionDTO functionDTO = new FunctionDTO();
 
-        functionDTO.setId(function.getId());
+        functionDTO.setNeoId(functionNeo.getId());
         functionDTO.setJpaId(functionNeo.getJpaId());
         functionDTO.setOrganizationalUnit(functionNeo.getOrganizationalUnit());
         functionDTO.setAccount(functionNeo.getAccount());

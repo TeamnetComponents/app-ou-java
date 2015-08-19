@@ -9,7 +9,8 @@ import java.util.Set;
 
 public class OrganizationalUnitDTO implements Serializable {
 
-    private Long id;
+    private Long neoId;
+    private Long jpaId;
     private String code;
     private String description;
     private Date validFrom;
@@ -20,17 +21,17 @@ public class OrganizationalUnitDTO implements Serializable {
     private OrganizationalUnitDTO parent;
     private Set<OrganizationalUnitDTO> children = new HashSet<>();
 
-    private Long jpaId;
+
     private Set<Account> accounts = new HashSet<>();
 //    private Set<OrganizationalUnitFunction> organizationalUnitFunctions = new HashSet<>();
 
     public OrganizationalUnitDTO() {
     }
 
-    public OrganizationalUnitDTO(Long id, String code, String description, Date validFrom, Date validTo,
+    public OrganizationalUnitDTO(Long neoId, String code, String description, Date validFrom, Date validTo,
                                  Boolean active, Long jpaId, PerspectiveDTO perspective, OrganizationalUnitDTO parent,
                                  Set<OrganizationalUnitDTO> children, Set<Account> accounts) {
-        this.id = id;
+        this.neoId = neoId;
         this.code = code;
         this.description = description;
         this.validFrom = validFrom;
@@ -43,12 +44,12 @@ public class OrganizationalUnitDTO implements Serializable {
         this.accounts = accounts;
     }
 
-    public Long getId() {
-        return id;
+    public Long getNeoId() {
+        return neoId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setNeoId(Long neoId) {
+        this.neoId = neoId;
     }
 
     public String getCode() {
@@ -134,7 +135,8 @@ public class OrganizationalUnitDTO implements Serializable {
     @Override
     public String toString() {
         return "OrganizationalUnitDTO{" +
-                "id=" + id +
+                "neoId=" + neoId +
+                ", jpaId=" + jpaId +
                 ", code='" + code + '\'' +
                 ", description='" + description + '\'' +
                 ", validFrom=" + validFrom +
@@ -143,7 +145,6 @@ public class OrganizationalUnitDTO implements Serializable {
                 ", perspective=" + perspective +
                 ", parent=" + parent +
                 ", children=" + children +
-                ", jpaId=" + jpaId +
                 ", accounts=" + accounts +
                 '}';
     }

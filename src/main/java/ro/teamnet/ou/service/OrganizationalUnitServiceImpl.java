@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.teamnet.ou.domain.jpa.OrganizationalUnit;
 import ro.teamnet.ou.domain.jpa.Perspective;
+import ro.teamnet.ou.domain.neo.Organization;
 import ro.teamnet.ou.mapper.OrganizationalUnitMapper;
 import ro.teamnet.ou.repository.jpa.OrganizationalUnitRepository;
 import ro.teamnet.ou.repository.jpa.PerspectiveRepository;
@@ -99,5 +100,11 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
         return OrganizationalUnitMapper.toDTO(organizationalUnit, organizationalUnitNeo);
     }
 
-
+    @Override
+    public void delete(Long id) {
+        OrganizationalUnit organizationalUnit = organizationalUnitRepository.findOne(id);
+        organizationalUnitRepository.delete(organizationalUnit);
+        ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnitNeo = organizationalUnitNeoRepository.findByJpaId(id);
+        organizationalUnitNeoRepository.delete(organizationalUnitNeo);
+    }
 }

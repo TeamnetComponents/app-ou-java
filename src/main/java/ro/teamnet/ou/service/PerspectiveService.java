@@ -22,5 +22,7 @@ public interface PerspectiveService {
 
     PerspectiveDTO save(PerspectiveDTO perspectiveDTO);
 
-   // PerspectiveDTO update(PerspectiveDTO perspectiveDTO);
+    void delete(Long id);
+
+    // PerspectiveDTO update(PerspectiveDTO perspectiveDTO);
 }

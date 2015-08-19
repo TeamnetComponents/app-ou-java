@@ -49,7 +49,7 @@ public class PerspectiveServiceImpl implements PerspectiveService {
     public PerspectiveDTO findPerspectiveById(Long id) {
 
         Perspective perspective = perspectiveRepository.findOne(id);
-        ro.teamnet.ou.domain.neo.Perspective perspectiveNeo = perspectiveNeoRepository.findOne(id);
+        ro.teamnet.ou.domain.neo.Perspective perspectiveNeo = perspectiveNeoRepository.findByJpaId(id);
 
         return PerspectiveMapper.toDTO(perspective, perspectiveNeo);
     }
@@ -83,6 +83,20 @@ public class PerspectiveServiceImpl implements PerspectiveService {
         ro.teamnet.ou.domain.neo.Perspective perspectiveNeo = PerspectiveMapper.toNeo(perspectiveDTO);
         perspectiveNeoRepository.save(perspectiveNeo);
         return PerspectiveMapper.toDTO(perspective, perspectiveNeo);
+    }
+
+    @Override
+    public void delete(Long id) {
+//        Perspective perspective = PerspectiveMapper.toJPA(perspectiveDTO);
+//        perspectiveRepository.delete(perspective);
+//
+//        ro.teamnet.ou.domain.neo.Perspective perspectiveNeo = PerspectiveMapper.toNeo(perspectiveDTO);
+//        perspectiveNeoRepository.delete(perspectiveNeo);
+
+        Perspective perspective = perspectiveRepository.findOne(id);
+        perspectiveRepository.delete(perspective);
+        ro.teamnet.ou.domain.neo.Perspective perspectiveNeo = perspectiveNeoRepository.findByJpaId(id);
+        perspectiveNeoRepository.delete(perspectiveNeo);
     }
 
 }

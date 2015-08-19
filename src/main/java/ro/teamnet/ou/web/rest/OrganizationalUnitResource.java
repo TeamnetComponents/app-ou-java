@@ -72,4 +72,13 @@ public class OrganizationalUnitResource {
 
         return new ResponseEntity<>(organizationalUnitDTOResp, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/{id}",
+            method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public void delete(@PathVariable Long id) {
+        log.debug("REST request to delete : {}", id);
+        organizationalUnitService.delete(id);
+    }
 }

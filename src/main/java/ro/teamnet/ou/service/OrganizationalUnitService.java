@@ -18,11 +18,12 @@ public interface OrganizationalUnitService {
 
 //    OrganizationalUnitDTO createOrganizationalUnitDTO(Long id, String code, String description, Date validFrom, Date validTo, PerspectiveDTO perspectiveDTO,
 //                                                             OrganizationalUnitDTO parent, Set<OrganizationalUnitDTO> children);
-
     OrganizationalUnitDTO findOrganizationalUnitById(Long id);
 
     Set<OrganizationalUnitDTO> getAllOrganizationalUnit();
 
     OrganizationalUnitDTO save(OrganizationalUnitDTO organizationalUnitDTO);
+
+    void delete(Long id);
 
 }

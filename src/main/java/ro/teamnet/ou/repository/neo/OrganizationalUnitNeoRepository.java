@@ -18,6 +18,9 @@ public interface OrganizationalUnitNeoRepository extends GraphRepository<Organiz
     @Query("match (childOu:OrganizationalUnit)-[:BELONGS_TO*]->(rootOu:OrganizationalUnit{jpaId : {0}}) return childOu.jpaId")
     List<Long> getOrganizationalUnitSubTreeJpaIdsByRootJpaId(Long jpaId);
 
-    @Query("MATCH (organization:Perspective) RETURN perspective")
+    @Query("MATCH (organizationalUnit:OrganizationalUnit) RETURN organizationalUnit")
     List<OrganizationalUnit> getAllOrganizationalUnits();
+
+    @Query("MATCH (organizationalUnit:OrganizationalUnit {jpaId:{0}}) RETURN organizationalUnit")
+    OrganizationalUnit findByJpaId(Long jpaId);
 }

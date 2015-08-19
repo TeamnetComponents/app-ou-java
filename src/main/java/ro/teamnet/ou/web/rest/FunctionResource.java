@@ -19,63 +19,89 @@ import java.util.Set;
  */
 @RestController
 @RequestMapping("/app/rest/function")
-public class FunctionResource extends ro.teamnet.bootstrap.web.rest.AbstractResource<Function,Long>{
+public class FunctionResource{
 
     private final Logger log = LoggerFactory.getLogger(FunctionResource.class);
     private FunctionService functionService;
 
     @Inject
     public FunctionResource(FunctionService functionService) {
-        super(functionService);
         this.functionService=functionService;
     }
 
     @RequestMapping(value = "/allWithModuleRights", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public Set<Function> getAllWithModuleRights() {
-        log.debug("REST request to get all functions fetching module rights olso");
+    public Set<FunctionDTO> getAllWithModuleRights() {
+        log.debug("REST request to get all functions fetching module rights also");
         return functionService.getAllWithModuleRights();
     }
 
-    /**
-     * POST  /rest/function  update function
-     */
-    @RequestMapping(value = "/{id}",
-            method = RequestMethod.PUT,
+    @RequestMapping(method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Function> updateById(@PathVariable Long id,@RequestBody FunctionDTO functionDTO) {
-        log.debug("REST request to update the function : {}", id);
+    public ResponseEntity<FunctionDTO> update(@RequestBody FunctionDTO functionDTO) {
 
-//        Boolean functionFound = functionService.updateFunctionById(id, functionDTO);
-//        if (functionFound == null) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-
-//      we need function with module rights to be returned, for menu administration
-        Function function = functionService.getOneById(id);
-        if(function == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        functionService.update(function, functionDTO);
-
-        return new ResponseEntity<>(function, HttpStatus.OK);
+        FunctionDTO functionDTOresponse = functionService.save(functionDTO);
+        return new ResponseEntity<>(functionDTOresponse, HttpStatus.OK);
     }
 
 
-    @Override
+    @RequestMapping(method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<FunctionDTO> create(@RequestBody FunctionDTO functionDTO) {
+
+        FunctionDTO functionDTOresponse = functionService.save(functionDTO);
+        return new ResponseEntity<>(functionDTOresponse, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{id}",
+            method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public void delete(@PathVariable Long id) {
+        log.debug("REST request to delete : {}", id);
+        functionService.delete(id);
+    }
+
+//    /**
+//     * POST  /rest/function  update function
+//     */
+//    @RequestMapping(value = "/{id}",
+//            method = RequestMethod.PUT,
+//            produces = MediaType.APPLICATION_JSON_VALUE)
+//    @Timed
+//    public ResponseEntity<Function> updateById(@PathVariable Long id,@RequestBody FunctionDTO functionDTO) {
+//        log.debug("REST request to update the function : {}", id);
+//
+////        Boolean functionFound = functionService.updateFunctionById(id, functionDTO);
+////        if (functionFound == null) {
+////            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+////        }
+//
+////      we need function with module rights to be returned, for menu administration
+//        Function function = functionService.getOneById(id);
+//        if(function == null){
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//
+//        functionService.update(function, functionDTO);
+//
+//        return new ResponseEntity<>(function, HttpStatus.OK);
+//    }
+
+
     @RequestMapping(value = "/{id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Function> get(@PathVariable Long id) {
+    public ResponseEntity<FunctionDTO> get(@PathVariable Long id) {
         log.debug("REST request to get  : {}", id);
-        Function function = functionService.getOneById(id);
-        if (function == null) {
+        FunctionDTO functionDto = functionService.getOneById(id);
+        if (functionDto == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(function, HttpStatus.OK);
+        return new ResponseEntity<>(functionDto, HttpStatus.OK);
     }
 }

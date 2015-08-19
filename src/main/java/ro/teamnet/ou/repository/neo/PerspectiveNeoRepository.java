@@ -12,6 +12,11 @@ import java.util.List;
  */
 public interface PerspectiveNeoRepository extends GraphRepository<Perspective>, SchemaIndexRepository<Perspective> {
 
+
+    @Query("MATCH (perspective:Perspective {jpaId:{0}}) RETURN perspective")
+    Perspective findByJpaId(Long jpaId);
+
+
     @Query("MATCH (organization:Perspective) RETURN perspective")
     List<Perspective> getAllPerspectives();
 }
