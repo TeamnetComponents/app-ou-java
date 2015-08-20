@@ -1,8 +1,6 @@
 package ro.teamnet.ou.web.rest.dto;
 
 import ro.teamnet.bootstrap.web.rest.dto.ModuleRightDTO;
-import ro.teamnet.ou.domain.neo.Account;
-import ro.teamnet.ou.domain.neo.OrganizationalUnit;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -21,14 +19,14 @@ public class FunctionDTO implements Serializable {
     private Boolean active;
     private Set<ModuleRightDTO> moduleRights = new HashSet<>();
 
-    private Account account;
-    private OrganizationalUnit organizationalUnit;
+    private AccountDTO accountDto;
+    private OrganizationalUnitDTO organizationalUnitDto;
 
     public FunctionDTO() {
     }
 
     public FunctionDTO(Long id, String code, String description, Date validFrom, Date validTo, Boolean active,
-                       Set<ModuleRightDTO> moduleRights, Account account, OrganizationalUnit organizationalUnit) {
+                       Set<ModuleRightDTO> moduleRights, AccountDTO accountDto, OrganizationalUnitDTO organizationalUnitDto) {
         this.id = id;
         this.code = code;
         this.description = description;
@@ -36,8 +34,8 @@ public class FunctionDTO implements Serializable {
         this.validTo = validTo;
         this.active = active;
         this.moduleRights = moduleRights;
-        this.account = account;
-        this.organizationalUnit = organizationalUnit;
+        this.accountDto = accountDto;
+        this.organizationalUnitDto = organizationalUnitDto;
     }
 
     public Long getId() {
@@ -96,22 +94,21 @@ public class FunctionDTO implements Serializable {
         return moduleRights;
     }
 
-    public Account getAccount() {
-        return account;
+    public AccountDTO getAccountDto() {
+        return accountDto;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setAccountDto(AccountDTO accountDto) {
+        this.accountDto = accountDto;
     }
 
-    public OrganizationalUnit getOrganizationalUnit() {
-        return organizationalUnit;
+    public OrganizationalUnitDTO getOrganizationalUnitDto() {
+        return organizationalUnitDto;
     }
 
-    public void setOrganizationalUnit(OrganizationalUnit organizationalUnit) {
-        this.organizationalUnit = organizationalUnit;
+    public void setOrganizationalUnitDto(OrganizationalUnitDTO organizationalUnitDto) {
+        this.organizationalUnitDto = organizationalUnitDto;
     }
-
 
     @Override
     public String toString() {
@@ -123,8 +120,8 @@ public class FunctionDTO implements Serializable {
                 ", validTo=" + validTo +
                 ", active=" + active +
                 ", moduleRights=" + moduleRights +
-                ", account=" + account +
-                ", organizationalUnit=" + organizationalUnit +
+                ", accountDto=" + accountDto +
+                ", organizationalUnitDto=" + organizationalUnitDto +
                 '}';
     }
 }

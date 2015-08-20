@@ -5,8 +5,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.teamnet.bootstrap.domain.Module;
 import ro.teamnet.bootstrap.domain.ModuleRight;
+import ro.teamnet.bootstrap.domain.util.ModuleRightTypeEnum;
 import ro.teamnet.bootstrap.repository.ModuleRepository;
+import ro.teamnet.bootstrap.service.AbstractServiceImpl;
 import ro.teamnet.bootstrap.service.ModuleRightService;
+import ro.teamnet.bootstrap.web.rest.dto.ModuleRightDTO;
+
 import ro.teamnet.ou.domain.jpa.Function;
 import ro.teamnet.ou.mapper.FunctionMapper;
 import ro.teamnet.ou.repository.jpa.FunctionRepository;
@@ -14,8 +18,7 @@ import ro.teamnet.ou.repository.neo.FunctionNeoRepository;
 import ro.teamnet.ou.web.rest.dto.FunctionDTO;
 
 import javax.inject.Inject;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Service class for managing  ModuleRights.
@@ -70,9 +73,9 @@ public class FunctionServiceImpl implements FunctionService {
         }
 
         Function functionSaved = functionRepository.save(function);
-
+        Long neoId = functionNeoRepository.findByJpaId(function.getId()).getId();
         ro.teamnet.ou.domain.neo.Function functionNeo = FunctionMapper.toNeo(functionDto);
-        functionNeo.setJpaId(function.getId());
+        functionNeo.setId(neoId);
         ro.teamnet.ou.domain.neo.Function functionNeoSaved = functionNeoRepository.save(functionNeo);
 
         return FunctionMapper.toDTO(functionSaved,functionNeoSaved);
@@ -127,6 +130,10 @@ public class FunctionServiceImpl implements FunctionService {
         Function function = functionRepository.findOne(id);
         functionRepository.delete(function);
         ro.teamnet.ou.domain.neo.Function functionNeo = functionNeoRepository.findByJpaId(id);
+
+        Long neoId = functionNeoRepository.findByJpaId(id).getId();
+        functionNeo.setId(neoId);
+
         functionNeoRepository.delete(functionNeo);
     }
 

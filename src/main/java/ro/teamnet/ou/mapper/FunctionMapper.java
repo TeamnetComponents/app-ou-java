@@ -34,21 +34,17 @@ public class FunctionMapper {
 
     public static ro.teamnet.ou.domain.neo.Function toNeo(FunctionDTO functionDTO) {
         ro.teamnet.ou.domain.neo.Function function = new ro.teamnet.ou.domain.neo.Function();
-
         function.setCode(functionDTO.getCode());
-        function.setAccount(functionDTO.getAccount());
+        function.setAccount(AccountMapper.toNeo(functionDTO.getAccountDto()));
         function.setJpaId(functionDTO.getId());
-        function.setOrganizationalUnit(functionDTO.getOrganizationalUnit());
-
+        function.setOrganizationalUnit(OrganizationalUnitMapper.toNeo(functionDTO.getOrganizationalUnitDto()));
         return function;
     }
 
     public static FunctionDTO toDTO(Function function, ro.teamnet.ou.domain.neo.Function functionNeo) {
         FunctionDTO functionDTO = new FunctionDTO();
 
-        functionDTO.setId(functionNeo.getJpaId());
-        functionDTO.setOrganizationalUnit(functionNeo.getOrganizationalUnit());
-        functionDTO.setAccount(functionNeo.getAccount());
+        functionDTO.setId(function.getId());
         functionDTO.setActive(function.getActive());
         functionDTO.setCode(function.getCode());
         functionDTO.setValidFrom(function.getValidFrom());
@@ -63,6 +59,16 @@ public class FunctionMapper {
             }
         }
         functionDTO.setModuleRights(moduleRightDTOs);
+
+        return functionDTO;
+    }
+
+    public static FunctionDTO toDTO(ro.teamnet.ou.domain.neo.Function functionNeo) {
+        FunctionDTO functionDTO = new FunctionDTO();
+
+        functionDTO.setId(functionNeo.getId());
+        functionDTO.setOrganizationalUnitDto(OrganizationalUnitMapper.toDTO(functionNeo.getOrganizationalUnit()));
+        functionDTO.setAccountDto(AccountMapper.toDTO(functionNeo.getAccount()));
 
         return functionDTO;
     }

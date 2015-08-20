@@ -10,13 +10,10 @@ public interface FunctionService {
 
     public FunctionDTO save(FunctionDTO function);
 
-   // public Function update(Function applicationRole, FunctionDTO functionDTO);
-
-   // public Boolean updateRoleById(Long id, FunctionDTO functionDTO);
+    void delete(Long id);
 
     public FunctionDTO getOneById(Long id);
 
     Set<FunctionDTO> getAllWithModuleRights();
 
-    void delete(Long id);
 }
