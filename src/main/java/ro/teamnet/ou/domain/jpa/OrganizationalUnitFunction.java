@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 
 @Entity
-@Table(name="T_ORGANIZATIONAL_UNIT_FUNCTION")
+@Table(name="T_OU_FUNCTION")
 public class OrganizationalUnitFunction {
 
     @Id
@@ -13,7 +13,7 @@ public class OrganizationalUnitFunction {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="ORGANIZATIONAL_UNIT_ID", referencedColumnName = "ID")
+    @JoinColumn(name="OU_ID", referencedColumnName = "ID")
     private OrganizationalUnit organizationalUnit;
 
     @ManyToOne
