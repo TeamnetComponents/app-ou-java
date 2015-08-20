@@ -17,6 +17,7 @@ public class OrganizationalUnit {
     @GraphProperty(propertyName = "code", defaultValue = "")
     private String code;
 
+    @Fetch
     @RelatedTo(type="BELONGS_TO",direction = Direction.OUTGOING)
     private OrganizationalUnit parent;
 

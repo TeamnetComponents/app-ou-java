@@ -130,7 +130,15 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
         try {
             nodeJSON.put("id", orgUnit.getJpaId());
             nodeJSON.put("code", orgUnit.getCode());
-            nodeJSON.put("items", arrayJSON);
+            nodeJSON.put("accounts", orgUnit.getAccounts());
+            nodeJSON.put("children", arrayJSON);
+
+            JSONObject parentNodeJSON = new JSONObject();
+            parentNodeJSON.put("id", orgUnit.getParent().getJpaId());
+            parentNodeJSON.put("code", orgUnit.getParent().getCode());
+
+            nodeJSON.put("parent", parentNodeJSON);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
