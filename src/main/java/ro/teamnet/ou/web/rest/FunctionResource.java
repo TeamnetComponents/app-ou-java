@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ro.teamnet.ou.domain.jpa.Function;
 import ro.teamnet.ou.service.FunctionService;
 import ro.teamnet.ou.web.rest.dto.FunctionDTO;
 
@@ -29,21 +28,19 @@ public class FunctionResource{
         this.functionService=functionService;
     }
 
-    @RequestMapping(value = "/allWithModuleRights", method = RequestMethod.GET,
+    @RequestMapping(method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public Set<FunctionDTO> getAllWithModuleRights() {
+    public Set<FunctionDTO> getAll() {
         log.debug("REST request to get all functions fetching module rights also");
-        return functionService.getAllWithModuleRights();
+        return functionService.findAll();
     }
 
     @RequestMapping(method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<FunctionDTO> update(@RequestBody FunctionDTO functionDTO) {
-
-        FunctionDTO functionDTOresponse = functionService.save(functionDTO);
-        return new ResponseEntity<>(functionDTOresponse, HttpStatus.OK);
+        return new ResponseEntity<>(functionService.save(functionDTO), HttpStatus.OK);
     }
 
 
@@ -51,9 +48,7 @@ public class FunctionResource{
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<FunctionDTO> create(@RequestBody FunctionDTO functionDTO) {
-
-        FunctionDTO functionDTOresponse = functionService.save(functionDTO);
-        return new ResponseEntity<>(functionDTOresponse, HttpStatus.OK);
+        return new ResponseEntity<>(functionService.save(functionDTO), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}",
@@ -65,32 +60,6 @@ public class FunctionResource{
         functionService.delete(id);
     }
 
-//    /**
-//     * POST  /rest/function  update function
-//     */
-//    @RequestMapping(value = "/{id}",
-//            method = RequestMethod.PUT,
-//            produces = MediaType.APPLICATION_JSON_VALUE)
-//    @Timed
-//    public ResponseEntity<Function> updateById(@PathVariable Long id,@RequestBody FunctionDTO functionDTO) {
-//        log.debug("REST request to update the function : {}", id);
-//
-////        Boolean functionFound = functionService.updateFunctionById(id, functionDTO);
-////        if (functionFound == null) {
-////            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-////        }
-//
-////      we need function with module rights to be returned, for menu administration
-//        Function function = functionService.getOneById(id);
-//        if(function == null){
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//
-//        functionService.update(function, functionDTO);
-//
-//        return new ResponseEntity<>(function, HttpStatus.OK);
-//    }
-
 
     @RequestMapping(value = "/{id}",
             method = RequestMethod.GET,
@@ -98,7 +67,7 @@ public class FunctionResource{
     @Timed
     public ResponseEntity<FunctionDTO> get(@PathVariable Long id) {
         log.debug("REST request to get  : {}", id);
-        FunctionDTO functionDto = functionService.getOneById(id);
+        FunctionDTO functionDto = functionService.findOne(id);
         if (functionDto == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

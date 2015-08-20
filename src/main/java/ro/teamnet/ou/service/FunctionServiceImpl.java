@@ -5,12 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.teamnet.bootstrap.domain.Module;
 import ro.teamnet.bootstrap.domain.ModuleRight;
-import ro.teamnet.bootstrap.domain.util.ModuleRightTypeEnum;
 import ro.teamnet.bootstrap.repository.ModuleRepository;
-import ro.teamnet.bootstrap.service.AbstractServiceImpl;
 import ro.teamnet.bootstrap.service.ModuleRightService;
-import ro.teamnet.bootstrap.web.rest.dto.ModuleRightDTO;
-
 import ro.teamnet.ou.domain.jpa.Function;
 import ro.teamnet.ou.mapper.FunctionMapper;
 import ro.teamnet.ou.repository.jpa.FunctionRepository;
@@ -18,40 +14,33 @@ import ro.teamnet.ou.repository.neo.FunctionNeoRepository;
 import ro.teamnet.ou.web.rest.dto.FunctionDTO;
 
 import javax.inject.Inject;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * Service class for managing  ModuleRights.
+ * Service class for managing Functions.
  */
 @Service
 @Transactional
 public class FunctionServiceImpl implements FunctionService {
 
-
-    private final FunctionRepository functionRepository;
-
-    private final FunctionNeoRepository functionNeoRepository;
-
-    private final ModuleRightService moduleRightService;
-
-    private final ModuleRepository moduleRepository;
+    @Inject
+    private FunctionRepository functionRepository;
 
     @Inject
-    public FunctionServiceImpl(FunctionRepository functionRepository, ModuleRightService moduleRightService,
-                               ModuleRepository moduleRepository,FunctionNeoRepository functionNeoRepository) {
-        this.functionRepository = functionRepository;
-        this.functionNeoRepository = functionNeoRepository;
-        this.moduleRightService=moduleRightService;
-        this.moduleRepository=moduleRepository;
-    }
+    private FunctionNeoRepository functionNeoRepository;
+
+    @Inject
+    private ModuleRightService moduleRightService;
+
+    @Inject
+    private ModuleRepository moduleRepository;
 
 
-    public FunctionDTO getOneById(Long id) {
-        Function function = functionRepository.getOne(id);
-
+    public FunctionDTO findOne(Long id) {
+        Function function = functionRepository.findOne(id);
         ro.teamnet.ou.domain.neo.Function functionNeo = functionNeoRepository.findByJpaId(id);
         FunctionDTO functionDTO = FunctionMapper.toDTO(function, functionNeo);
-
         return functionDTO;
     }
 
@@ -81,36 +70,8 @@ public class FunctionServiceImpl implements FunctionService {
         return FunctionMapper.toDTO(functionSaved,functionNeoSaved);
     }
 
-//    @Override
-//    public Function update(Function function, FunctionDTO functionDTO) {
-//
-//        function.setCode(functionDTO.getCode());
-//        function.setDescription(functionDTO.getDescription());
-//        function.setValidFrom(functionDTO.getValidFrom());
-//        function.setValidTo(functionDTO.getValidTo());
-//        function.setActive(functionDTO.getActive());
-//
-//
-//        //update moduleRights for Role
-//        List<ModuleRight> moduleRights = new ArrayList<>();
-//        for(ModuleRightDTO mrDTO : functionDTO.getModuleRights()) {
-//            if(mrDTO.getId() != null) {
-//                moduleRights.add(moduleRightService.findOne(mrDTO.getId()));
-//            } else {
-//                Module module = moduleRepository.findOne(mrDTO.getModule().getId());
-//                Short right = ModuleRightTypeEnum.READ_ACCESS.getRight();
-//
-//                moduleRights.addAll(moduleRightService.findByModuleAndRight(module, right));
-//            }
-//        }
-//
-//        function.setModuleRights(moduleRights);
-//
-//        return functionRepository.save(function);
-//    }
-
     @Override
-    public Set<FunctionDTO> getAllWithModuleRights() {
+    public Set<FunctionDTO> findAll() {
         Set<Function> functions = functionRepository.getAllWithModuleRights();
         Result<ro.teamnet.ou.domain.neo.Function> neoFunctions = functionNeoRepository.findAll();
 
@@ -137,15 +98,4 @@ public class FunctionServiceImpl implements FunctionService {
         functionNeoRepository.delete(functionNeo);
     }
 
-
-    //
-//    @Override
-//    public Boolean updateRoleById(Long id, FunctionDTO functionDTO) {
-//        Function function = this.getOne(id);
-//        if (function == null) {
-//            return false;
-//        }
-//        this.update(function, functionDTO);
-//        return true;
-//    }
 }

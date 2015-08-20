@@ -18,25 +18,8 @@ public class FunctionDTO implements Serializable {
     private Date validTo;
     private Boolean active;
     private Set<ModuleRightDTO> moduleRights = new HashSet<>();
-
-    private AccountDTO accountDto;
-    private OrganizationalUnitDTO organizationalUnitDto;
-
-    public FunctionDTO() {
-    }
-
-    public FunctionDTO(Long id, String code, String description, Date validFrom, Date validTo, Boolean active,
-                       Set<ModuleRightDTO> moduleRights, AccountDTO accountDto, OrganizationalUnitDTO organizationalUnitDto) {
-        this.id = id;
-        this.code = code;
-        this.description = description;
-        this.validFrom = validFrom;
-        this.validTo = validTo;
-        this.active = active;
-        this.moduleRights = moduleRights;
-        this.accountDto = accountDto;
-        this.organizationalUnitDto = organizationalUnitDto;
-    }
+    private AccountDTO account;
+    private OrganizationalUnitDTO organizationalUnit;
 
     public Long getId() {
         return id;
@@ -94,35 +77,20 @@ public class FunctionDTO implements Serializable {
         return moduleRights;
     }
 
-    public AccountDTO getAccountDto() {
-        return accountDto;
+    public AccountDTO getAccount() {
+        return account;
     }
 
-    public void setAccountDto(AccountDTO accountDto) {
-        this.accountDto = accountDto;
+    public void setAccount(AccountDTO account) {
+        this.account = account;
     }
 
-    public OrganizationalUnitDTO getOrganizationalUnitDto() {
-        return organizationalUnitDto;
+    public OrganizationalUnitDTO getOrganizationalUnit() {
+        return organizationalUnit;
     }
 
-    public void setOrganizationalUnitDto(OrganizationalUnitDTO organizationalUnitDto) {
-        this.organizationalUnitDto = organizationalUnitDto;
-    }
-
-    @Override
-    public String toString() {
-        return "FunctionDTO{" +
-                "id=" + id +
-                ", code='" + code + '\'' +
-                ", description='" + description + '\'' +
-                ", validFrom=" + validFrom +
-                ", validTo=" + validTo +
-                ", active=" + active +
-                ", moduleRights=" + moduleRights +
-                ", accountDto=" + accountDto +
-                ", organizationalUnitDto=" + organizationalUnitDto +
-                '}';
+    public void setOrganizationalUnit(OrganizationalUnitDTO organizationalUnit) {
+        this.organizationalUnit = organizationalUnit;
     }
 }
 
