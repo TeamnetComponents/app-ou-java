@@ -32,7 +32,7 @@ public class AccountDTO {
     private String langKey;
     private String gender;
     private Boolean activated;
-    private List<RoleDTO> roles = new ArrayList<>();
+    private Set<RoleDTO> roles = new HashSet<>();
     private HashMap<String, ModuleRightDTO> moduleRights = new HashMap<>();
     private Set<OrganizationalUnit> organizationalUnits;
     private Set<Function> functions;
@@ -147,11 +147,11 @@ public class AccountDTO {
         this.activated = activated;
     }
 
-    public List<RoleDTO> getRoles() {
+    public Set<RoleDTO> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<RoleDTO> roles) {
+    public void setRoles(Set<RoleDTO> roles) {
         this.roles = roles;
     }
 

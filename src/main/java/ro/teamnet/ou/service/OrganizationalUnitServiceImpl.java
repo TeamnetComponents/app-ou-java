@@ -33,7 +33,7 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
     public OrganizationalUnitServiceImpl() {
 
     };
-    
+
     public OrganizationalUnitServiceImpl (OrganizationalUnitRepository organizationalUnitRepository, OrganizationalUnitNeoRepository organizationalUnitNeoRepository,
                                           PerspectiveRepository perspectiveRepository){
         this.organizationalUnitRepository = organizationalUnitRepository;
