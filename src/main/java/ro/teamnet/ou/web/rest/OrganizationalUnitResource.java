@@ -1,6 +1,8 @@
 package ro.teamnet.ou.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -80,5 +82,20 @@ public class OrganizationalUnitResource {
     public void delete(@PathVariable Long id) {
         log.debug("REST request to delete : {}", id);
         organizationalUnitService.delete(id);
+    }
+
+    @RequestMapping(value = "/getOrganizationalUnitTreeById/{id}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public Set<ro.teamnet.ou.domain.neo.OrganizationalUnit> getOrganizationalUnitTreeById(@PathVariable Long id) {
+        return organizationalUnitService.getOrganizationalUnitTreeById(id);
+    }
+
+    @RequestMapping(value = "/getTree/{id}",
+            method = RequestMethod.GET)
+    @Timed
+    public String getTree(@PathVariable Long id) {
+        return organizationalUnitService.getTree(id);
     }
 }

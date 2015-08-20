@@ -1,5 +1,7 @@
 package ro.teamnet.ou.service;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import ro.teamnet.bootstrap.service.AbstractService;
 import ro.teamnet.ou.domain.jpa.OrganizationalUnit;
 import ro.teamnet.ou.domain.jpa.Perspective;
@@ -23,4 +25,7 @@ public interface OrganizationalUnitService {
 
     Set<OrganizationalUnitDTO> getAllOrganizationalUnit();
 
+    Set<ro.teamnet.ou.domain.neo.OrganizationalUnit> getOrganizationalUnitTreeById(Long id);
+
+    String getTree(Long id);
 }

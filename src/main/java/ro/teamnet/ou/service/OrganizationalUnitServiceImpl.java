@@ -1,5 +1,8 @@
 package ro.teamnet.ou.service;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.teamnet.ou.domain.jpa.OrganizationalUnit;
@@ -10,12 +13,10 @@ import ro.teamnet.ou.repository.neo.OrganizationalUnitNeoRepository;
 import ro.teamnet.ou.web.rest.dto.OrganizationalUnitDTO;
 
 import javax.inject.Inject;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
- * Created by ionut.patrascu on 31.07.2015.
+ * Created by Marian.Spoiala 20.08.2015
  */
 @Service
 @Transactional
@@ -32,10 +33,12 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
 
     public OrganizationalUnitServiceImpl() {
 
-    };
+    }
 
-    public OrganizationalUnitServiceImpl (OrganizationalUnitRepository organizationalUnitRepository, OrganizationalUnitNeoRepository organizationalUnitNeoRepository,
-                                          PerspectiveRepository perspectiveRepository){
+    ;
+
+    public OrganizationalUnitServiceImpl(OrganizationalUnitRepository organizationalUnitRepository, OrganizationalUnitNeoRepository organizationalUnitNeoRepository,
+                                         PerspectiveRepository perspectiveRepository) {
         this.organizationalUnitRepository = organizationalUnitRepository;
         this.organizationalUnitNeoRepository = organizationalUnitNeoRepository;
         this.perspectiveRepository = perspectiveRepository;
@@ -88,10 +91,10 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
         Set<ro.teamnet.ou.domain.neo.OrganizationalUnit> organizationalUnitsNeo = organizationalUnitNeoRepository.getAllOrganizationalUnits();
 
         Set<OrganizationalUnitDTO> organizationalUnitDTOs = new HashSet<>();
-        if(organizationalUnits != null && organizationalUnitsNeo != null){
+        if (organizationalUnits != null && organizationalUnitsNeo != null) {
             for (OrganizationalUnit organizationalUnit : organizationalUnits) {
                 for (ro.teamnet.ou.domain.neo.OrganizationalUnit neoOu : organizationalUnitsNeo) {
-                    if(organizationalUnit.getId().equals(neoOu.getJpaId())){
+                    if (organizationalUnit.getId().equals(neoOu.getJpaId())) {
                         organizationalUnitDTOs.add(OrganizationalUnitMapper.toDTO(organizationalUnit));
                     }
                 }
@@ -101,4 +104,56 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
         return organizationalUnitDTOs;
     }
 
+    @Override
+    @Transactional
+    public Set<ro.teamnet.ou.domain.neo.OrganizationalUnit> getOrganizationalUnitTreeById(Long id) {
+        return organizationalUnitNeoRepository.getOrganizationalUnitTreeById(id);
+    }
+
+    JSONObject BFS(ro.teamnet.ou.domain.neo.OrganizationalUnit orgUnit,
+                  List<ro.teamnet.ou.domain.neo.OrganizationalUnit> orgUnitList,
+                  List<Long> marked,
+                  HashMap<Long, Long> map) {
+
+        JSONArray arrayJSON = new JSONArray();
+        JSONObject nodeJSON = new JSONObject();
+
+        for (ro.teamnet.ou.domain.neo.OrganizationalUnit N : orgUnit.getChildren()) {
+            N = orgUnitList.get(map.get(N.getId()).intValue());
+            if ( marked.contains(N.getId()) == false) {
+                marked.add(N.getId());
+                JSONObject childrenObjectJSON = BFS(N, orgUnitList, marked, map);
+                arrayJSON.put(childrenObjectJSON);
+            }
+        }
+
+        try {
+            nodeJSON.put("id", orgUnit.getJpaId());
+            nodeJSON.put("code", orgUnit.getCode());
+            nodeJSON.put("items", arrayJSON);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return nodeJSON;
+    }
+
+    public String getTree(Long id) {
+
+        Set<ro.teamnet.ou.domain.neo.OrganizationalUnit> orgUnitSet = getOrganizationalUnitTreeById(id);
+        List<Long> marked = new ArrayList<>();
+        List<ro.teamnet.ou.domain.neo.OrganizationalUnit> orgUnitList = new ArrayList<>();
+        HashMap<Long, Long> map = new HashMap<>();
+
+        long pos = 0;
+        for (ro.teamnet.ou.domain.neo.OrganizationalUnit orgUnit : orgUnitSet) {
+            orgUnitList.add(orgUnit);
+            map.put(orgUnit.getId(), pos);
+            pos++;
+        }
+
+        JSONArray arrayJSON = new JSONArray();
+        arrayJSON.put(BFS(orgUnitList.get(map.get(id).intValue()), orgUnitList, marked, map));
+        return arrayJSON.toString();
+    }
 }
