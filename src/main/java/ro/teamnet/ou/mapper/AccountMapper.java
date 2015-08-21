@@ -10,7 +10,9 @@ import ro.teamnet.ou.web.rest.dto.AccountDTO;
 public class AccountMapper {
 
     public static Account toJpa(AccountDTO accountDTO) {
-
+        if (accountDTO == null) {
+            return null;
+        }
         Account account = new Account();
         account.setId(accountDTO.getId());
         account.setLastName(accountDTO.getLastName());
@@ -27,7 +29,9 @@ public class AccountMapper {
     }
 
     public static ro.teamnet.ou.domain.neo.Account toNeo(AccountDTO accountDTO) {
-
+        if (accountDTO == null) {
+            return null;
+        }
         ro.teamnet.ou.domain.neo.Account account = new ro.teamnet.ou.domain.neo.Account();
 
         account.setJpaId(accountDTO.getId());
@@ -39,7 +43,9 @@ public class AccountMapper {
     }
 
     public static AccountDTO toDTO(Account account) {
-
+        if (account == null) {
+            return null;
+        }
         AccountDTO accountDTO = new AccountDTO();
 
         accountDTO.setId(account.getId());

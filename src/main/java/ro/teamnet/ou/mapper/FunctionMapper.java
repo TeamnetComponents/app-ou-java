@@ -4,6 +4,7 @@ import ro.teamnet.bootstrap.domain.ModuleRight;
 import ro.teamnet.bootstrap.web.rest.dto.ModuleRightDTO;
 import ro.teamnet.ou.domain.jpa.Function;
 import ro.teamnet.ou.web.rest.dto.FunctionDTO;
+import ro.teamnet.ou.web.rest.dto.FunctionRelationshipDTO;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,8 +12,16 @@ import java.util.Set;
 public class FunctionMapper {
 
     public static Function toJpa(FunctionDTO functionDTO) {
-        Function function = new Function();
+        if (functionDTO == null) {
+            return null;
+        }
+        return updateJpa(new Function(), functionDTO);
+    }
 
+    public static Function updateJpa(Function function, FunctionDTO functionDTO) {
+        if (functionDTO == null) {
+            return function;
+        }
         function.setId(functionDTO.getId());
         function.setCode(functionDTO.getCode());
         function.setDescription(functionDTO.getDescription());
@@ -22,7 +31,7 @@ public class FunctionMapper {
 
         Set<ModuleRight> moduleRightSet = new HashSet<>();
         Set<ModuleRightDTO> moduleRights = functionDTO.getModuleRights();
-        if(moduleRights != null) {
+        if (moduleRights != null) {
             for (ModuleRightDTO moduleRightDTO : moduleRights) {
                 moduleRightSet.add(ModuleRightMapper.from(moduleRightDTO));
             }
@@ -31,17 +40,23 @@ public class FunctionMapper {
 
         return function;
     }
-
-    public static ro.teamnet.ou.domain.neo.Function toNeo(FunctionDTO functionDTO) {
+    public static ro.teamnet.ou.domain.neo.Function toNeo(FunctionRelationshipDTO relationshipDTO) {
+        if (relationshipDTO == null || relationshipDTO.getAccount() == null || relationshipDTO.getOrganizationalUnit() == null) {
+            return null;
+        }
         ro.teamnet.ou.domain.neo.Function function = new ro.teamnet.ou.domain.neo.Function();
-        function.setCode(functionDTO.getCode());
-        function.setAccount(AccountMapper.toNeo(functionDTO.getAccount()));
-        function.setJpaId(functionDTO.getId());
-        function.setOrganizationalUnit(OrganizationalUnitMapper.toNeo(functionDTO.getOrganizationalUnit()));
+        function.setId(relationshipDTO.getId());
+        function.setJpaId(relationshipDTO.getFunctionId());
+        function.setCode(relationshipDTO.getCode());
+        function.setAccount(AccountMapper.toNeo(relationshipDTO.getAccount()));
+        function.setOrganizationalUnit(OrganizationalUnitMapper.toNeo(relationshipDTO.getOrganizationalUnit()));
         return function;
     }
 
-    public static FunctionDTO toDTO(Function function, ro.teamnet.ou.domain.neo.Function functionNeo) {
+    public static FunctionDTO toDTO(Function function) {
+        if (function == null) {
+            return null;
+        }
         FunctionDTO functionDTO = new FunctionDTO();
 
         functionDTO.setId(function.getId());
@@ -53,8 +68,8 @@ public class FunctionMapper {
 
         Set<ModuleRightDTO> moduleRightDTOs = new HashSet<>();
         Set<ModuleRight> moduleRightSet = function.getModuleRights();
-        if(moduleRightSet != null) {
-            for(ModuleRight moduleRight : moduleRightSet) {
+        if (moduleRightSet != null) {
+            for (ModuleRight moduleRight : moduleRightSet) {
                 moduleRightDTOs.add(ModuleRightMapper.from(moduleRight));
             }
         }
@@ -63,13 +78,17 @@ public class FunctionMapper {
         return functionDTO;
     }
 
-    public static FunctionDTO toDTO(ro.teamnet.ou.domain.neo.Function functionNeo) {
-        FunctionDTO functionDTO = new FunctionDTO();
-
-        functionDTO.setId(functionNeo.getId());
-        functionDTO.setOrganizationalUnit(OrganizationalUnitMapper.toDTO(functionNeo.getOrganizationalUnit()));
-        functionDTO.setAccount(AccountMapper.toDTO(functionNeo.getAccount()));
-
-        return functionDTO;
+    public static FunctionRelationshipDTO toDTO(ro.teamnet.ou.domain.neo.Function functionNeo) {
+        if (functionNeo == null) {
+            return null;
+        }
+        FunctionRelationshipDTO relationshipDTO = new FunctionRelationshipDTO();
+        relationshipDTO.setId(functionNeo.getId());
+        relationshipDTO.setFunctionId(functionNeo.getJpaId());
+        relationshipDTO.setOrganizationalUnit(OrganizationalUnitMapper.toDTO(functionNeo.getOrganizationalUnit()));
+        relationshipDTO.setAccount(AccountMapper.toDTO(functionNeo.getAccount()));
+        return relationshipDTO;
     }
+
+
 }

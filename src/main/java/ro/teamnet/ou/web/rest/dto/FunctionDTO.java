@@ -18,8 +18,6 @@ public class FunctionDTO implements Serializable {
     private Date validTo;
     private Boolean active;
     private Set<ModuleRightDTO> moduleRights = new HashSet<>();
-    private AccountDTO account;
-    private OrganizationalUnitDTO organizationalUnit;
 
     public Long getId() {
         return id;
@@ -77,21 +75,6 @@ public class FunctionDTO implements Serializable {
         return moduleRights;
     }
 
-    public AccountDTO getAccount() {
-        return account;
-    }
-
-    public void setAccount(AccountDTO account) {
-        this.account = account;
-    }
-
-    public OrganizationalUnitDTO getOrganizationalUnit() {
-        return organizationalUnit;
-    }
-
-    public void setOrganizationalUnit(OrganizationalUnitDTO organizationalUnit) {
-        this.organizationalUnit = organizationalUnit;
-    }
 }
 
 

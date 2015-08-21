@@ -11,6 +11,9 @@ import java.util.Set;
 public class OrganizationalUnitMapper {
 
     public static OrganizationalUnit toJPA(OrganizationalUnitDTO organizationalUnitDTO) {
+        if (organizationalUnitDTO == null) {
+            return null;
+        }
         OrganizationalUnit organizationalUnit = new OrganizationalUnit();
 
         organizationalUnit.setId(organizationalUnitDTO.getId());
@@ -38,6 +41,9 @@ public class OrganizationalUnitMapper {
     }
 
     public static ro.teamnet.ou.domain.neo.OrganizationalUnit toNeo(OrganizationalUnitDTO organizationalUnitDTO) {
+        if (organizationalUnitDTO == null) {
+            return null;
+        }
         ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnit = new ro.teamnet.ou.domain.neo.OrganizationalUnit();
 
         organizationalUnit.setJpaId(organizationalUnitDTO.getId());
@@ -62,7 +68,9 @@ public class OrganizationalUnitMapper {
     }
 
     public static OrganizationalUnitDTO toDTO(OrganizationalUnit organizationalUnit) {
-
+        if (organizationalUnit == null) {
+            return null;
+        }
         OrganizationalUnitDTO organizationalUnitDTO = new OrganizationalUnitDTO();
 
         organizationalUnitDTO.setId(organizationalUnit.getId());

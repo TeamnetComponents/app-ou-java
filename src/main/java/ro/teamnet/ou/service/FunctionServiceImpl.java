@@ -1,6 +1,5 @@
 package ro.teamnet.ou.service;
 
-import org.springframework.data.neo4j.conversion.Result;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.teamnet.bootstrap.domain.Module;
@@ -12,6 +11,7 @@ import ro.teamnet.ou.mapper.FunctionMapper;
 import ro.teamnet.ou.repository.jpa.FunctionRepository;
 import ro.teamnet.ou.repository.neo.FunctionNeoRepository;
 import ro.teamnet.ou.web.rest.dto.FunctionDTO;
+import ro.teamnet.ou.web.rest.dto.FunctionRelationshipDTO;
 
 import javax.inject.Inject;
 import java.util.HashSet;
@@ -39,63 +39,57 @@ public class FunctionServiceImpl implements FunctionService {
 
     public FunctionDTO findOne(Long id) {
         Function function = functionRepository.findOne(id);
-        ro.teamnet.ou.domain.neo.Function functionNeo = functionNeoRepository.findByJpaId(id);
-        FunctionDTO functionDTO = FunctionMapper.toDTO(function, functionNeo);
-        return functionDTO;
+        return FunctionMapper.toDTO(function);
     }
 
 
     @Override
     public FunctionDTO save(FunctionDTO functionDto) {
-        Function function = FunctionMapper.toJpa(functionDto);
+        Function function = (functionDto.getId() != null) ?
+                FunctionMapper.updateJpa(functionRepository.findOne(functionDto.getId()), functionDto)
+                : FunctionMapper.toJpa(functionDto);
 
-        for(ModuleRight mr: function.getModuleRights()) {
-            if(mr.getId()==null){
-                Module moduleDb=moduleRepository.findOne(mr.getModule().getId());
+        for (ModuleRight mr : function.getModuleRights()) {
+            if (mr.getId() == null) {
+                Module moduleDb = moduleRepository.findOne(mr.getModule().getId());
                 mr.setModule(null);
                 moduleRightService.save(mr);
                 mr.setModule(moduleDb);
-            }else{
+            } else {
                 moduleRightService.save(mr);
             }
-
         }
-
-        Function functionSaved = functionRepository.save(function);
-        Long neoId = functionNeoRepository.findByJpaId(function.getId()).getId();
-        ro.teamnet.ou.domain.neo.Function functionNeo = FunctionMapper.toNeo(functionDto);
-        functionNeo.setId(neoId);
-        ro.teamnet.ou.domain.neo.Function functionNeoSaved = functionNeoRepository.save(functionNeo);
-
-        return FunctionMapper.toDTO(functionSaved,functionNeoSaved);
+        return FunctionMapper.toDTO(functionRepository.save(function));
     }
 
     @Override
     public Set<FunctionDTO> findAll() {
         Set<Function> functions = functionRepository.getAllWithModuleRights();
-        Result<ro.teamnet.ou.domain.neo.Function> neoFunctions = functionNeoRepository.findAll();
 
         Set<FunctionDTO> functionDTOSet = new HashSet<>();
         for (Function function : functions) {
-            for (ro.teamnet.ou.domain.neo.Function neoFunction : neoFunctions) {
-                if(function.getId() == neoFunction.getJpaId()){
-                    functionDTOSet.add(FunctionMapper.toDTO(function,neoFunction));
-                }
-            }
+            functionDTOSet.add(FunctionMapper.toDTO(function));
         }
         return functionDTOSet;
     }
 
     @Override
+    public FunctionRelationshipDTO addRelationship(FunctionRelationshipDTO functionRelationshipDTO) {
+        ro.teamnet.ou.domain.neo.Function neoFunction = FunctionMapper.toNeo(functionRelationshipDTO);
+        return FunctionMapper.toDTO(functionNeoRepository.save(neoFunction));
+    }
+
+    @Override
+    public void deleteRelationship(Long functionRelationshipId) {
+        functionNeoRepository.delete(functionRelationshipId);
+    }
+
+    @Override
     public void delete(Long id) {
-        Function function = functionRepository.findOne(id);
-        functionRepository.delete(function);
-        ro.teamnet.ou.domain.neo.Function functionNeo = functionNeoRepository.findByJpaId(id);
-
-        Long neoId = functionNeoRepository.findByJpaId(id).getId();
-        functionNeo.setId(neoId);
-
-        functionNeoRepository.delete(functionNeo);
+        functionRepository.delete(id);
+        for (ro.teamnet.ou.domain.neo.Function neoFunction : functionNeoRepository.findByJpaId(id)) {
+            functionNeoRepository.delete(neoFunction);
+        }
     }
 
 }

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.teamnet.ou.service.FunctionService;
 import ro.teamnet.ou.web.rest.dto.FunctionDTO;
+import ro.teamnet.ou.web.rest.dto.FunctionRelationshipDTO;
 
 import javax.inject.Inject;
 import java.util.Set;
@@ -36,31 +37,6 @@ public class FunctionResource{
         return functionService.findAll();
     }
 
-    @RequestMapping(method = RequestMethod.PUT,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public ResponseEntity<FunctionDTO> update(@RequestBody FunctionDTO functionDTO) {
-        return new ResponseEntity<>(functionService.save(functionDTO), HttpStatus.OK);
-    }
-
-
-    @RequestMapping(method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public ResponseEntity<FunctionDTO> create(@RequestBody FunctionDTO functionDTO) {
-        return new ResponseEntity<>(functionService.save(functionDTO), HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/{id}",
-            method = RequestMethod.DELETE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public void delete(@PathVariable Long id) {
-        log.debug("REST request to delete : {}", id);
-        functionService.delete(id);
-    }
-
-
     @RequestMapping(value = "/{id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -73,4 +49,42 @@ public class FunctionResource{
         }
         return new ResponseEntity<>(functionDto, HttpStatus.OK);
     }
+
+    @RequestMapping(method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<FunctionDTO> create(@RequestBody FunctionDTO functionDTO) {
+        return new ResponseEntity<>(functionService.save(functionDTO), HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<FunctionDTO> update(@RequestBody FunctionDTO functionDTO) {
+        return new ResponseEntity<>(functionService.save(functionDTO), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{id}",
+            method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public void delete(@PathVariable Long id) {
+        log.debug("REST request to delete : {}", id);
+        functionService.delete(id);
+    }
+
+    @RequestMapping(value = "/addRelationship", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<FunctionRelationshipDTO> addRelationship(@RequestBody FunctionRelationshipDTO functionRelationshipDTO) {
+        return new ResponseEntity<>(functionService.addRelationship(functionRelationshipDTO), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/deleteRelationship/{id}", method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public void deleteRelationship(@RequestBody Long functionRelationshipId) {
+        functionService.deleteRelationship(functionRelationshipId);
+    }
+
 }

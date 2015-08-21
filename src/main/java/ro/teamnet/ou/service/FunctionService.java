@@ -1,6 +1,7 @@
 package ro.teamnet.ou.service;
 
 import ro.teamnet.ou.web.rest.dto.FunctionDTO;
+import ro.teamnet.ou.web.rest.dto.FunctionRelationshipDTO;
 
 import java.util.Set;
 
@@ -14,4 +15,7 @@ public interface FunctionService {
 
     Set<FunctionDTO> findAll();
 
+    FunctionRelationshipDTO addRelationship(FunctionRelationshipDTO functionRelationshipDTO);
+
+    void deleteRelationship(Long functionRelationshipId);
 }
