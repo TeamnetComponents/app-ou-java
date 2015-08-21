@@ -4,8 +4,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.teamnet.bootstrap.domain.Module;
 import ro.teamnet.bootstrap.domain.ModuleRight;
+import ro.teamnet.bootstrap.domain.util.ModuleRightTypeEnum;
 import ro.teamnet.bootstrap.repository.ModuleRepository;
 import ro.teamnet.bootstrap.service.ModuleRightService;
+import ro.teamnet.bootstrap.web.rest.dto.ModuleRightDTO;
 import ro.teamnet.ou.domain.jpa.Function;
 import ro.teamnet.ou.mapper.FunctionMapper;
 import ro.teamnet.ou.repository.jpa.FunctionRepository;
@@ -14,7 +16,9 @@ import ro.teamnet.ou.web.rest.dto.FunctionDTO;
 import ro.teamnet.ou.web.rest.dto.FunctionRelationshipDTO;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -49,16 +53,17 @@ public class FunctionServiceImpl implements FunctionService {
                 FunctionMapper.updateJpa(functionRepository.findOne(functionDto.getId()), functionDto)
                 : FunctionMapper.toJpa(functionDto);
 
-        for (ModuleRight mr : function.getModuleRights()) {
-            if (mr.getId() == null) {
-                Module moduleDb = moduleRepository.findOne(mr.getModule().getId());
-                mr.setModule(null);
-                moduleRightService.save(mr);
-                mr.setModule(moduleDb);
+        List<ModuleRight> moduleRights = new ArrayList<>();
+        for (ModuleRightDTO moduleRightDTO : functionDto.getModuleRights()) {
+            if(moduleRightDTO.getId() != null) {
+                moduleRights.add(moduleRightService.findOne(moduleRightDTO.getId()));
             } else {
-                moduleRightService.save(mr);
+                Module module = moduleRepository.findOne(moduleRightDTO.getModule().getId());
+                Short right = ModuleRightTypeEnum.READ_ACCESS.getRight();
+                moduleRights.addAll(moduleRightService.findByModuleAndRight(module, right));
             }
         }
+        function.setModuleRights(moduleRights);
         return FunctionMapper.toDTO(functionRepository.save(function));
     }
 

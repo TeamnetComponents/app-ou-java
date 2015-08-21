@@ -22,7 +22,7 @@ public class ModuleRightMapper {
         moduleRightDTO.setId(moduleRight.getId());
         moduleRightDTO.setVersion(moduleRight.getVersion());
         moduleRightDTO.setRight(moduleRight.getRight());
-        moduleRightDTO.setModule(ModuleMapper.from(moduleRight.getModule()));
+        moduleRightDTO.setModule(ModuleMapper.lazyFrom(moduleRight.getModule()));
 
         return moduleRightDTO;
     }

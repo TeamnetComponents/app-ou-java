@@ -53,4 +53,17 @@ public class ModuleMapper {
 
         return moduleDTO;
     }
+
+    public static ModuleDTO lazyFrom(Module module) {
+        ModuleDTO moduleDTO = new ModuleDTO();
+
+        moduleDTO.setId(module.getId());
+        moduleDTO.setType(module.getType());
+        moduleDTO.setParentModule(module.getParentModule());
+        moduleDTO.setCode(module.getCode());
+        moduleDTO.setDescription(module.getDescription());
+        moduleDTO.setVersion(module.getVersion());
+
+        return moduleDTO;
+    }
 }
