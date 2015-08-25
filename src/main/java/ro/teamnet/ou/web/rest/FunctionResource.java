@@ -83,8 +83,31 @@ public class FunctionResource{
     @RequestMapping(value = "/deleteRelationship/{id}", method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public void deleteRelationship(@RequestBody Long functionRelationshipId) {
+    public ResponseEntity deleteRelationship(@PathVariable Long functionRelationshipId) {
         functionService.deleteRelationship(functionRelationshipId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/account/{accountId}", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public Set<FunctionDTO> getAllByAccountId(@PathVariable Long accountId) {
+        return functionService.findAllByAccountId(accountId);
+    }
+
+    @RequestMapping(value = "/account/{accountId}", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity addToAccount(@PathVariable Long accountId, @RequestBody FunctionDTO functionDTO) {
+        functionService.addToAccount(accountId, functionDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/account/{accountId}/{functionId}", method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity removeFromAccount(@PathVariable Long accountId, @PathVariable Long functionId) {
+        functionService.removeFromAccount(accountId, functionId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

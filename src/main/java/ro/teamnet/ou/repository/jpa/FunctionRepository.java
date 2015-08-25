@@ -8,7 +8,7 @@ import ro.teamnet.ou.domain.jpa.Function;
 import java.util.Set;
 
 /**
- * Spring Data JPA repository for the Role entity.
+ * Spring Data JPA repository for the Function entity.
  */
 public interface FunctionRepository extends AppRepository<Function, Long> {
 

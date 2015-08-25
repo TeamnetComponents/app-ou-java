@@ -18,4 +18,10 @@ public interface FunctionService {
     FunctionRelationshipDTO addRelationship(FunctionRelationshipDTO functionRelationshipDTO);
 
     void deleteRelationship(Long functionRelationshipId);
+
+    Set<FunctionDTO> findAllByAccountId(Long accountId);
+
+    void addToAccount(Long accountId, FunctionDTO functionDTO);
+
+    void removeFromAccount(Long accountId, Long functionId);
 }

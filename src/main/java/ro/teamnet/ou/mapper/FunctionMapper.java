@@ -6,6 +6,7 @@ import ro.teamnet.ou.domain.jpa.Function;
 import ro.teamnet.ou.web.rest.dto.FunctionDTO;
 import ro.teamnet.ou.web.rest.dto.FunctionRelationshipDTO;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -90,5 +91,12 @@ public class FunctionMapper {
         return relationshipDTO;
     }
 
+    public static Set<FunctionDTO> toDTO(Collection<Function> functions) {
+        Set<FunctionDTO> dtos = new HashSet<>();
+        for (Function function : functions) {
+            dtos.add(FunctionMapper.toDTO(function));
+        }
+        return dtos;
+    }
 
 }
