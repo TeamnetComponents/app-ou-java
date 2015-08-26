@@ -24,4 +24,10 @@ public interface FunctionService {
     void addToAccount(Long accountId, FunctionDTO functionDTO);
 
     void removeFromAccount(Long accountId, Long functionId);
+
+    Set<FunctionDTO> findAllByOrganizationalUnitId(Long ouId);
+
+    void addToOrganizationalUnit(Long ouId, FunctionDTO functionDTO);
+
+    void removeFromOrganizationalUnit(Long ouId, Long functionId);
 }

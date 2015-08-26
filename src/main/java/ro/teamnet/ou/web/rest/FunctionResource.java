@@ -110,4 +110,27 @@ public class FunctionResource{
         functionService.removeFromAccount(accountId, functionId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/ou/{ouId}", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public Set<FunctionDTO> getAllByOrganizationalUnitId(@PathVariable Long ouId) {
+        return functionService.findAllByOrganizationalUnitId(ouId);
+    }
+
+    @RequestMapping(value = "/ou/{ouId}", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity addToOrganizationalUnit(@PathVariable Long ouId, @RequestBody FunctionDTO functionDTO) {
+        functionService.addToOrganizationalUnit(ouId, functionDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/ou/{ouId}/{functionId}", method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity removeFromOrganizationalUnit(@PathVariable Long ouId, @PathVariable Long functionId) {
+        functionService.removeFromOrganizationalUnit(ouId, functionId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

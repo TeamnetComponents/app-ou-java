@@ -11,9 +11,12 @@ import ro.teamnet.bootstrap.service.ModuleRightService;
 import ro.teamnet.bootstrap.web.rest.dto.ModuleRightDTO;
 import ro.teamnet.ou.domain.jpa.AccountFunction;
 import ro.teamnet.ou.domain.jpa.Function;
+import ro.teamnet.ou.domain.jpa.OrganizationalUnitFunction;
 import ro.teamnet.ou.mapper.FunctionMapper;
 import ro.teamnet.ou.repository.jpa.AccountFunctionRepository;
 import ro.teamnet.ou.repository.jpa.FunctionRepository;
+import ro.teamnet.ou.repository.jpa.OrganizationalUnitFunctionRepository;
+import ro.teamnet.ou.repository.jpa.OrganizationalUnitRepository;
 import ro.teamnet.ou.repository.neo.FunctionNeoRepository;
 import ro.teamnet.ou.web.rest.dto.FunctionDTO;
 import ro.teamnet.ou.web.rest.dto.FunctionRelationshipDTO;
@@ -37,7 +40,13 @@ public class FunctionServiceImpl implements FunctionService {
     private AccountFunctionRepository accountFunctionRepository;
 
     @Inject
+    private OrganizationalUnitFunctionRepository ouFunctionRepository;
+
+    @Inject
     private AccountRepository accountRepository;
+
+    @Inject
+    private OrganizationalUnitRepository ouRepository;
 
     @Inject
     private FunctionNeoRepository functionNeoRepository;
@@ -114,6 +123,25 @@ public class FunctionServiceImpl implements FunctionService {
     @Override
     public void removeFromAccount(Long accountId, Long functionId) {
         accountFunctionRepository.deleteByAccountIdAndFunctionId(accountId, functionId);
+    }
+
+    @Override
+    public Set<FunctionDTO> findAllByOrganizationalUnitId(Long ouId) {
+        return FunctionMapper.toDTO(ouFunctionRepository.findFunctionsByorganizationalUnitId(ouId));
+    }
+
+    @Override
+    public void addToOrganizationalUnit(Long ouId, FunctionDTO functionDTO) {
+
+        OrganizationalUnitFunction ouFunction = new OrganizationalUnitFunction();
+        ouFunction.setOrganizationalUnit(ouRepository.findOne(ouId));
+        ouFunction.setFunction(functionRepository.findOne(functionDTO.getId()));
+        ouFunctionRepository.save(ouFunction);
+    }
+
+    @Override
+    public void removeFromOrganizationalUnit(Long ouId, Long functionId) {
+        ouFunctionRepository.deleteByOrganizationalUnitIdAndFunctionId(ouId, functionId);
     }
 
 
