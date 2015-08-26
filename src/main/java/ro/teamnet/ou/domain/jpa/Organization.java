@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Created by ionut.patrascu on 04.08.2015.
@@ -42,8 +43,8 @@ public class Organization implements Serializable {
     @NotNull @Column(name = "IS_ACTIVE")
     protected Boolean active;
 
-    @OneToMany(mappedBy = "organization")
-    private Set<Perspective> perspectives = new HashSet<>();
+    @OneToMany(mappedBy = "organization", orphanRemoval = true)
+    private Set<Perspective> perspectives = new TreeSet<>();
 
     public Long getId() {
         return id;

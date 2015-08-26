@@ -25,9 +25,6 @@ public class OrganizationalUnitDTO implements Serializable {
     private Set<AccountDTO> accounts = new HashSet<>();
 //    private Set<OrganizationalUnitFunction> organizationalUnitFunctions = new HashSet<>();
 
-    public OrganizationalUnitDTO() {
-    }
-
     public OrganizationalUnitDTO(String code, String description, Date validFrom, Date validTo,
                                  Boolean active, Long id, PerspectiveDTO perspective, OrganizationalUnitDTO parent,
                                  Set<OrganizationalUnitDTO> children, Set<AccountDTO> accounts) {
@@ -42,6 +39,9 @@ public class OrganizationalUnitDTO implements Serializable {
         this.parent = parent;
         this.children = children;
         this.accounts = accounts;
+    }
+
+    public OrganizationalUnitDTO() {
     }
 
     public String getCode() {

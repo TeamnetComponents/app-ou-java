@@ -12,6 +12,8 @@ public interface OrganizationService {
 
     OrganizationDTO save(OrganizationDTO organizationDTO);
 
+    OrganizationDTO update(OrganizationDTO organizationDTO);
+
     void delete(Long id);
 
     Set<OrganizationDTO> getAllOrganizationDTOs();

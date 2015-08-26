@@ -26,12 +26,26 @@ public class OrganizationMapper {
 
         Set<Perspective> perspectiveSet = new HashSet<>();
         Set<PerspectiveDTO> perspectiveDTOSet = organizationDTO.getPerspectives();
+
         if (perspectiveDTOSet != null) {
             for (PerspectiveDTO perspectiveDTO : perspectiveDTOSet) {
-                perspectiveSet.add(PerspectiveMapper.toJPA(perspectiveDTO));
+                perspectiveSet.add(PerspectiveMapper.toJPAlazy(perspectiveDTO));
             }
         }
         organization.setPerspectives(perspectiveSet);
+
+        return organization;
+    }
+
+    public static Organization toJPAlazy(OrganizationDTO organizationDTO) {
+        Organization organization = new Organization();
+
+        organization.setId(organizationDTO.getId());
+        organization.setCode(organizationDTO.getCode());
+        organization.setDescription(organizationDTO.getDescription());
+        organization.setValidFrom(organizationDTO.getValidFrom());
+        organization.setValidTo(organizationDTO.getValidTo());
+        organization.setActive(organizationDTO.getActive());
 
         return organization;
     }
@@ -74,11 +88,15 @@ public class OrganizationMapper {
         organizationDTO.setActive(organization.getActive());
 
         Set<PerspectiveDTO> perspectiveDTOs = new HashSet<>();
-        List<Perspective> perspectiveList = new ArrayList<>(organization.getPerspectives());
-        List<ro.teamnet.ou.domain.neo.Perspective> perspectiveNeoList = new ArrayList<>(organizationNeo.getPerspectives());
-        if (perspectiveList != null) {
-            for (int i = 0; i < perspectiveList.size(); i++) {
-                perspectiveDTOs.add(PerspectiveMapper.toDTO(perspectiveList.get(i), perspectiveNeoList.get(i)));
+        Set<Perspective> perspectiveSet = organization.getPerspectives();
+        Set<ro.teamnet.ou.domain.neo.Perspective> perspectiveNeoSet = organizationNeo.getPerspectives();
+        if (perspectiveSet != null && perspectiveNeoSet != null) {
+            for (Perspective perspective : perspectiveSet) {
+                for(ro.teamnet.ou.domain.neo.Perspective perspectiveNeo : perspectiveNeoSet){
+                    if(perspectiveNeo.getJpaId() == perspective.getId()){
+                        perspectiveDTOs.add(PerspectiveMapper.toDTOLazy(perspective, perspectiveNeo));
+                    }
+                }
             }
         }
         organizationDTO.setPerspectives(perspectiveDTOs);
@@ -91,6 +109,38 @@ public class OrganizationMapper {
             }
         }
         organizationDTO.setRoots(organizationalUnitDTOs);
+
+        return organizationDTO;
+    }
+
+    public static OrganizationDTO toDTO(Organization organization) {
+        OrganizationDTO organizationDTO = new OrganizationDTO();
+        organizationDTO.setId(organization.getId());
+        organizationDTO.setCode(organization.getCode());
+        organizationDTO.setDescription(organization.getDescription());
+        organizationDTO.setValidFrom(organization.getValidFrom());
+        organizationDTO.setValidTo(organization.getValidTo());
+        organizationDTO.setActive(organization.getActive());
+
+        Set<PerspectiveDTO> perspectiveDTOs = new HashSet<>();
+        if (organization.getPerspectives() != null) {
+            for (Perspective perspective : organization.getPerspectives()) {
+                perspectiveDTOs.add(PerspectiveMapper.toDTOLazy(perspective));
+            }
+        }
+        organizationDTO.setPerspectives(perspectiveDTOs);
+
+        return organizationDTO;
+    }
+
+    public static OrganizationDTO toDTOLazy(Organization organization) {
+        OrganizationDTO organizationDTO = new OrganizationDTO();
+        organizationDTO.setId(organization.getId());
+        organizationDTO.setCode(organization.getCode());
+        organizationDTO.setDescription(organization.getDescription());
+        organizationDTO.setValidFrom(organization.getValidFrom());
+        organizationDTO.setValidTo(organization.getValidTo());
+        organizationDTO.setActive(organization.getActive());
 
         return organizationDTO;
     }

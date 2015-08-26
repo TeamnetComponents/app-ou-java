@@ -34,18 +34,22 @@ public class OrganizationResource {
     @Inject
     private OrganizationService organizationService;
 
-    @RequestMapping(value = "/saveOrganization",
+    @RequestMapping(value = "/save",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE,
             method = RequestMethod.POST)
-    public ResponseEntity<OrganizationDTO> saveOrganization(@RequestBody OrganizationDTO organizationDTO) {
-
-        organizationDTO = organizationService.save(organizationDTO);
+    public ResponseEntity<OrganizationDTO> updateOrganization(@RequestBody OrganizationDTO organizationDTO) {
+        if(organizationDTO.getId()!=null)    {
+            organizationDTO = organizationService.update(organizationDTO);
+        }else {
+            organizationDTO = organizationService.save(organizationDTO);
+        }
         if (organizationDTO == null) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(organizationDTO, HttpStatus.OK);
     }
+
 
 //    @RequestMapping(value = "/deleteOrganization",
 //            consumes = MediaType.APPLICATION_JSON_VALUE,

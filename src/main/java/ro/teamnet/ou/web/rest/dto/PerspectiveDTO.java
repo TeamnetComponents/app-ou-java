@@ -9,19 +9,19 @@ public class PerspectiveDTO implements Serializable {
     private String code;
     private String description;
 
-    private OrganizationDTO organization;
+    private OrganizationDTO organizationDto;
     private OrganizationalUnitDTO organizationalUnit;
     private Set<OrganizationalUnitDTO> organizationalUnitSet;
 
     public PerspectiveDTO(){}
 
-    public PerspectiveDTO(Long id, String code, String description, OrganizationDTO organization,
+    public PerspectiveDTO(Long id, String code, String description, OrganizationDTO organizationDto,
                           OrganizationalUnitDTO organizationalUnit, Set<OrganizationalUnitDTO> organizationalUnitSet){
 
         this.id = id;
         this.code = code;
         this.description = description;
-        this.organization = organization;
+        this.organizationDto = organizationDto;
         this.organizationalUnit = organizationalUnit;
         this.organizationalUnitSet = organizationalUnitSet;
     }
@@ -51,12 +51,12 @@ public class PerspectiveDTO implements Serializable {
         this.id = id;
     }
 
-    public OrganizationDTO getOrganization() {
-        return organization;
+    public OrganizationDTO getOrganizationDto() {
+        return organizationDto;
     }
 
-    public void setOrganization(OrganizationDTO organization) {
-        this.organization = organization;
+    public void setOrganizationDto(OrganizationDTO organizationDto) {
+        this.organizationDto = organizationDto;
     }
 
     public OrganizationalUnitDTO getOrganizationalUnit() {
@@ -81,7 +81,7 @@ public class PerspectiveDTO implements Serializable {
                 ", id=" + id +
                 ", code='" + code + '\'' +
                 ", description='" + description + '\'' +
-                ", organization=" + organization +
+                ", organizationDto=" + organizationDto +
                 ", organizationalUnit=" + organizationalUnit +
                 ", organizationalUnitSet=" + organizationalUnitSet +
                 '}';

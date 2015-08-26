@@ -1,11 +1,14 @@
 package ro.teamnet.ou.domain.jpa;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.atmosphere.cpr.Action;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Created by ionut.patrascu on 04.08.2015.
@@ -33,7 +36,7 @@ public class Perspective implements Serializable {
 
     @OneToMany(mappedBy = "perspective")
     @JsonManagedReference
-    private Set<OrganizationalUnit> organizationalUnits;
+    private Set<OrganizationalUnit> organizationalUnits = new TreeSet<>();
 
     public Long getId() {
         return id;

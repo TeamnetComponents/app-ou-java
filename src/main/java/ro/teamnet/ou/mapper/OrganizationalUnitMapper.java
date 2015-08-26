@@ -34,8 +34,8 @@ public class OrganizationalUnitMapper {
         }
 
         organizationalUnit.setChildren(organizationalUnitSet);
-        if(organizationalUnitDTO.getPerspective()!=null)
-            organizationalUnit.setPerspective(PerspectiveMapper.toJPA(organizationalUnitDTO.getPerspective()));
+//        if(organizationalUnitDTO.getPerspective()!=null)
+//            organizationalUnit.setPerspective(PerspectiveMapper.toJPA(organizationalUnitDTO.getPerspective()));
 
         return organizationalUnit;
     }

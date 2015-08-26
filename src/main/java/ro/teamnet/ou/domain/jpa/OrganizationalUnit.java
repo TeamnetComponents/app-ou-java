@@ -1,5 +1,7 @@
 package ro.teamnet.ou.domain.jpa;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -37,8 +39,9 @@ public class OrganizationalUnit implements Serializable{
     @NotNull @Column(name = "IS_ACTIVE")
     protected Boolean active;
 
-    @ManyToOne
-    @JoinColumn(name = "PARENT")
+    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
+    @JoinColumn(name = "PARENT", updatable = true, insertable = true)
+    @JsonBackReference
     private OrganizationalUnit parent;
 
     @OneToMany(mappedBy = "parent")

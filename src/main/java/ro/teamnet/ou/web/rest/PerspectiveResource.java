@@ -44,12 +44,31 @@ public class PerspectiveResource {
         return new ResponseEntity<>(perspectiveDTO, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{id}",
-            method = RequestMethod.PUT,
+    @RequestMapping(value = "/getByOrganizationId/{id}",
+            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<PerspectiveDTO> update(@PathVariable Long id, @RequestBody PerspectiveDTO perspectiveDTO) {
-        log.debug("REST request to update the function : {}", id);
+    public Set<PerspectiveDTO> getByOrganizationId(@PathVariable Long id) {
+        log.debug("REST request to get  : {}", id);
+        //Set<PerspectiveDTO> perspectiveDTO = perspectiveService.findPerspectivesByOrganizationId(id);
+
+        return  perspectiveService.findPerspectivesByOrganizationId(id);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<PerspectiveDTO> update(@RequestBody PerspectiveDTO perspectiveDTO) {
+
+        perspectiveService.save(perspectiveDTO);
+
+        return new ResponseEntity<>(perspectiveDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<PerspectiveDTO> create(@RequestBody PerspectiveDTO perspectiveDTO) {
 
         perspectiveService.save(perspectiveDTO);
 

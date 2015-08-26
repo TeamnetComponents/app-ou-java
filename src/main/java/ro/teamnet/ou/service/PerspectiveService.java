@@ -14,9 +14,9 @@ import java.util.Set;
  */
 public interface PerspectiveService {
 
-//    PerspectiveDTO createPerspectiveDTO(Long jpaId, Long neoId, String code, String description, OrganizationDTO organizationDTO, Set<OrganizationalUnitDTO> organizationalUnitDTOSet);
-
     PerspectiveDTO findPerspectiveById(Long id);
+
+    Set<PerspectiveDTO> findPerspectivesByOrganizationId(Long id);
 
     Set<PerspectiveDTO> getAllPerspectives();
 
@@ -24,5 +24,4 @@ public interface PerspectiveService {
 
     void delete(Long id);
 
-    // PerspectiveDTO update(PerspectiveDTO perspectiveDTO);
 }

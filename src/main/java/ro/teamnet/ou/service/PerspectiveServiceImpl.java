@@ -10,9 +10,7 @@ import ro.teamnet.ou.repository.neo.PerspectiveNeoRepository;
 import ro.teamnet.ou.web.rest.dto.PerspectiveDTO;
 
 import javax.inject.Inject;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by ionut.patrascu on 31.07.2015.
@@ -25,20 +23,6 @@ public class PerspectiveServiceImpl implements PerspectiveService {
     private PerspectiveRepository perspectiveRepository;
     @Inject
     private PerspectiveNeoRepository perspectiveNeoRepository;
-
-
-//    @Override
-//    public PerspectiveDTO createPerspectiveDTO(Long jpaId, Long neoId, String code, String description, OrganizationDTO organizationDTO, Set<OrganizationalUnitDTO> organizationalUnitDTOSet) {
-//        PerspectiveDTO perspectiveDTO = new PerspectiveDTO();
-//        perspectiveDTO.setId(jpaId);
-//        perspectiveDTO.setNeoId(neoId);
-//        perspectiveDTO.setCode(code);
-//        perspectiveDTO.setDescription(description);
-//        perspectiveDTO.setOrganization(organizationDTO);
-//        perspectiveDTO.setOrganizationalUnitSet(organizationalUnitDTOSet);
-//
-//        return perspectiveDTO;
-//    }
 
     @Override
     @Transactional
@@ -64,7 +48,6 @@ public class PerspectiveServiceImpl implements PerspectiveService {
                 }
             }
         }
-
         return perspectiveDTOs;
     }
 
@@ -73,20 +56,24 @@ public class PerspectiveServiceImpl implements PerspectiveService {
     public PerspectiveDTO save(PerspectiveDTO perspectiveDTO) {
 
         Perspective perspective = PerspectiveMapper.toJPA(perspectiveDTO);
-        perspectiveRepository.save(perspective);
-        perspectiveDTO.setId(perspective.getId());
-        ro.teamnet.ou.domain.neo.Perspective perspectiveNeo = PerspectiveMapper.toNeo(perspectiveDTO);
-        perspectiveNeoRepository.save(perspectiveNeo);
-        return PerspectiveMapper.toDTO(perspective, perspectiveNeo);
+        perspective = perspectiveRepository.save(perspective);
+//        ro.teamnet.ou.domain.neo.Perspective perspectiveNeo = PerspectiveMapper.toNeo(perspectiveDTO);
+//        perspectiveNeo.setJpaId(perspective.getId());
+//        perspectiveNeo = perspectiveNeoRepository.save(perspectiveNeo);
+        return PerspectiveMapper.toDTO(perspective);
+    }
+
+    public Set<PerspectiveDTO> findPerspectivesByOrganizationId(Long id){
+         Set<Perspective> perspectives = perspectiveRepository.findByOrganizationId(id);
+         Set<PerspectiveDTO> perspectiveDTOSet = new HashSet<>();
+         for(Perspective perspective : perspectives){
+            perspectiveDTOSet.add(PerspectiveMapper.toDTOLazy(perspective));
+         }
+         return perspectiveDTOSet;
     }
 
     @Override
     public void delete(Long id) {
-//        Perspective perspective = PerspectiveMapper.toJPA(perspectiveDTO);
-//        perspectiveRepository.delete(perspective);
-//
-//        ro.teamnet.ou.domain.neo.Perspective perspectiveNeo = PerspectiveMapper.toNeo(perspectiveDTO);
-//        perspectiveNeoRepository.delete(perspectiveNeo);
 
         Perspective perspective = perspectiveRepository.findOne(id);
         perspectiveRepository.delete(perspective);
