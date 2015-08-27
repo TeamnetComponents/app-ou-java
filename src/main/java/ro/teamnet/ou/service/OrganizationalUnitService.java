@@ -13,9 +13,9 @@ public interface OrganizationalUnitService {
 
     void delete(Long id);
 
-    OrganizationalUnitDTO getOneById(Long id);
+    OrganizationalUnitDTO findOne(Long id);
 
-    Set<OrganizationalUnitDTO> getAllOrganizationalUnit();
+    Set<OrganizationalUnitDTO> findAll();
 
     Set<ro.teamnet.ou.domain.neo.OrganizationalUnit> getOrganizationalUnitTreeById(Long id);
 
