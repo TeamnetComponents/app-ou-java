@@ -41,16 +41,15 @@ public class PerspectiveMapper {
      * @return the Neo4J entity
      */
     public static ro.teamnet.ou.domain.neo.Perspective toNeo(PerspectiveDTO perspectiveDTO) {
+        if (perspectiveDTO.getOrganization() == null || perspectiveDTO.getOuTreeRoot() == null) {
+            return null;
+        }
         ro.teamnet.ou.domain.neo.Perspective perspective = new ro.teamnet.ou.domain.neo.Perspective();
 
         perspective.setJpaId(perspectiveDTO.getId());
         perspective.setCode(perspectiveDTO.getCode());
-        if (perspectiveDTO.getOrganization() != null) {
-            perspective.setOrganization(OrganizationMapper.toNeo(perspectiveDTO.getOrganization()));
-        }
-        if (perspectiveDTO.getOuTreeRoot() != null) {
-            perspective.setOrganizationalUnit(OrganizationalUnitMapper.toNeo(perspectiveDTO.getOuTreeRoot()));
-        }
+        perspective.setOrganization(OrganizationMapper.toNeo(perspectiveDTO.getOrganization()));
+        perspective.setOrganizationalUnit(OrganizationalUnitMapper.toNeo(perspectiveDTO.getOuTreeRoot()));
         return perspective;
     }
 

@@ -1,23 +1,18 @@
 package ro.teamnet.ou.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ro.teamnet.ou.domain.jpa.OrganizationalUnit;
 import ro.teamnet.ou.service.OrganizationService;
 import ro.teamnet.ou.service.OrganizationalUnitService;
 import ro.teamnet.ou.service.PerspectiveService;
 import ro.teamnet.ou.web.rest.dto.OrganizationalUnitDTO;
 
 import javax.inject.Inject;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -92,10 +87,10 @@ public class OrganizationalUnitResource {
         return organizationalUnitService.getOrganizationalUnitTreeById(id);
     }
 
-    @RequestMapping(value = "/getTree/{id}",
+    @RequestMapping(value = "/getTree/{rootId}",
             method = RequestMethod.GET)
     @Timed
-    public String getTree(@PathVariable Long id) {
-        return organizationalUnitService.getTree(id);
+    public String getTree(@PathVariable Long rootId) {
+        return organizationalUnitService.getTree(rootId);
     }
 }

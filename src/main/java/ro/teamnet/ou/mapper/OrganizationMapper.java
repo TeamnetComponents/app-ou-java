@@ -32,7 +32,7 @@ public class OrganizationMapper {
 
             if (perspectiveDTOSet != null) {
                 for (PerspectiveDTO perspectiveDTO : perspectiveDTOSet) {
-                    perspectiveSet.add(PerspectiveMapper.toJPAlazy(perspectiveDTO));
+                    perspectiveSet.add(PerspectiveMapper.toJPA(perspectiveDTO, true));
                 }
             }
             organization.setPerspectives(perspectiveSet);

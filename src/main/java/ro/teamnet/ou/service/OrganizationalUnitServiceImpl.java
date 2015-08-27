@@ -96,33 +96,34 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
         return organizationalUnitNeoRepository.getOrganizationalUnitTreeById(id);
     }
 
-    JSONObject BFS(ro.teamnet.ou.domain.neo.OrganizationalUnit orgUnit,
-                  List<ro.teamnet.ou.domain.neo.OrganizationalUnit> orgUnitList,
-                  List<Long> marked,
-                  HashMap<Long, Long> map) {
+    private JSONObject bfs(ro.teamnet.ou.domain.neo.OrganizationalUnit rootNode,
+                   List<ro.teamnet.ou.domain.neo.OrganizationalUnit> orgUnitList,
+                   List<Long> marked,
+                   HashMap<Long, Long> map) {
 
         JSONArray arrayJSON = new JSONArray();
         JSONObject nodeJSON = new JSONObject();
 
-        for (ro.teamnet.ou.domain.neo.OrganizationalUnit N : orgUnit.getChildren()) {
-            N = orgUnitList.get(map.get(N.getId()).intValue());
-            if ( marked.contains(N.getId()) == false) {
-                marked.add(N.getId());
-                JSONObject childrenObjectJSON = BFS(N, orgUnitList, marked, map);
+        for (ro.teamnet.ou.domain.neo.OrganizationalUnit childNode : rootNode.getChildren()) {
+            childNode = orgUnitList.get(map.get(childNode.getId()).intValue());
+            if ( marked.contains(childNode.getId()) == false) {
+                marked.add(childNode.getId());
+                JSONObject childrenObjectJSON = bfs(childNode, orgUnitList, marked, map);
                 arrayJSON.put(childrenObjectJSON);
             }
         }
 
         try {
-            nodeJSON.put("id", orgUnit.getJpaId());
-            nodeJSON.put("code", orgUnit.getCode());
-            nodeJSON.put("accounts", orgUnit.getAccounts());
+            nodeJSON.put("id", rootNode.getJpaId());
+            nodeJSON.put("code", rootNode.getCode());
+            nodeJSON.put("accounts", rootNode.getAccounts());
             nodeJSON.put("children", arrayJSON);
 
             JSONObject parentNodeJSON = new JSONObject();
-            parentNodeJSON.put("id", orgUnit.getParent().getJpaId());
-            parentNodeJSON.put("code", orgUnit.getParent().getCode());
-
+            if (rootNode.getParent() != null) {
+                parentNodeJSON.put("id", rootNode.getParent().getJpaId());
+                parentNodeJSON.put("code", rootNode.getParent().getCode());
+            }
             nodeJSON.put("parent", parentNodeJSON);
 
         } catch (JSONException e) {
@@ -132,9 +133,9 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
         return nodeJSON;
     }
 
-    public String getTree(Long id) {
-
-        Set<ro.teamnet.ou.domain.neo.OrganizationalUnit> orgUnitSet = getOrganizationalUnitTreeById(id);
+    public String getTree(Long rootId) {
+        ro.teamnet.ou.domain.neo.OrganizationalUnit rootOu = organizationalUnitNeoRepository.findByJpaId(rootId);
+        Set<ro.teamnet.ou.domain.neo.OrganizationalUnit> orgUnitSet = getOrganizationalUnitTreeById(rootOu.getId());
         List<Long> marked = new ArrayList<>();
         List<ro.teamnet.ou.domain.neo.OrganizationalUnit> orgUnitList = new ArrayList<>();
         HashMap<Long, Long> map = new HashMap<>();
@@ -147,7 +148,7 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
         }
 
         JSONArray arrayJSON = new JSONArray();
-        arrayJSON.put(BFS(orgUnitList.get(map.get(id).intValue()), orgUnitList, marked, map));
+        arrayJSON.put(bfs(orgUnitList.get(map.get(rootOu.getId()).intValue()), orgUnitList, marked, map));
         return arrayJSON.toString();
     }
 }
