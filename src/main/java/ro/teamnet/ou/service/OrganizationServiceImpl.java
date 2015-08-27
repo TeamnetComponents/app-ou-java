@@ -29,7 +29,6 @@ public class OrganizationServiceImpl implements OrganizationService {
 
         Organization organization = OrganizationMapper.toJPAlazy(organizationDTO);
         organization = organizationRepository.save(organization);
-
 //        ro.teamnet.ou.domain.neo.Organization organizationNeo = OrganizationMapper.toNeo(organizationDTO);
 //        organizationNeo.setJpaId(organization.getId());
 //
