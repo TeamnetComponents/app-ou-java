@@ -34,8 +34,6 @@ public class OrganizationalUnitMapper {
         }
 
         organizationalUnit.setChildren(organizationalUnitSet);
-//        if(organizationalUnitDTO.getPerspective()!=null)
-//            organizationalUnit.setPerspective(PerspectiveMapper.toJPA(organizationalUnitDTO.getPerspective()));
 
         return organizationalUnit;
     }
@@ -58,16 +56,16 @@ public class OrganizationalUnitMapper {
                 organizationalUnitSet.add(organizationalUnitItem);
             }
         }
-
         organizationalUnit.setChildren(organizationalUnitSet);
-/*
-        organizationalUnit.setAccounts(organizationalUnitDTO.getAccounts());
-*/
 
         return organizationalUnit;
     }
 
-    public static OrganizationalUnitDTO toDTO(OrganizationalUnit organizationalUnit) {
+    public static OrganizationalUnitDTO toDTO(OrganizationalUnit organizationalUnit){
+        return toDTO(organizationalUnit, false);
+    }
+
+    public static OrganizationalUnitDTO toDTO(OrganizationalUnit organizationalUnit, boolean lazyFetching) {
         if (organizationalUnit == null) {
             return null;
         }
@@ -80,21 +78,23 @@ public class OrganizationalUnitMapper {
         organizationalUnitDTO.setValidTo(organizationalUnit.getValidTo());
         organizationalUnitDTO.setActive(organizationalUnit.getActive());
 
-        if(organizationalUnit.getParent() != null)
+        if (organizationalUnit.getParent() != null)
             organizationalUnitDTO.setParent(OrganizationalUnitMapper.toDTO(organizationalUnit.getParent()));
 
-        if(organizationalUnit.getPerspective() != null)
-            organizationalUnitDTO.setPerspective(PerspectiveMapper.toDTO(organizationalUnit.getPerspective(), null));
+        if(!lazyFetching){
 
-        Set<OrganizationalUnitDTO> organizationalUnitDTOs = new HashSet<>();
-        List<OrganizationalUnit> organizationalUnitList = new ArrayList<>(organizationalUnit.getChildren());
-        if(organizationalUnitList != null) {
-            for (OrganizationalUnit ou : organizationalUnitList) {
-                organizationalUnitDTOs.add(OrganizationalUnitMapper.toDTO(ou));
+            if (organizationalUnit.getPerspective() != null)
+                organizationalUnitDTO.setPerspective(PerspectiveMapper.toDTO(organizationalUnit.getPerspective(), true));
+
+            Set<OrganizationalUnitDTO> organizationalUnitDTOs = new HashSet<>();
+            List<OrganizationalUnit> organizationalUnitList = new ArrayList<>(organizationalUnit.getChildren());
+            if (organizationalUnitList != null) {
+                for (OrganizationalUnit ou : organizationalUnitList) {
+                    organizationalUnitDTOs.add(OrganizationalUnitMapper.toDTO(ou, true));
+                }
             }
+            organizationalUnitDTO.setChildren(organizationalUnitDTOs);
         }
-        organizationalUnitDTO.setChildren(organizationalUnitDTOs);
-
         return organizationalUnitDTO;
     }
 

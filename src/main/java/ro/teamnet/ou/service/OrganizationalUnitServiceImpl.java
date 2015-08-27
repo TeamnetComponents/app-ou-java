@@ -31,21 +31,7 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
     @Inject
     public PerspectiveRepository perspectiveRepository;
 
-    public OrganizationalUnitServiceImpl() {
-
-    }
-
-    ;
-
-    public OrganizationalUnitServiceImpl(OrganizationalUnitRepository organizationalUnitRepository, OrganizationalUnitNeoRepository organizationalUnitNeoRepository,
-                                         PerspectiveRepository perspectiveRepository) {
-        this.organizationalUnitRepository = organizationalUnitRepository;
-        this.organizationalUnitNeoRepository = organizationalUnitNeoRepository;
-        this.perspectiveRepository = perspectiveRepository;
-    }
-
     @Override
-    @Transactional
     public OrganizationalUnitDTO save(OrganizationalUnitDTO organizationalUnitDTO) {
 
         OrganizationalUnit organizationalUnit = OrganizationalUnitMapper.toJPA(organizationalUnitDTO);

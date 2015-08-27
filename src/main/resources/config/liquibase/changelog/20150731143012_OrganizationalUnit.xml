@@ -21,5 +21,20 @@
             <column name="IS_ACTIVE" type="bit"/>
         </createTable>
     </changeSet>
+
+    <changeSet id="20150827140000" author="oanam">
+
+        <addColumn tableName="T_ORGANIZATIONAL_UNIT">
+            <column name="PARENT_ID" type="bigint"/>
+        </addColumn>
+
+        <addForeignKeyConstraint baseColumnNames="PARENT_ID"
+                                 baseTableName="T_ORGANIZATIONAL_UNIT"
+                                 constraintName="fk_organizational_unit_parent"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="T_ORGANIZATIONAL_UNIT"/>
+    </changeSet>
+
+
 </databaseChangeLog>
 

@@ -40,14 +40,14 @@ public class OrganizationalUnit implements Serializable{
     protected Boolean active;
 
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
-    @JoinColumn(name = "PARENT", updatable = true, insertable = true)
+    @JoinColumn(name = "PARENT_ID", updatable = true, insertable = true)
     @JsonBackReference
     private OrganizationalUnit parent;
 
     @OneToMany(mappedBy = "parent")
     private Set<OrganizationalUnit> children;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "PERSPECTIVE_ID", referencedColumnName = "ID")
     private Perspective perspective;
 

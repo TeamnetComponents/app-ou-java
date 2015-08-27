@@ -26,26 +26,15 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public OrganizationDTO save(OrganizationDTO organizationDTO) {
-
-        Organization organization = OrganizationMapper.toJPAlazy(organizationDTO);
+        Organization organization = OrganizationMapper.toJPA(organizationDTO, true);
         organization = organizationRepository.save(organization);
-//        ro.teamnet.ou.domain.neo.Organization organizationNeo = OrganizationMapper.toNeo(organizationDTO);
-//        organizationNeo.setJpaId(organization.getId());
-//
-//        Long neoId = organizationNeoRepository.findByJpaId(organization.getId()).getId();
-//        organizationNeo.setId(neoId);
-
-//        organizationNeo = organizationNeoRepository.save(organizationNeo);
-
-        return OrganizationMapper.toDTOLazy(organization);
+        return OrganizationMapper.toDTO(organization, true);
     }
 
     @Override
     public OrganizationDTO update(OrganizationDTO organizationDTO) {
-
         Organization organization = OrganizationMapper.toJPA(organizationDTO);
         organization = organizationRepository.save(organization);
-
         return OrganizationMapper.toDTO(organization);
     }
 
@@ -59,41 +48,17 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
 
-    /**
-     * Metoda ce returneaza lista cu toate OrganizationDTO, obtinuta prin combinarea datelor
-     * din jpa si neo.
-     * !!!!!!!!!!!!!!!! Complexitate n^2
-     * @return
-     */
     @Override
     public Set<OrganizationDTO> getAllOrganizationDTOs() {
-        List<Organization> organizationList = organizationRepository.findAll();
-//        List<ro.teamnet.ou.domain.neo.Organization> organizationListNeo = organizationNeoRepository.getAllOrganizations();
-//
-//        Set<OrganizationDTO> organizationDTOs = new HashSet<>();
-//        if (organizationList != null && organizationListNeo != null) {
-//            for (int i = 0; i < organizationList.size(); i++) {
-//                for (int j=0; j < organizationListNeo.size(); j++) {
-//                    if (organizationList.get(i).getId().equals(organizationListNeo.get(j).getJpaId())) {
-//                        organizationDTOs.add(OrganizationMapper.toDTO(organizationList.get(i), organizationListNeo.get(j)));
-//                    }
-//                }
-//            }
-//        }
-
         Set<OrganizationDTO> organizationDTOs = new HashSet<>();
-        for(Organization organization : organizationList){
+        for(Organization organization : organizationRepository.findAll()){
             organizationDTOs.add(OrganizationMapper.toDTO(organization));
         }
-
         return organizationDTOs;
     }
 
     @Override
     public OrganizationDTO findOrganizationDTOById(Long id) {
-        Organization organization =  organizationRepository.findOne(id);
-        ro.teamnet.ou.domain.neo.Organization organizationNeo = organizationNeoRepository.findByJpaId(id);
-
-        return OrganizationMapper.toDTO(organization, organizationNeo);
+        return OrganizationMapper.toDTO(organizationRepository.findOne(id));
     }
 }

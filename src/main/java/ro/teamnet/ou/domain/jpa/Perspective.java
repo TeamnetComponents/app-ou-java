@@ -1,14 +1,10 @@
 package ro.teamnet.ou.domain.jpa;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import org.atmosphere.cpr.Action;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Created by ionut.patrascu on 04.08.2015.
@@ -34,9 +30,9 @@ public class Perspective implements Serializable {
     private Organization organization;
 
 
-    @OneToMany(mappedBy = "perspective")
+    @OneToOne(mappedBy = "perspective")
     @JsonManagedReference
-    private Set<OrganizationalUnit> organizationalUnits = new TreeSet<>();
+    private OrganizationalUnit ouTreeRoot;
 
     public Long getId() {
         return id;
@@ -70,11 +66,11 @@ public class Perspective implements Serializable {
         this.organization = organization;
     }
 
-    public Set<OrganizationalUnit> getOrganizationalUnits() {
-        return organizationalUnits;
+    public OrganizationalUnit getOuTreeRoot() {
+        return ouTreeRoot;
     }
 
-    public void setOrganizationalUnits(Set<OrganizationalUnit> organizationalUnits) {
-        this.organizationalUnits = organizationalUnits;
+    public void setOuTreeRoot(OrganizationalUnit ouTreeRoot) {
+        this.ouTreeRoot = ouTreeRoot;
     }
 }

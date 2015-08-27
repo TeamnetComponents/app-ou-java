@@ -31,7 +31,7 @@ public class PerspectiveServiceImpl implements PerspectiveService {
         Perspective perspective = perspectiveRepository.findOne(id);
         ro.teamnet.ou.domain.neo.Perspective perspectiveNeo = perspectiveNeoRepository.findByJpaId(id);
 
-        return PerspectiveMapper.toDTO(perspective, perspectiveNeo);
+        return PerspectiveMapper.toDTO(perspective);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class PerspectiveServiceImpl implements PerspectiveService {
         for (Perspective perspective : perspectives) {
             for (ro.teamnet.ou.domain.neo.Perspective neoPerspective : neoPerspectives) {
                 if (perspective.getId().equals(neoPerspective.getJpaId())) {
-                    perspectiveDTOs.add(PerspectiveMapper.toDTO(perspective, neoPerspective));
+                    perspectiveDTOs.add(PerspectiveMapper.toDTO(perspective));
                 }
             }
         }
@@ -67,7 +67,7 @@ public class PerspectiveServiceImpl implements PerspectiveService {
          Set<Perspective> perspectives = perspectiveRepository.findByOrganizationId(id);
          Set<PerspectiveDTO> perspectiveDTOSet = new HashSet<>();
          for(Perspective perspective : perspectives){
-            perspectiveDTOSet.add(PerspectiveMapper.toDTOLazy(perspective));
+            perspectiveDTOSet.add(PerspectiveMapper.toDTO(perspective, true));
          }
          return perspectiveDTOSet;
     }
