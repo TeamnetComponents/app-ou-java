@@ -53,12 +53,6 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
 
     private OrganizationalUnitDTO saveJPA(OrganizationalUnitDTO organizationalUnitDTO) {
         OrganizationalUnit organizationalUnit = OrganizationalUnitMapper.toJPA(organizationalUnitDTO);
-        if(organizationalUnit.getParent() != null) {
-            organizationalUnit.setParent(organizationalUnitRepository.findOne(organizationalUnit.getParent().getId()));
-        }
-        if (organizationalUnit.getPerspective() != null) {
-            organizationalUnit.setPerspective(perspectiveRepository.findOne(organizationalUnit.getPerspective().getId()));
-        }
         organizationalUnitRepository.save(organizationalUnit);
         organizationalUnitDTO.setId(organizationalUnit.getId());
         return organizationalUnitDTO;

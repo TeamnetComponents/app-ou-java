@@ -18,7 +18,7 @@ public class PerspectiveMapper {
         perspective.setCode(perspectiveDTO.getCode());
         perspective.setDescription(perspectiveDTO.getDescription());
         perspective.setOuTreeRoot(OrganizationalUnitMapper.toJPA(perspectiveDTO.getOuTreeRoot()));
-        if (!lazyFetching) {
+        if (!lazyFetching && perspectiveDTO.getOrganization() != null) {
             perspective.setOrganization(OrganizationMapper.toJPA(perspectiveDTO.getOrganization(), true));
         }
         return perspective;

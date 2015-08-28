@@ -39,8 +39,8 @@ public class OrganizationalUnit implements Serializable{
     @NotNull @Column(name = "IS_ACTIVE")
     protected Boolean active;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
-    @JoinColumn(name = "PARENT_ID", updatable = true, insertable = true)
+    @ManyToOne
+    @JoinColumn(name = "PARENT_ID")
     @JsonBackReference
     private OrganizationalUnit parent;
 
@@ -48,7 +48,7 @@ public class OrganizationalUnit implements Serializable{
     private Set<OrganizationalUnit> children;
 
     @OneToOne
-    @JoinColumn(name = "PERSPECTIVE_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "PERSPECTIVE_ID")
     private Perspective perspective;
 
     public Perspective getPerspective() {

@@ -13,9 +13,10 @@ public class OrganizationalUnitMapper {
      * Converts the DTO for an organizational unit into a JPA entity.
      *
      * @param organizationalUnitDTO the organizational unit DTO
+     * @param lazyFetching          if true, the references to perspective and children wil not be added to the entity
      * @return the JPA entity
      */
-    public static OrganizationalUnit toJPA(OrganizationalUnitDTO organizationalUnitDTO) {
+    public static OrganizationalUnit toJPA(OrganizationalUnitDTO organizationalUnitDTO, boolean lazyFetching) {
         if (organizationalUnitDTO == null) {
             return null;
         }
@@ -27,7 +28,34 @@ public class OrganizationalUnitMapper {
         organizationalUnit.setValidFrom(organizationalUnitDTO.getValidFrom());
         organizationalUnit.setValidTo(organizationalUnitDTO.getValidTo());
         organizationalUnit.setActive(organizationalUnitDTO.getActive());
+        if (organizationalUnitDTO.getParent() != null) {
+            organizationalUnit.setParent(OrganizationalUnitMapper.toJPA(organizationalUnitDTO.getParent()));
+        }
+        if (!lazyFetching) {
+            if (organizationalUnitDTO.getPerspective() != null) {
+                organizationalUnit.setPerspective(PerspectiveMapper.toJPA(organizationalUnitDTO.getPerspective(), true));
+            }
+            Set<OrganizationalUnit> organizationalUnitSet = new HashSet<>();
+            if (organizationalUnitDTO.getChildren() != null) {
+                for (OrganizationalUnitDTO item : organizationalUnitDTO.getChildren()) {
+                    OrganizationalUnit organizationalUnitItem = OrganizationalUnitMapper.toJPA(item);
+                    organizationalUnitSet.add(organizationalUnitItem);
+                }
+            }
+            organizationalUnit.setChildren(organizationalUnitSet);
+        }
         return organizationalUnit;
+    }
+
+    /**
+     * Converts the DTO for an organizational unit into a JPA entity. The references to the perspective and children
+     * are included in the entity.
+     *
+     * @param organizationalUnitDTO the organizational unit DTO
+     * @return the JPA entity
+     */
+    public static OrganizationalUnit toJPA(OrganizationalUnitDTO organizationalUnitDTO) {
+        return toJPA(organizationalUnitDTO, false);
     }
 
     /**
