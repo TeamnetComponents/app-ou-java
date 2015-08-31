@@ -66,7 +66,9 @@ public class PerspectiveMapper {
         perspectiveDTO.setId(perspective.getId());
         perspectiveDTO.setCode(perspective.getCode());
         perspectiveDTO.setDescription(perspective.getDescription());
-        perspectiveDTO.setOuTreeRoot(OrganizationalUnitMapper.toDTO(perspective.getOuTreeRoot(), true));
+        if (perspective.getOuTreeRoot() != null) {
+            perspectiveDTO.setOuTreeRoot(OrganizationalUnitMapper.toDTO(perspective.getOuTreeRoot(), true));
+        }
         if (!lazyFetching) {
             perspectiveDTO.setOrganization(OrganizationMapper.toDTO(perspective.getOrganization(), true));
         }

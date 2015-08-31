@@ -30,7 +30,7 @@ public class Perspective implements Serializable {
     private Organization organization;
 
 
-    @OneToOne(mappedBy = "perspective")
+    @OneToOne(mappedBy = "perspective", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private OrganizationalUnit ouTreeRoot;
 

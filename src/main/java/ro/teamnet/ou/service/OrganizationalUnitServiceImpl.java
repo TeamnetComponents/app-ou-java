@@ -11,6 +11,7 @@ import ro.teamnet.ou.repository.jpa.OrganizationalUnitRepository;
 import ro.teamnet.ou.repository.jpa.PerspectiveRepository;
 import ro.teamnet.ou.repository.neo.OrganizationalUnitNeoRepository;
 import ro.teamnet.ou.web.rest.dto.OrganizationalUnitDTO;
+import ro.teamnet.ou.web.rest.dto.PerspectiveDTO;
 
 import javax.inject.Inject;
 import java.util.*;
@@ -38,6 +39,18 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
         return organizationalUnitDTO;
     }
 
+    @Override
+    public OrganizationalUnitDTO saveOUTreeRoot(PerspectiveDTO perspective) {
+        OrganizationalUnit ouTreeRoot = new OrganizationalUnit();
+        ouTreeRoot.setPerspective(perspectiveRepository.findOne(perspective.getId()));
+        ouTreeRoot.setCode(perspective.getCode() + "_ROOT");
+        ouTreeRoot.setActive(true);
+        organizationalUnitRepository.save(ouTreeRoot);
+        OrganizationalUnitDTO organizationalUnitDTO = OrganizationalUnitMapper.toDTO(ouTreeRoot);
+        saveNeo(organizationalUnitDTO);
+        return organizationalUnitDTO;
+    }
+
     private void saveNeo(OrganizationalUnitDTO organizationalUnitDTO) {
         ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnit = OrganizationalUnitMapper.toNeo(organizationalUnitDTO);
 
@@ -60,25 +73,21 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
 
     @Override
     public void delete(Long id) {
-        OrganizationalUnit organizationalUnit = organizationalUnitRepository.findOne(id);
-        organizationalUnitRepository.delete(organizationalUnit);
+        organizationalUnitRepository.delete(id);
 
         ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnitNeo = organizationalUnitNeoRepository.findByJpaId(id);
-        Long neoId = organizationalUnitNeoRepository.findByJpaId(id).getId();
-        organizationalUnitNeo.setId(neoId);
-
-        organizationalUnitNeoRepository.delete(organizationalUnitNeo);
+        if (organizationalUnitNeo != null) {
+            organizationalUnitNeoRepository.delete(organizationalUnitNeo.getId());
+        }
     }
 
     @Override
-    @Transactional
     public OrganizationalUnitDTO findOne(Long id) {
         OrganizationalUnit organizationalUnit = organizationalUnitRepository.findOne(id);
         return OrganizationalUnitMapper.toDTO(organizationalUnit);
     }
 
     @Override
-    @Transactional
     public Set<OrganizationalUnitDTO> findAll() {
         List<OrganizationalUnit> organizationalUnits = organizationalUnitRepository.findAll();
         Set<ro.teamnet.ou.domain.neo.OrganizationalUnit> organizationalUnitsNeo = organizationalUnitNeoRepository.getAllOrganizationalUnits();
@@ -98,7 +107,6 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
     }
 
     @Override
-    @Transactional
     public Set<ro.teamnet.ou.domain.neo.OrganizationalUnit> getOrganizationalUnitTreeById(Long id) {
         return organizationalUnitNeoRepository.getOrganizationalUnitTreeById(id);
     }
@@ -113,7 +121,7 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
 
         for (ro.teamnet.ou.domain.neo.OrganizationalUnit childNode : rootNode.getChildren()) {
             childNode = orgUnitList.get(map.get(childNode.getId()).intValue());
-            if ( marked.contains(childNode.getId()) == false) {
+            if (!marked.contains(childNode.getId())) {
                 marked.add(childNode.getId());
                 JSONObject childrenObjectJSON = bfs(childNode, orgUnitList, marked, map);
                 arrayJSON.put(childrenObjectJSON);

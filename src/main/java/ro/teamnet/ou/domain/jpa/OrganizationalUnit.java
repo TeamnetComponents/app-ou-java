@@ -26,17 +26,16 @@ public class OrganizationalUnit implements Serializable{
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @NotNull
     @Column(name = "VALID_FROM")
     @Temporal(TemporalType.DATE)
     protected Date validFrom;
 
-    @NotNull
     @Column(name = "VALID_TO")
     @Temporal(TemporalType.DATE)
     protected Date validTo;
 
-    @NotNull @Column(name = "IS_ACTIVE")
+    @NotNull
+    @Column(name = "IS_ACTIVE")
     protected Boolean active;
 
     @ManyToOne
@@ -44,7 +43,7 @@ public class OrganizationalUnit implements Serializable{
     @JsonBackReference
     private OrganizationalUnit parent;
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<OrganizationalUnit> children;
 
     @OneToOne
