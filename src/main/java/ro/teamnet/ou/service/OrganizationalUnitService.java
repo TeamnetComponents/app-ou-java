@@ -1,6 +1,7 @@
 package ro.teamnet.ou.service;
 
 import ro.teamnet.ou.web.rest.dto.OrganizationalUnitDTO;
+import ro.teamnet.ou.web.rest.dto.PerspectiveDTO;
 
 import java.util.Set;
 
@@ -20,4 +21,6 @@ public interface OrganizationalUnitService {
     Set<ro.teamnet.ou.domain.neo.OrganizationalUnit> getOrganizationalUnitTreeById(Long id);
 
     String getTree(Long rootId);
+
+    OrganizationalUnitDTO saveOUTreeRoot(PerspectiveDTO perspective);
 }

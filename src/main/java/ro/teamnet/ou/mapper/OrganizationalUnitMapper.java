@@ -96,17 +96,19 @@ public class OrganizationalUnitMapper {
         }
         if (!lazyFetching) {
 
-            if (organizationalUnit.getPerspective() != null)
+            if (organizationalUnit.getPerspective() != null) {
                 organizationalUnitDTO.setPerspective(PerspectiveMapper.toDTO(organizationalUnit.getPerspective(), true));
-
-            Set<OrganizationalUnitDTO> organizationalUnitDTOs = new HashSet<>();
-            List<OrganizationalUnit> organizationalUnitList = new ArrayList<>(organizationalUnit.getChildren());
-            if (organizationalUnitList != null) {
-                for (OrganizationalUnit ou : organizationalUnitList) {
-                    organizationalUnitDTOs.add(OrganizationalUnitMapper.toDTO(ou, true));
-                }
             }
-            organizationalUnitDTO.setChildren(organizationalUnitDTOs);
+            if (organizationalUnit.getChildren() != null) {
+                Set<OrganizationalUnitDTO> organizationalUnitDTOs = new HashSet<>();
+                List<OrganizationalUnit> organizationalUnitList = new ArrayList<>(organizationalUnit.getChildren());
+                if (organizationalUnitList != null) {
+                    for (OrganizationalUnit ou : organizationalUnitList) {
+                        organizationalUnitDTOs.add(OrganizationalUnitMapper.toDTO(ou, true));
+                    }
+                }
+                organizationalUnitDTO.setChildren(organizationalUnitDTOs);
+            }
         }
         return organizationalUnitDTO;
     }

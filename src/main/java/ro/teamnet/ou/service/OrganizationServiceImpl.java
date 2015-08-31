@@ -28,13 +28,25 @@ public class OrganizationServiceImpl implements OrganizationService {
     public OrganizationDTO save(OrganizationDTO organizationDTO) {
         Organization organization = OrganizationMapper.toJPA(organizationDTO, true);
         organization = organizationRepository.save(organization);
+        organizationDTO.setId(organization.getId());
+        saveNeo(organizationDTO);
         return OrganizationMapper.toDTO(organization, true);
+    }
+
+    private void saveNeo(OrganizationDTO organizationDTO) {
+        ro.teamnet.ou.domain.neo.Organization neoOrganization = OrganizationMapper.toNeo(organizationDTO);
+        ro.teamnet.ou.domain.neo.Organization existingNeoOrganization = organizationNeoRepository.findByJpaId(organizationDTO.getId());
+        if (existingNeoOrganization != null) {
+            neoOrganization.setId(existingNeoOrganization.getId());
+        }
+        organizationNeoRepository.save(neoOrganization);
     }
 
     @Override
     public OrganizationDTO update(OrganizationDTO organizationDTO) {
         Organization organization = OrganizationMapper.toJPA(organizationDTO);
         organization = organizationRepository.save(organization);
+        saveNeo(organizationDTO);
         return OrganizationMapper.toDTO(organization);
     }
 

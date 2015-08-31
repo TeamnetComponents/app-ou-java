@@ -1,13 +1,10 @@
 package ro.teamnet.ou.domain.jpa;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -30,17 +27,16 @@ public class Organization implements Serializable {
     @Column(name = "DESCRIPTION")
     protected String description;
 
-    @NotNull
     @Column(name = "VALID_FROM")
     @Temporal(TemporalType.DATE)
     protected Date validFrom;
 
-    @NotNull
     @Column(name = "VALID_TO")
     @Temporal(TemporalType.DATE)
     protected Date validTo;
 
-    @NotNull @Column(name = "IS_ACTIVE")
+    @NotNull
+    @Column(name = "IS_ACTIVE")
     protected Boolean active;
 
     @OneToMany(mappedBy = "organization", orphanRemoval = true)
