@@ -99,7 +99,7 @@ public class FunctionServiceImpl implements FunctionService {
     @Override
     public FunctionRelationshipDTO addRelationship(FunctionRelationshipDTO functionRelationshipDTO) {
         ro.teamnet.ou.domain.neo.Function neoFunction = FunctionMapper.toNeo(functionRelationshipDTO);
-        return FunctionMapper.toDTO(functionNeoRepository.save(neoFunction));
+        return FunctionMapper.toRelationshipDTO(functionNeoRepository.save(neoFunction));
     }
 
     @Override
@@ -127,7 +127,7 @@ public class FunctionServiceImpl implements FunctionService {
 
     @Override
     public Set<FunctionDTO> findAllByOrganizationalUnitId(Long ouId) {
-        return FunctionMapper.toDTO(ouFunctionRepository.findFunctionsByorganizationalUnitId(ouId));
+        return FunctionMapper.toDTO(ouFunctionRepository.findFunctionsByOrganizationalUnitId(ouId));
     }
 
     @Override

@@ -41,6 +41,7 @@ public class FunctionMapper {
 
         return function;
     }
+
     public static ro.teamnet.ou.domain.neo.Function toNeo(FunctionRelationshipDTO relationshipDTO) {
         if (relationshipDTO == null || relationshipDTO.getAccount() == null || relationshipDTO.getOrganizationalUnit() == null) {
             return null;
@@ -55,6 +56,10 @@ public class FunctionMapper {
     }
 
     public static FunctionDTO toDTO(Function function) {
+        return toDTO(function, false);
+    }
+
+    public static FunctionDTO toDTO(Function function, boolean lazyFetching) {
         if (function == null) {
             return null;
         }
@@ -66,20 +71,31 @@ public class FunctionMapper {
         functionDTO.setValidFrom(function.getValidFrom());
         functionDTO.setValidTo(function.getValidTo());
         functionDTO.setDescription(function.getDescription());
-
-        Set<ModuleRightDTO> moduleRightDTOs = new HashSet<>();
-        Set<ModuleRight> moduleRightSet = function.getModuleRights();
-        if (moduleRightSet != null) {
-            for (ModuleRight moduleRight : moduleRightSet) {
-                moduleRightDTOs.add(ModuleRightMapper.from(moduleRight));
+        if (!lazyFetching) {
+            Set<ModuleRightDTO> moduleRightDTOs = new HashSet<>();
+            Set<ModuleRight> moduleRightSet = function.getModuleRights();
+            if (moduleRightSet != null) {
+                for (ModuleRight moduleRight : moduleRightSet) {
+                    moduleRightDTOs.add(ModuleRightMapper.from(moduleRight));
+                }
             }
+            functionDTO.setModuleRights(moduleRightDTOs);
         }
-        functionDTO.setModuleRights(moduleRightDTOs);
-
         return functionDTO;
     }
 
-    public static FunctionRelationshipDTO toDTO(ro.teamnet.ou.domain.neo.Function functionNeo) {
+    public static FunctionDTO toDTO(ro.teamnet.ou.domain.neo.Function function) {
+        if (function == null) {
+            return null;
+        }
+        FunctionDTO functionDTO = new FunctionDTO();
+
+        functionDTO.setId(function.getJpaId());
+        functionDTO.setCode(function.getCode());
+        return functionDTO;
+    }
+
+    public static FunctionRelationshipDTO toRelationshipDTO(ro.teamnet.ou.domain.neo.Function functionNeo) {
         if (functionNeo == null) {
             return null;
         }

@@ -7,10 +7,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ro.teamnet.ou.service.OUAccountService;
 import ro.teamnet.ou.service.OrganizationalUnitService;
+import ro.teamnet.ou.web.rest.dto.AccountDTO;
 import ro.teamnet.ou.web.rest.dto.OrganizationalUnitDTO;
 
 import javax.inject.Inject;
+import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -23,6 +26,8 @@ public class OrganizationalUnitResource {
     private final Logger log = LoggerFactory.getLogger(OrganizationalUnitResource.class);
     @Inject
     private OrganizationalUnitService organizationalUnitService;
+    @Inject
+    private OUAccountService ouAccountService;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
@@ -75,4 +80,15 @@ public class OrganizationalUnitResource {
     public String getTree(@PathVariable Long rootId) {
         return organizationalUnitService.getTree(rootId);
     }
+
+    @RequestMapping(value = "/accounts/{ouId}", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public Collection<AccountDTO> getAccounts(@PathVariable Long ouId){
+        return ouAccountService.getAccountsInOrganizationalUnit(ouId);
+    }
+
+    @RequestMapping(value = "/eligibleAccounts/{ouId}", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public Collection<AccountDTO> getEligibleAccounts(@PathVariable Long ouId){
+        return ouAccountService.getAccountsEligibleForOrganizationalUnit(ouId);}
 }

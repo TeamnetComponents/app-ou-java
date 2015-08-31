@@ -15,9 +15,7 @@ import java.util.Set;
 public interface OrganizationalUnitFunctionRepository extends AppRepository<OrganizationalUnitFunction, Long> {
 
     @Query("select ouFunction.function from OrganizationalUnitFunction ouFunction where ouFunction.organizationalUnit.id = :organizationalUnitId")
-    Set<Function> findFunctionsByorganizationalUnitId(@Param("organizationalUnitId") Long organizationalUnit);
-
-    AccountFunction findByOrganizationalUnitIdAndFunctionId(Long organizationalUnitId, Long functionId);
+    Set<Function> findFunctionsByOrganizationalUnitId(@Param("organizationalUnitId") Long organizationalUnit);
 
     void deleteByOrganizationalUnitIdAndFunctionId(Long organizationalUnitId, Long functionId);
 }

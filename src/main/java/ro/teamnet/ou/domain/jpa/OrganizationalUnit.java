@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -50,13 +51,13 @@ public class OrganizationalUnit implements Serializable{
     @JoinColumn(name = "PERSPECTIVE_ID")
     private Perspective perspective;
 
-    public Perspective getPerspective() {
-        return perspective;
-    }
 
-    public void setPerspective(Perspective perspective) {
-        this.perspective = perspective;
-    }
+    @ManyToMany//(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE,CascadeType.REFRESH})
+    @JoinTable(
+            name = "T_OU_ACCOUNT_FUNCTION",
+            joinColumns = {@JoinColumn(name = "account_function_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "ou_id", referencedColumnName = "id")})
+    private Set<AccountFunction> accountFunctions = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -72,22 +73,6 @@ public class OrganizationalUnit implements Serializable{
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public OrganizationalUnit getParent() {
-        return parent;
-    }
-
-    public void setParent(OrganizationalUnit parent) {
-        this.parent = parent;
-    }
-
-    public Set<OrganizationalUnit> getChildren() {
-        return children;
-    }
-
-    public void setChildren(Set<OrganizationalUnit> children) {
-        this.children = children;
     }
 
     public String getDescription() {
@@ -120,5 +105,37 @@ public class OrganizationalUnit implements Serializable{
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public OrganizationalUnit getParent() {
+        return parent;
+    }
+
+    public void setParent(OrganizationalUnit parent) {
+        this.parent = parent;
+    }
+
+    public Set<OrganizationalUnit> getChildren() {
+        return children;
+    }
+
+    public void setChildren(Set<OrganizationalUnit> children) {
+        this.children = children;
+    }
+
+    public Perspective getPerspective() {
+        return perspective;
+    }
+
+    public void setPerspective(Perspective perspective) {
+        this.perspective = perspective;
+    }
+
+    public Set<AccountFunction> getAccountFunctions() {
+        return accountFunctions;
+    }
+
+    public void setAccountFunctions(Set<AccountFunction> accountFunctions) {
+        this.accountFunctions = accountFunctions;
     }
 }

@@ -9,7 +9,7 @@
             <column name="ID" autoIncrement="true" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="ACCOUNT_ID" type="bigint" />
+            <column name="ACCOUNT_ID" type="bigint"/>
             <column name="FUNCTION_ID" type="bigint"/>
         </createTable>
 
@@ -26,5 +26,26 @@
                                  referencedTableName="T_ROLE"/>
 
     </changeSet>
+    <changeSet id="20150831170000" author="oanam">
+        <createTable tableName="T_OU_ACCOUNT_FUNCTION">
+            <column name="OU_ID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ACCOUNT_FUNCTION_ID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
 
+        <addForeignKeyConstraint baseColumnNames="ACCOUNT_FUNCTION_ID"
+                                 baseTableName="T_OU_ACCOUNT_FUNCTION"
+                                 constraintName="fk_ou_account_function"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="T_ACCOUNT_FUNCTION"/>
+
+        <addForeignKeyConstraint baseColumnNames="OU_ID"
+                                 baseTableName="T_OU_ACCOUNT_FUNCTION"
+                                 constraintName="fk_account_function_OU"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="T_ORGANIZATIONAL_UNIT"/>
+    </changeSet>
 </databaseChangeLog>

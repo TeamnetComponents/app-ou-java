@@ -1,5 +1,8 @@
 package ro.teamnet.ou.service;
 
+import ro.teamnet.ou.web.rest.dto.AccountDTO;
+
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -7,4 +10,8 @@ import java.util.List;
  */
 public interface OUAccountService {
     List<Long> getOrganizationalUnitIds(Long accountId);
+
+    Collection<AccountDTO> getAccountsInOrganizationalUnit(Long organizationalUnitId);
+
+    Collection<AccountDTO> getAccountsEligibleForOrganizationalUnit(Long organizationalUnitId);
 }

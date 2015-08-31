@@ -6,6 +6,7 @@ import ro.teamnet.bootstrap.extend.AppRepository;
 import ro.teamnet.ou.domain.jpa.AccountFunction;
 import ro.teamnet.ou.domain.jpa.Function;
 
+import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -15,6 +16,8 @@ public interface AccountFunctionRepository extends AppRepository<AccountFunction
 
     @Query("select af.function from AccountFunction af where af.account.id = :accountId")
     Set<Function> findFunctionsByAccountId(@Param("accountId")Long accountId);
+
+    Set<AccountFunction> findByFunctionIn(Collection<Function> functions);
 
     AccountFunction findByAccountIdAndFunctionId(Long accountId, Long functionId);
     void deleteByAccountIdAndFunctionId(Long accountId, Long functionId);

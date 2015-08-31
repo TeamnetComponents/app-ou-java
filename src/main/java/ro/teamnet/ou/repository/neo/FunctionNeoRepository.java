@@ -9,4 +9,6 @@ import java.util.Set;
 
 public interface FunctionNeoRepository extends GraphRepository<Function>, SchemaIndexRepository<Function> {
     Set<Function> findByJpaId(Long jpaId);
+
+    Set<Function> findByOrganizationalUnitJpaId(Long ouId);
 }
