@@ -52,11 +52,12 @@ public class OrganizationalUnit implements Serializable{
     private Perspective perspective;
 
 
-    @ManyToMany//(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE,CascadeType.REFRESH})
+    @ManyToMany//(targetEntity = AccountFunction.class, fetch = FetchType.LAZY, cascade = {CascadeType.MERGE,CascadeType.REFRESH})
     @JoinTable(
             name = "T_OU_ACCOUNT_FUNCTION",
-            joinColumns = {@JoinColumn(name = "account_function_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "ou_id", referencedColumnName = "id")})
+            joinColumns = {@JoinColumn(name = "ou_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "account_function_id", referencedColumnName = "id")}
+    )
     private Set<AccountFunction> accountFunctions = new HashSet<>();
 
     public Long getId() {

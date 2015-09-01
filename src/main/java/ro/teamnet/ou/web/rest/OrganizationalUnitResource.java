@@ -100,7 +100,7 @@ public class OrganizationalUnitResource {
     @Timed
     public ResponseEntity saveAccounts(@PathVariable Long ouId, @RequestBody Collection<AccountDTO> accounts) {
         log.debug("REST request to save the organizational unit accounts for ouId = {}", ouId);
-        //  TODO: save or update ou-account relationships
+        ouAccountService.createOrUpdateOUAccountRelationships(ouId, accounts);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -109,7 +109,7 @@ public class OrganizationalUnitResource {
     @Timed
     public ResponseEntity deleteAccount(@PathVariable Long ouId, @PathVariable Long accountId) {
         log.debug("REST request to delete the organizational unit accounts for: ouId={}, accountId={}", ouId, accountId);
-        //TODO: delete the ou-account relationships
+        ouAccountService.deleteOuAccountRelationships(ouId, accountId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

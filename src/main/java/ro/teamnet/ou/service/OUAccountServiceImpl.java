@@ -3,14 +3,18 @@ package ro.teamnet.ou.service;
 import org.springframework.stereotype.Service;
 import ro.teamnet.ou.domain.jpa.AccountFunction;
 import ro.teamnet.ou.domain.jpa.Function;
+import ro.teamnet.ou.domain.neo.Account;
 import ro.teamnet.ou.domain.neo.OrganizationalUnit;
 import ro.teamnet.ou.mapper.AccountMapper;
 import ro.teamnet.ou.mapper.FunctionMapper;
 import ro.teamnet.ou.repository.jpa.AccountFunctionRepository;
 import ro.teamnet.ou.repository.jpa.OrganizationalUnitFunctionRepository;
+import ro.teamnet.ou.repository.jpa.OrganizationalUnitRepository;
 import ro.teamnet.ou.repository.neo.AccountNeoRepository;
 import ro.teamnet.ou.repository.neo.FunctionNeoRepository;
+import ro.teamnet.ou.repository.neo.OrganizationalUnitNeoRepository;
 import ro.teamnet.ou.web.rest.dto.AccountDTO;
+import ro.teamnet.ou.web.rest.dto.FunctionDTO;
 
 import javax.inject.Inject;
 import java.util.*;
@@ -20,11 +24,15 @@ public class OUAccountServiceImpl implements OUAccountService {
     @Inject
     private AccountNeoRepository accountNeoRepository;
     @Inject
+    private OrganizationalUnitNeoRepository ouNeoRepository;
+    @Inject
     private FunctionNeoRepository functionNeoRepository;
     @Inject
     private AccountFunctionRepository accountFunctionRepository;
     @Inject
     private OrganizationalUnitFunctionRepository ouFunctionRepository;
+    @Inject
+    private OrganizationalUnitRepository organizationalUnitRepository;
 
     @Override
     public List<Long> getOrganizationalUnitIds(Long accountId) {
@@ -41,8 +49,7 @@ public class OUAccountServiceImpl implements OUAccountService {
     @Override
     public Collection<AccountDTO> getAccountsInOrganizationalUnit(Long organizationalUnitId) {
         Map<Long, AccountDTO> accountsById = new HashMap<>();
-        Set<ro.teamnet.ou.domain.neo.Function> functions = functionNeoRepository.findByOrganizationalUnitJpaId(
-                organizationalUnitId);
+        Set<ro.teamnet.ou.domain.neo.Function> functions = ouNeoRepository.findByJpaId(organizationalUnitId).getFunctions();
         if (functions != null && !functions.isEmpty()) {
             for (ro.teamnet.ou.domain.neo.Function function : functions) {
                 AccountDTO accountDTO = accountsById.get(function.getAccount().getId());
@@ -57,7 +64,7 @@ public class OUAccountServiceImpl implements OUAccountService {
         for (Long accountId : accountsById.keySet()) {
             Set<Function> availableAccountFunctions = accountFunctionRepository.findFunctionsByAccountId(accountId);
             availableAccountFunctions.retainAll(availableOuFunctions);
-            accountsById.get(accountId).setAvailableFunctions(FunctionMapper.toDTO(availableAccountFunctions));
+            accountsById.get(accountId).setAvailableFunctions(FunctionMapper.toDTO(availableAccountFunctions, true));
         }
         return accountsById.values();
     }
@@ -79,5 +86,44 @@ public class OUAccountServiceImpl implements OUAccountService {
             }
         }
         return accountsById.values();
+    }
+
+    @Override
+    public void createOrUpdateOUAccountRelationships(Long ouId, Collection<AccountDTO> accounts) {
+        OrganizationalUnit neoOrganizationalUnit = ouNeoRepository.findByJpaId(ouId);
+        neoOrganizationalUnit.setAccounts(new HashSet<Account>());
+        neoOrganizationalUnit.setFunctions(new HashSet<ro.teamnet.ou.domain.neo.Function>());
+        ouNeoRepository.save(neoOrganizationalUnit);
+        ro.teamnet.ou.domain.jpa.OrganizationalUnit jpaOrganizationalUnit = organizationalUnitRepository
+                .getOneWithAccountFunctions(ouId);
+        jpaOrganizationalUnit.setAccountFunctions(new HashSet<AccountFunction>());
+        for (AccountDTO account : accounts) {
+            Account neoAccount = accountNeoRepository.findByJpaId(account.getId());
+            for (FunctionDTO functionDTO : account.getFunctions()) {
+                saveNeoFunction(neoOrganizationalUnit, neoAccount, functionDTO);
+                AccountFunction accountFunction = accountFunctionRepository.findByAccountIdAndFunctionId(account.getId(), functionDTO.getId());
+                jpaOrganizationalUnit.getAccountFunctions().add(accountFunction);
+            }
+        }
+        organizationalUnitRepository.save(jpaOrganizationalUnit);
+    }
+
+    private void saveNeoFunction(OrganizationalUnit neoOrganizationalUnit, Account neoAccount, FunctionDTO functionDTO) {
+        ro.teamnet.ou.domain.neo.Function neoFunction = new ro.teamnet.ou.domain.neo.Function();
+        neoFunction.setOrganizationalUnit(neoOrganizationalUnit);
+        neoFunction.setAccount(neoAccount);
+        neoFunction.setId(null);
+        neoFunction.setJpaId(functionDTO.getId());
+        neoFunction.setCode(functionDTO.getCode());
+        functionNeoRepository.save(neoFunction);
+    }
+
+    @Override
+    public void deleteOuAccountRelationships(Long ouId, Long accountId) {
+        functionNeoRepository.deleteByOrganizationalUnitJpaIdAndAccountJpaId(ouId, accountId);
+        ro.teamnet.ou.domain.jpa.OrganizationalUnit organizationalUnit = organizationalUnitRepository
+                .getOneWithAccountFunctions(ouId);
+        organizationalUnit.getAccountFunctions().removeAll(accountFunctionRepository.findByAccountId(accountId));
+        organizationalUnitRepository.save(organizationalUnit);
     }
 }

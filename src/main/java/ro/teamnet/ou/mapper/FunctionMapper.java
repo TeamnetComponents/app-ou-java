@@ -4,7 +4,6 @@ import ro.teamnet.bootstrap.domain.ModuleRight;
 import ro.teamnet.bootstrap.web.rest.dto.ModuleRightDTO;
 import ro.teamnet.ou.domain.jpa.Function;
 import ro.teamnet.ou.web.rest.dto.FunctionDTO;
-import ro.teamnet.ou.web.rest.dto.FunctionRelationshipDTO;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -39,19 +38,6 @@ public class FunctionMapper {
         }
         function.setModuleRights(moduleRightSet);
 
-        return function;
-    }
-
-    public static ro.teamnet.ou.domain.neo.Function toNeo(FunctionRelationshipDTO relationshipDTO) {
-        if (relationshipDTO == null || relationshipDTO.getAccount() == null || relationshipDTO.getOrganizationalUnit() == null) {
-            return null;
-        }
-        ro.teamnet.ou.domain.neo.Function function = new ro.teamnet.ou.domain.neo.Function();
-        function.setId(relationshipDTO.getId());
-        function.setJpaId(relationshipDTO.getFunctionId());
-        function.setCode(relationshipDTO.getCode());
-        function.setAccount(AccountMapper.toNeo(relationshipDTO.getAccount()));
-        function.setOrganizationalUnit(OrganizationalUnitMapper.toNeo(relationshipDTO.getOrganizationalUnit()));
         return function;
     }
 
@@ -95,24 +81,15 @@ public class FunctionMapper {
         return functionDTO;
     }
 
-    public static FunctionRelationshipDTO toRelationshipDTO(ro.teamnet.ou.domain.neo.Function functionNeo) {
-        if (functionNeo == null) {
-            return null;
-        }
-        FunctionRelationshipDTO relationshipDTO = new FunctionRelationshipDTO();
-        relationshipDTO.setId(functionNeo.getId());
-        relationshipDTO.setFunctionId(functionNeo.getJpaId());
-        relationshipDTO.setOrganizationalUnit(OrganizationalUnitMapper.toDTO(functionNeo.getOrganizationalUnit()));
-        relationshipDTO.setAccount(AccountMapper.toDTO(functionNeo.getAccount()));
-        return relationshipDTO;
-    }
-
-    public static Set<FunctionDTO> toDTO(Collection<Function> functions) {
+    public static Set<FunctionDTO> toDTO(Collection<Function> functions, boolean lazyFetching) {
         Set<FunctionDTO> dtos = new HashSet<>();
         for (Function function : functions) {
-            dtos.add(FunctionMapper.toDTO(function));
+            dtos.add(FunctionMapper.toDTO(function, lazyFetching));
         }
         return dtos;
     }
 
+    public static Set<FunctionDTO> toDTO(Collection<Function> functions) {
+        return toDTO(functions, false);
+    }
 }

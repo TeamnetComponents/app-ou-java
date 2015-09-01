@@ -18,7 +18,8 @@ public interface AccountFunctionRepository extends AppRepository<AccountFunction
     Set<Function> findFunctionsByAccountId(@Param("accountId")Long accountId);
 
     Set<AccountFunction> findByFunctionIn(Collection<Function> functions);
-
+    Set<AccountFunction> findByAccountId(Long accountId);
     AccountFunction findByAccountIdAndFunctionId(Long accountId, Long functionId);
+
     void deleteByAccountIdAndFunctionId(Long accountId, Long functionId);
 }
