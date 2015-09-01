@@ -74,6 +74,13 @@ public class OrganizationalUnitResource {
         return organizationalUnitService.getTree(rootId);
     }
 
+    @RequestMapping(value = "/getParentOrgUnitsById/{rootId}/{id}",
+            method = RequestMethod.GET)
+    @Timed
+    List<OrganizationalUnitDTO> getParentOrgUnitsById(@PathVariable Long rootId, @PathVariable Long id) {
+        return organizationalUnitService.getParentOrgUnitsById(rootId, id);
+    }
+    
     @RequestMapping(value = "/accounts/{ouId}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
@@ -95,12 +102,5 @@ public class OrganizationalUnitResource {
         log.debug("REST request to save the organizational unit accounts for ouId = {}", ouId);
         ouAccountService.createOrUpdateOUAccountRelationships(ouId, accounts);
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/getParentOrgUnitsById/{rootId}/{id}",
-            method = RequestMethod.GET)
-    @Timed
-    List<OrganizationalUnitDTO> getParentOrgUnitsById(@PathVariable Long rootId, @PathVariable Long id) {
-        return organizationalUnitService.getParentOrgUnitsById(rootId, id);
     }
 }
