@@ -13,7 +13,6 @@ import ro.teamnet.ou.web.rest.dto.AccountDTO;
 import ro.teamnet.ou.web.rest.dto.OrganizationalUnitDTO;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -66,13 +65,6 @@ public class OrganizationalUnitResource {
     public void delete(@PathVariable Long id) {
         log.debug("REST request to delete : {}", id);
         organizationalUnitService.delete(id);
-    }
-
-    @RequestMapping(value = "/getOrganizationalUnitTreeById/{id}",
-            method = RequestMethod.GET)
-    @Timed
-    public List<OrganizationalUnitDTO> getOrganizationalUnitTreeById(@PathVariable Long id) {
-        return organizationalUnitService.getOrganizationalUnitDTOsJPAId(id);
     }
 
     @RequestMapping(value = "/getTree/{rootId}",

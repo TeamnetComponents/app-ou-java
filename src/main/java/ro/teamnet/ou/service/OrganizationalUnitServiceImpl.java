@@ -148,18 +148,6 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
         return nodeJSON;
     }
 
-    public List<OrganizationalUnitDTO> getOrganizationalUnitDTOsJPAId(Long rootId) {
-        ro.teamnet.ou.domain.neo.OrganizationalUnit rootOu = organizationalUnitNeoRepository.findByJpaId(rootId);
-        Set<ro.teamnet.ou.domain.neo.OrganizationalUnit> orgUnitSet = getOrganizationalUnitTreeById(rootOu.getId());
-
-        List<OrganizationalUnitDTO> organizationalUnitDTOs = new ArrayList<>();
-        for (ro.teamnet.ou.domain.neo.OrganizationalUnit orgUnit : orgUnitSet) {
-            organizationalUnitDTOs.add(OrganizationalUnitMapper.toDTO(orgUnit, false));
-        }
-
-        return organizationalUnitDTOs;
-    }
-
     public String getTree(Long rootId) {
         ro.teamnet.ou.domain.neo.OrganizationalUnit rootOu = organizationalUnitNeoRepository.findByJpaId(rootId);
         Set<ro.teamnet.ou.domain.neo.OrganizationalUnit> orgUnitSet = getOrganizationalUnitTreeById(rootOu.getId());
