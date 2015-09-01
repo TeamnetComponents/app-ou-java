@@ -52,8 +52,9 @@ public class OrganizationalUnitHierarchyFilterTest {
         saveNewTestEntity(OWNER_OU_ID);
         saveNewTestEntity(2L);
         saveNewTestEntity(3L);
+        saveNewTestEntity(null);
         List<OUHierarchyTestEntity> all = repository.findAll();
-        Assert.assertEquals(4, all.size());
+        Assert.assertEquals(5, all.size());
         Mockito.doReturn(Collections.singletonList(OWNER_OU_ID)).when(advice).getAuthenticatedUserOUIds();
         advice.setupOrganizationalUnitHierarchyFilter();
         all = repository.findAll();
@@ -63,7 +64,7 @@ public class OrganizationalUnitHierarchyFilterTest {
         }
     }
 
-    private void saveNewTestEntity(long ownerOrganizationalUnitId) {
+    private void saveNewTestEntity(Long ownerOrganizationalUnitId) {
         OUHierarchyTestEntity test = new OUHierarchyTestEntity();
         test.setOwnerOrganizationalUnitId(ownerOrganizationalUnitId);
         repository.save(test);

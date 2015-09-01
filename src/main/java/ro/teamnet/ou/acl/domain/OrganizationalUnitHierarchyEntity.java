@@ -24,7 +24,7 @@ public abstract class OrganizationalUnitHierarchyEntity {
     public static final String FILTER_BY_OWNER_ORGANIZATIONAL_UNITS = "filterByOwnerOrganizationalUnits";
     public static final String OWNER_ORGANIZATIONAL_UNIT_IDS = "ownerOrganizationalUnitIds";
 
-    @Column(name = "OWNER_OU_ID", nullable = false)
+    @Column(name = "OWNER_OU_ID", nullable = true)
     private Long ownerOrganizationalUnitId;
 
     public Long getOwnerOrganizationalUnitId() {

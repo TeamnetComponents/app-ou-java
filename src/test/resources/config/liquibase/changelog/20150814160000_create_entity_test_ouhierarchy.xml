@@ -9,17 +9,13 @@
             <column name="ID" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="OWNER_OU_ID" type="bigint">
-                <constraints nullable="false"/>
-            </column>
+            <column name="OWNER_OU_ID" type="bigint"/>
         </createTable>
         <createTable tableName="_TEST_OUHIERARCHY2">
             <column name="ID" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="OWNER_OU_ID" type="bigint">
-                <constraints nullable="false"/>
-            </column>
+            <column name="OWNER_OU_ID" type="bigint"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>
