@@ -76,14 +76,26 @@ public class OrganizationalUnitResource {
 
     @RequestMapping(value = "/accounts/{ouId}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Collection<AccountDTO> getAccounts(@PathVariable Long ouId){
+    @Timed
+    public Collection<AccountDTO> getAccounts(@PathVariable Long ouId) {
         return ouAccountService.getAccountsInOrganizationalUnit(ouId);
     }
 
     @RequestMapping(value = "/eligibleAccounts/{ouId}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Collection<AccountDTO> getEligibleAccounts(@PathVariable Long ouId){
-        return ouAccountService.getAccountsEligibleForOrganizationalUnit(ouId);}
+    @Timed
+    public Collection<AccountDTO> getEligibleAccounts(@PathVariable Long ouId) {
+        return ouAccountService.getAccountsEligibleForOrganizationalUnit(ouId);
+    }
+
+    @RequestMapping(value = "/accounts/{ouId}", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity saveAccounts(@PathVariable Long ouId, @RequestBody Collection<AccountDTO> accounts) {
+        log.debug("REST request to save the organizational unit accounts for ouId = {}", ouId);
+        ouAccountService.createOrUpdateOUAccountRelationships(ouId, accounts);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     @RequestMapping(value = "/getParentOrgUnitsById/{rootId}/{id}",
             method = RequestMethod.GET)
