@@ -11,6 +11,7 @@ public class AccountDTO {
     private long id;
     private String username;
     private Set<FunctionDTO> functions;
+    private Set<FunctionDTO> availableFunctions;
 
     public long getId() {
         return id;
@@ -34,5 +35,13 @@ public class AccountDTO {
 
     public void setFunctions(Set<FunctionDTO> functions) {
         this.functions = functions;
+    }
+
+    public Set<FunctionDTO> getAvailableFunctions() {
+        return availableFunctions;
+    }
+
+    public void setAvailableFunctions(Set<FunctionDTO> availableFunctions) {
+        this.availableFunctions = availableFunctions;
     }
 }

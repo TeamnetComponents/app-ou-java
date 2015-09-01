@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.teamnet.ou.service.FunctionService;
 import ro.teamnet.ou.web.rest.dto.FunctionDTO;
-import ro.teamnet.ou.web.rest.dto.FunctionRelationshipDTO;
 
 import javax.inject.Inject;
 import java.util.Set;
@@ -71,21 +70,6 @@ public class FunctionResource{
     public void delete(@PathVariable Long id) {
         log.debug("REST request to delete : {}", id);
         functionService.delete(id);
-    }
-
-    @RequestMapping(value = "/addRelationship", method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public ResponseEntity<FunctionRelationshipDTO> addRelationship(@RequestBody FunctionRelationshipDTO functionRelationshipDTO) {
-        return new ResponseEntity<>(functionService.addRelationship(functionRelationshipDTO), HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/deleteRelationship/{id}", method = RequestMethod.DELETE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public ResponseEntity deleteRelationship(@PathVariable Long functionRelationshipId) {
-        functionService.deleteRelationship(functionRelationshipId);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/account/{accountId}", method = RequestMethod.GET,

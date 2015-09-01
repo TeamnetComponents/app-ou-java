@@ -19,7 +19,6 @@ import ro.teamnet.ou.repository.jpa.OrganizationalUnitFunctionRepository;
 import ro.teamnet.ou.repository.jpa.OrganizationalUnitRepository;
 import ro.teamnet.ou.repository.neo.FunctionNeoRepository;
 import ro.teamnet.ou.web.rest.dto.FunctionDTO;
-import ro.teamnet.ou.web.rest.dto.FunctionRelationshipDTO;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -94,17 +93,6 @@ public class FunctionServiceImpl implements FunctionService {
         for (ro.teamnet.ou.domain.neo.Function neoFunction : functionNeoRepository.findByJpaId(id)) {
             functionNeoRepository.delete(neoFunction);
         }
-    }
-
-    @Override
-    public FunctionRelationshipDTO addRelationship(FunctionRelationshipDTO functionRelationshipDTO) {
-        ro.teamnet.ou.domain.neo.Function neoFunction = FunctionMapper.toNeo(functionRelationshipDTO);
-        return FunctionMapper.toRelationshipDTO(functionNeoRepository.save(neoFunction));
-    }
-
-    @Override
-    public void deleteRelationship(Long functionRelationshipId) {
-        functionNeoRepository.delete(functionRelationshipId);
     }
 
     @Override

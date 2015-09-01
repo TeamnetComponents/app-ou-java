@@ -14,4 +14,8 @@ public interface OUAccountService {
     Collection<AccountDTO> getAccountsInOrganizationalUnit(Long organizationalUnitId);
 
     Collection<AccountDTO> getAccountsEligibleForOrganizationalUnit(Long organizationalUnitId);
+
+    void createOrUpdateOUAccountRelationships(Long ouId, Collection<AccountDTO> accounts);
+
+    void deleteOuAccountRelationships(Long ouId, Long accountId);
 }

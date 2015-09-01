@@ -28,6 +28,10 @@ public class OrganizationalUnit {
     @RelatedTo(type = "FUNCTION", direction = Direction.INCOMING)
     private Set<Account> accounts;
 
+    @Fetch
+    @RelatedToVia(type = "FUNCTION", direction = Direction.INCOMING)
+    private Set<Function> functions;
+
     public Long getId() {
         return id;
     }
@@ -74,5 +78,13 @@ public class OrganizationalUnit {
 
     public void setAccounts(Set<Account> accounts) {
         this.accounts = accounts;
+    }
+
+    public Set<Function> getFunctions() {
+        return functions;
+    }
+
+    public void setFunctions(Set<Function> functions) {
+        this.functions = functions;
     }
 }

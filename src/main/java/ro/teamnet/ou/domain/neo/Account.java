@@ -21,7 +21,7 @@ public class Account {
     private Set<ro.teamnet.ou.domain.neo.OrganizationalUnit> organizationalUnits;
 
     @Fetch
-    @RelatedToVia(type = "FUNCTION")
+    @RelatedToVia(type = "FUNCTION", direction = Direction.OUTGOING)
     private Set<Function> functions;
 
     public Long getId() {

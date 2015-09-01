@@ -11,4 +11,7 @@ public interface FunctionNeoRepository extends GraphRepository<Function>, Schema
     Set<Function> findByJpaId(Long jpaId);
 
     Set<Function> findByOrganizationalUnitJpaId(Long ouId);
+    void deleteByOrganizationalUnitJpaId(Long ouId);
+
+    void deleteByOrganizationalUnitJpaIdAndAccountJpaId(Long ouId, Long accountId);
 }
