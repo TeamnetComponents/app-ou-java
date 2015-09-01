@@ -13,7 +13,6 @@ import ro.teamnet.ou.web.rest.dto.AccountDTO;
 import ro.teamnet.ou.web.rest.dto.OrganizationalUnitDTO;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -84,15 +83,16 @@ public class OrganizationalUnitResource {
 
     @RequestMapping(value = "/accounts/{ouId}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Collection<AccountDTO> getAccounts(@PathVariable Long ouId){
+    public Collection<AccountDTO> getAccounts(@PathVariable Long ouId) {
         return ouAccountService.getAccountsInOrganizationalUnit(ouId);
     }
 
     @RequestMapping(value = "/eligibleAccounts/{ouId}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Collection<AccountDTO> getEligibleAccounts(@PathVariable Long ouId){
-        return ouAccountService.getAccountsEligibleForOrganizationalUnit(ouId);}
-}
+    public Collection<AccountDTO> getEligibleAccounts(@PathVariable Long ouId) {
+        return ouAccountService.getAccountsEligibleForOrganizationalUnit(ouId);
+    }
+
     @RequestMapping(value = "/getParentOrgUnitsById/{rootId}/{id}",
             method = RequestMethod.GET)
     @Timed
