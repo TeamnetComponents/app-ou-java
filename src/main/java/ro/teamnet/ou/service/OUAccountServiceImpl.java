@@ -52,7 +52,7 @@ public class OUAccountServiceImpl implements OUAccountService {
         Set<ro.teamnet.ou.domain.neo.Function> functions = ouNeoRepository.findByJpaId(organizationalUnitId).getFunctions();
         if (functions != null && !functions.isEmpty()) {
             for (ro.teamnet.ou.domain.neo.Function function : functions) {
-                AccountDTO accountDTO = accountsById.get(function.getAccount().getId());
+                AccountDTO accountDTO = accountsById.get(function.getAccount().getJpaId());
                 if (accountDTO == null) {
                     accountDTO = AccountMapper.toDTO(function.getAccount());
                     accountsById.put(accountDTO.getId(), accountDTO);

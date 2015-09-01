@@ -44,7 +44,7 @@ public class OrganizationalUnit implements Serializable{
     @JsonBackReference
     private OrganizationalUnit parent;
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<OrganizationalUnit> children;
 
     @OneToOne
@@ -52,7 +52,7 @@ public class OrganizationalUnit implements Serializable{
     private Perspective perspective;
 
 
-    @ManyToMany//(targetEntity = AccountFunction.class, fetch = FetchType.LAZY, cascade = {CascadeType.MERGE,CascadeType.REFRESH})
+    @ManyToMany
     @JoinTable(
             name = "T_OU_ACCOUNT_FUNCTION",
             joinColumns = {@JoinColumn(name = "ou_id", referencedColumnName = "id")},
