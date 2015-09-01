@@ -152,4 +152,36 @@ public class OrganizationalUnitMapper {
 
         return organizationalUnitDTO;
     }
+
+    /**
+     * Converts the Neo4J entity for an organizational unit into a DTO.
+     * @param lazyFetching if true, the references to perspective and children wil not be added to the entity
+     * @param organizationalUnitNeo the organizational unit Neo4J entity
+     * @return the DTO
+     */
+    public static OrganizationalUnitDTO toDTO(ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnitNeo, boolean lazyFetching) {
+
+        OrganizationalUnitDTO organizationalUnitDTO = new OrganizationalUnitDTO();
+
+        organizationalUnitDTO.setId(organizationalUnitNeo.getJpaId());
+        organizationalUnitDTO.setCode(organizationalUnitNeo.getCode());
+
+        if (organizationalUnitNeo.getParent() != null) {
+            organizationalUnitDTO.setParent(OrganizationalUnitMapper.toDTO(organizationalUnitNeo.getParent(), true));
+        }
+
+        if (!lazyFetching) {
+            Set<OrganizationalUnitDTO> organizationalUnitDTOs = new HashSet<>();
+            List<ro.teamnet.ou.domain.neo.OrganizationalUnit> organizationalUnitNeoList = new ArrayList<>(organizationalUnitNeo.getChildren());
+
+            if (organizationalUnitNeoList != null) {
+                for (ro.teamnet.ou.domain.neo.OrganizationalUnit ouNeo : organizationalUnitNeoList) {
+                    organizationalUnitDTOs.add(OrganizationalUnitMapper.toDTO(ouNeo, true));
+                }
+            }
+            organizationalUnitDTO.setChildren(organizationalUnitDTOs);
+
+        }
+        return organizationalUnitDTO;
+    }
 }

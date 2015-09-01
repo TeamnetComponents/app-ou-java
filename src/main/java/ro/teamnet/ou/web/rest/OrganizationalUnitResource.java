@@ -13,7 +13,9 @@ import ro.teamnet.ou.web.rest.dto.AccountDTO;
 import ro.teamnet.ou.web.rest.dto.OrganizationalUnitDTO;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -67,11 +69,10 @@ public class OrganizationalUnitResource {
     }
 
     @RequestMapping(value = "/getOrganizationalUnitTreeById/{id}",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+            method = RequestMethod.GET)
     @Timed
-    public Set<ro.teamnet.ou.domain.neo.OrganizationalUnit> getOrganizationalUnitTreeById(@PathVariable Long id) {
-        return organizationalUnitService.getOrganizationalUnitTreeById(id);
+    public List<OrganizationalUnitDTO> getOrganizationalUnitTreeById(@PathVariable Long id) {
+        return organizationalUnitService.getOrganizationalUnitDTOsJPAId(id);
     }
 
     @RequestMapping(value = "/getTree/{rootId}",
@@ -91,4 +92,11 @@ public class OrganizationalUnitResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Collection<AccountDTO> getEligibleAccounts(@PathVariable Long ouId){
         return ouAccountService.getAccountsEligibleForOrganizationalUnit(ouId);}
+}
+    @RequestMapping(value = "/getParentOrgUnitsById/{rootId}/{id}",
+            method = RequestMethod.GET)
+    @Timed
+    List<OrganizationalUnitDTO> getParentOrgUnitsById(@PathVariable Long rootId, @PathVariable Long id) {
+        return organizationalUnitService.getParentOrgUnitsById(rootId, id);
+    }
 }
