@@ -29,6 +29,7 @@ public class AccountMapper {
         accountDTO.setId(account.getId());
         accountDTO.setUsername(account.getLogin());
         accountDTO.setFunctions(new HashSet<FunctionDTO>());
+        accountDTO.setAvailableFunctions(new HashSet<FunctionDTO>());
         return accountDTO;
     }
 
@@ -40,6 +41,7 @@ public class AccountMapper {
         accountDTO.setId(account.getJpaId());
         accountDTO.setUsername(account.getUsername());
         accountDTO.setFunctions(new HashSet<FunctionDTO>());
+        accountDTO.setAvailableFunctions(new HashSet<FunctionDTO>());
         return accountDTO;
     }
 
