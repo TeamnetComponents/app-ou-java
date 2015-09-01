@@ -92,7 +92,7 @@ public class OrganizationalUnitResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Collection<AccountDTO> getEligibleAccounts(@PathVariable Long ouId){
         return ouAccountService.getAccountsEligibleForOrganizationalUnit(ouId);}
-}
+
     @RequestMapping(value = "/getParentOrgUnitsById/{rootId}/{id}",
             method = RequestMethod.GET)
     @Timed
