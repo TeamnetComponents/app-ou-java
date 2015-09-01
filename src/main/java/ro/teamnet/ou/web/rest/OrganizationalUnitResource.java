@@ -83,14 +83,34 @@ public class OrganizationalUnitResource {
 
     @RequestMapping(value = "/accounts/{ouId}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
     public Collection<AccountDTO> getAccounts(@PathVariable Long ouId) {
         return ouAccountService.getAccountsInOrganizationalUnit(ouId);
     }
 
     @RequestMapping(value = "/eligibleAccounts/{ouId}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
     public Collection<AccountDTO> getEligibleAccounts(@PathVariable Long ouId) {
         return ouAccountService.getAccountsEligibleForOrganizationalUnit(ouId);
+    }
+
+    @RequestMapping(value = "/accounts/{ouId}", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity saveAccounts(@PathVariable Long ouId, @RequestBody Collection<AccountDTO> accounts) {
+        log.debug("REST request to save the organizational unit accounts for ouId = {}", ouId);
+        //  TODO: save or update ou-account relationships
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/accounts/{ouId}/{accountId}", method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity deleteAccount(@PathVariable Long ouId, @PathVariable Long accountId) {
+        log.debug("REST request to delete the organizational unit accounts for: ouId={}, accountId={}", ouId, accountId);
+        //TODO: delete the ou-account relationships
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/getParentOrgUnitsById/{rootId}/{id}",
