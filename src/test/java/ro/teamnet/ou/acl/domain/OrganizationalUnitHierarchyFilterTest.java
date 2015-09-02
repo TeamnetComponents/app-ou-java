@@ -60,14 +60,14 @@ public class OrganizationalUnitHierarchyFilterTest {
         all = repository.findAll();
         Assert.assertEquals(2, all.size());
         for (OUHierarchyTestEntity testEntity : all) {
-            Assert.assertEquals(OWNER_OU_ID, testEntity.getOrganizationalUnitHierarchy().getOwnerOrganizationalUnitId().longValue());
+            Assert.assertEquals(OWNER_OU_ID, testEntity.getDataOwner().getOwnerOrganizationalUnitId().longValue());
         }
     }
 
     private void saveNewTestEntity(Long ownerOrganizationalUnitId) {
         OUHierarchyTestEntity test = new OUHierarchyTestEntity();
-        test.setOrganizationalUnitHierarchy(new OrganizationalUnitHierarchy());
-        test.getOrganizationalUnitHierarchy().setOwnerOrganizationalUnitId(ownerOrganizationalUnitId);
+        test.setDataOwner(new DataOwner());
+        test.getDataOwner().setOwnerOrganizationalUnitId(ownerOrganizationalUnitId);
         repository.save(test);
     }
 
@@ -96,18 +96,18 @@ public class OrganizationalUnitHierarchyFilterTest {
         all2 = repository2.findAll();
         Assert.assertEquals(2, all.size());
         for (OUHierarchyTestEntity testEntity : all) {
-            Assert.assertEquals(OWNER_OU_ID, testEntity.getOrganizationalUnitHierarchy().getOwnerOrganizationalUnitId().longValue());
+            Assert.assertEquals(OWNER_OU_ID, testEntity.getDataOwner().getOwnerOrganizationalUnitId().longValue());
         }
         Assert.assertEquals(5, all2.size());
         for (OUHierarchyTest2Entity test2Entity : all2) {
-            Assert.assertEquals(OWNER_OU_ID, test2Entity.getOrganizationalUnitHierarchy().getOwnerOrganizationalUnitId().longValue());
+            Assert.assertEquals(OWNER_OU_ID, test2Entity.getDataOwner().getOwnerOrganizationalUnitId().longValue());
         }
     }
 
     private void saveNewTest2Entity(long ownerOrganizationalUnitId) {
         OUHierarchyTest2Entity test = new OUHierarchyTest2Entity();
-        test.setOrganizationalUnitHierarchy(new OrganizationalUnitHierarchy());
-        test.getOrganizationalUnitHierarchy().setOwnerOrganizationalUnitId(ownerOrganizationalUnitId);
+        test.setDataOwner(new DataOwner());
+        test.getDataOwner().setOwnerOrganizationalUnitId(ownerOrganizationalUnitId);
         repository2.save(test);
     }
 
@@ -136,7 +136,7 @@ public class OrganizationalUnitHierarchyFilterTest {
         all = repository.findAll();
         Assert.assertEquals(5, all.size());
         for (OUHierarchyTestEntity testEntity : all) {
-            Assert.assertTrue(testEntity.getOrganizationalUnitHierarchy().getOwnerOrganizationalUnitId() <= ROOT_OU_ID);
+            Assert.assertTrue(testEntity.getDataOwner().getOwnerOrganizationalUnitId() <= ROOT_OU_ID);
         }
         ouNeoRepository.delete(rootOu);
         ouNeoRepository.delete(childOu);
@@ -192,7 +192,7 @@ public class OrganizationalUnitHierarchyFilterTest {
         all = repository.findAll();
         Assert.assertEquals(12, all.size());
         for (OUHierarchyTestEntity testEntity : all) {
-            Assert.assertTrue(testEntity.getOrganizationalUnitHierarchy().getOwnerOrganizationalUnitId() <= ROOT_OU_ID);
+            Assert.assertTrue(testEntity.getDataOwner().getOwnerOrganizationalUnitId() <= ROOT_OU_ID);
         }
         ouNeoRepository.delete(rootOu);
         ouNeoRepository.delete(child1Ou);
@@ -266,8 +266,8 @@ public class OrganizationalUnitHierarchyFilterTest {
         all = repository.findAll();
         Assert.assertEquals(7, all.size());
         for (OUHierarchyTestEntity testEntity : all) {
-            Assert.assertTrue(testEntity.getOrganizationalUnitHierarchy().getOwnerOrganizationalUnitId() <= CHILD1_OU_ID);
-            Assert.assertTrue(testEntity.getOrganizationalUnitHierarchy().getOwnerOrganizationalUnitId() > CHILD3_OU_ID);
+            Assert.assertTrue(testEntity.getDataOwner().getOwnerOrganizationalUnitId() <= CHILD1_OU_ID);
+            Assert.assertTrue(testEntity.getDataOwner().getOwnerOrganizationalUnitId() > CHILD3_OU_ID);
         }
         ouNeoRepository.delete(rootOu);
         ouNeoRepository.delete(child1Ou);

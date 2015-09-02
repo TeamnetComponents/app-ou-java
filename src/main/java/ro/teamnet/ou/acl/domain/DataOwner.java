@@ -8,7 +8,7 @@ import javax.persistence.Embeddable;
  * @see OrganizationalUnitHierarchyEntity
  */
 @Embeddable
-public class OrganizationalUnitHierarchy {
+public class DataOwner {
 
     @Column(name = "OWNER_OU_ID", nullable = true)
     private Long ownerOrganizationalUnitId;

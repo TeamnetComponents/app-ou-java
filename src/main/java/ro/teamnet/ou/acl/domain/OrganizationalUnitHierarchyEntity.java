@@ -25,13 +25,13 @@ public abstract class OrganizationalUnitHierarchyEntity {
     public static final String OWNER_ORGANIZATIONAL_UNIT_IDS = "ownerOrganizationalUnitIds";
 
     @Embedded
-    private OrganizationalUnitHierarchy organizationalUnitHierarchy;
+    private DataOwner dataOwner;
 
-    public OrganizationalUnitHierarchy getOrganizationalUnitHierarchy() {
-        return organizationalUnitHierarchy;
+    public DataOwner getDataOwner() {
+        return dataOwner;
     }
 
-    public void setOrganizationalUnitHierarchy(OrganizationalUnitHierarchy organizationalUnitHierarchy) {
-        this.organizationalUnitHierarchy = organizationalUnitHierarchy;
+    public void setDataOwner(DataOwner dataOwner) {
+        this.dataOwner = dataOwner;
     }
 }
