@@ -80,7 +80,7 @@ public class OrganizationalUnitResource {
     List<OrganizationalUnitDTO> getParentOrgUnitsById(@PathVariable Long rootId, @PathVariable Long id) {
         return organizationalUnitService.getParentOrgUnitsById(rootId, id);
     }
-    
+
     @RequestMapping(value = "/accounts/{ouId}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed

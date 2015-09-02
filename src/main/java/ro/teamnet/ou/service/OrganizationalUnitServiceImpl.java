@@ -77,7 +77,7 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
 
         ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnitNeo = organizationalUnitNeoRepository.findByJpaId(id);
         if (organizationalUnitNeo != null) {
-            organizationalUnitNeoRepository.delete(organizationalUnitNeo.getId());
+            organizationalUnitNeoRepository.deleteNodeAndChildren(organizationalUnitNeo.getId());
         }
     }
 

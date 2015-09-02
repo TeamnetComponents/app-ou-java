@@ -28,4 +28,11 @@ public interface OrganizationalUnitNeoRepository extends GraphRepository<Organiz
 
     @Query("start n=node({0}),x=node({1}) match(n:OrganizationalUnit)-[*]-(p:OrganizationalUnit),(q:OrganizationalUnit)-[*]->(n) where ID(q)<>{1} and not(q)-->(x)   return DISTINCT q")
     Set<OrganizationalUnit> getParentOrgUnitsById(Long rootId, Long id);
+
+    @Query("START a=node({0}), b=node({0})" +
+            "MATCH (b:OrganizationalUnit)-[t]-(), (a:OrganizationalUnit)<-[r*1..]-(z:OrganizationalUnit)" +
+            "FOREACH(rel IN r | DELETE rel)" +
+            "DELETE b,t,z")
+    void deleteNodeAndChildren(Long id);
+
 }
