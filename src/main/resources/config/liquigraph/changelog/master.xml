@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<changelog>
+    <changeset id="20150901#1" author="oanam" contexts="dev,test">
+        <query>
+            CREATE (system:Account:_Account {jpaId: 1, username: 'system'})
+            CREATE (admin:Account:_Account {jpaId: 2, username: 'admin'})
+            CREATE (user:Account:_Account {jpaId: 3, username: 'user'})
+        </query>
+    </changeset>
+</changelog>
