@@ -4,6 +4,8 @@ import org.springframework.data.neo4j.conversion.Result;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.teamnet.ou.domain.jpa.Perspective;
+import ro.teamnet.ou.domain.neo.Organization;
+import ro.teamnet.ou.domain.neo.OrganizationalUnit;
 import ro.teamnet.ou.mapper.PerspectiveMapper;
 import ro.teamnet.ou.repository.jpa.PerspectiveRepository;
 import ro.teamnet.ou.repository.neo.OrganizationNeoRepository;
@@ -39,7 +41,7 @@ public class PerspectiveServiceImpl implements PerspectiveService {
     public PerspectiveDTO findPerspectiveById(Long id) {
 
         Perspective perspective = perspectiveRepository.findOne(id);
-        ro.teamnet.ou.domain.neo.Perspective perspectiveNeo = perspectiveNeoRepository.findByJpaId(id);
+       // ro.teamnet.ou.domain.neo.Perspective perspectiveNeo = perspectiveNeoRepository.findByJpaId(id);
 
         return PerspectiveMapper.toDTO(perspective);
     }
@@ -67,6 +69,13 @@ public class PerspectiveServiceImpl implements PerspectiveService {
         return perspectiveDTO;
     }
 
+    @Override
+    public PerspectiveDTO update(PerspectiveDTO perspectiveDTO) {
+        perspectiveDTO = updateJpa(perspectiveDTO);
+        updateNeo(perspectiveDTO);
+        return perspectiveDTO;
+    }
+
     private void saveNeo(PerspectiveDTO perspectiveDTO) {
         ro.teamnet.ou.domain.neo.Perspective perspectiveNeo = new ro.teamnet.ou.domain.neo.Perspective();
         perspectiveNeo.setJpaId(perspectiveDTO.getId());
@@ -76,10 +85,25 @@ public class PerspectiveServiceImpl implements PerspectiveService {
         perspectiveNeoRepository.save(perspectiveNeo);
     }
 
+    private void updateNeo(PerspectiveDTO perspectiveDTO) {
+        ro.teamnet.ou.domain.neo.Perspective perspectiveNeo = perspectiveNeoRepository.findByJpaId(perspectiveDTO.getId());
+        perspectiveNeo.setJpaId(perspectiveDTO.getId());
+        perspectiveNeo.setCode(perspectiveDTO.getCode());
+        perspectiveNeoRepository.save(perspectiveNeo);
+    }
+
     private PerspectiveDTO saveJpa(PerspectiveDTO perspectiveDTO) {
         Perspective perspective = perspectiveRepository.save(PerspectiveMapper.toJPA(perspectiveDTO));
         perspectiveDTO.setId(perspective.getId());
         perspectiveDTO.setOuTreeRoot(organizationalUnitService.saveOUTreeRoot(perspectiveDTO));
+        return perspectiveDTO;
+    }
+
+    private PerspectiveDTO updateJpa(PerspectiveDTO perspectiveDTO) {
+        Perspective perspectiveToSave = PerspectiveMapper.toJPA(perspectiveDTO);
+        perspectiveToSave.setOuTreeRoot(perspectiveRepository.getOne(perspectiveDTO.getId()).getOuTreeRoot());
+        Perspective perspective = perspectiveRepository.save(perspectiveToSave);
+        perspectiveDTO.setId(perspective.getId());
         return perspectiveDTO;
     }
 
@@ -93,12 +117,11 @@ public class PerspectiveServiceImpl implements PerspectiveService {
     }
 
     @Override
-    public void delete(Long id) {
-
-        Perspective perspective = perspectiveRepository.findOne(id);
+    public void delete(PerspectiveDTO perspectiveDTO) {
+        Perspective perspective = perspectiveRepository.findOne(perspectiveDTO.getId());
         perspectiveRepository.delete(perspective);
-        ro.teamnet.ou.domain.neo.Perspective perspectiveNeo = perspectiveNeoRepository.findByJpaId(id);
-        perspectiveNeoRepository.delete(perspectiveNeo);
+        ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnit = organizationalUnitNeoRepository.findByJpaId(perspectiveDTO.getOuTreeRoot().getId());
+        organizationalUnitNeoRepository.deleteNodeAndChildren(organizationalUnit.getId());
     }
 
 }

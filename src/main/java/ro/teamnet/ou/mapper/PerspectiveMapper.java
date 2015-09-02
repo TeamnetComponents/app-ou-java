@@ -23,7 +23,6 @@ public class PerspectiveMapper {
         }
         return perspective;
     }
-
     /**
      * Converts the DTO for Perspective into a JPA entity. A reference to the organization will be added to the entity.
      *

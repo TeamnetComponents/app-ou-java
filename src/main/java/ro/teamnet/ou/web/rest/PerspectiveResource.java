@@ -60,7 +60,7 @@ public class PerspectiveResource {
     @Timed
     public ResponseEntity<PerspectiveDTO> update(@RequestBody PerspectiveDTO perspectiveDTO) {
 
-        perspectiveService.save(perspectiveDTO);
+        perspectiveService.update(perspectiveDTO);
 
         return new ResponseEntity<>(perspectiveDTO, HttpStatus.OK);
     }
@@ -86,11 +86,11 @@ public class PerspectiveResource {
     }
 
     @RequestMapping(value = "/{id}",
-            method = RequestMethod.DELETE,
+            method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public void delete(@PathVariable Long id) {
-        log.debug("REST request to delete : {}", id);
-        perspectiveService.delete(id);
+    public void delete(@RequestBody PerspectiveDTO perspectiveDTO) {
+        log.debug("REST request to delete : {}", perspectiveDTO);
+        perspectiveService.delete(perspectiveDTO);
     }
 }

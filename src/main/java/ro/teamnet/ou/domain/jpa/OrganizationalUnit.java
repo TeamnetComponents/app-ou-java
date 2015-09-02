@@ -44,7 +44,7 @@ public class OrganizationalUnit implements Serializable{
     @JsonBackReference
     private OrganizationalUnit parent;
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<OrganizationalUnit> children;
 
     @OneToOne

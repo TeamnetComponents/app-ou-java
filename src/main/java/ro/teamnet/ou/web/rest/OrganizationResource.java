@@ -60,7 +60,7 @@ public class OrganizationResource {
 //        organizationService.delete(organizationDTO);
 //    }
 
-    @RequestMapping(value = "/{id}",
+    @RequestMapping(value = "/delete",
             method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
