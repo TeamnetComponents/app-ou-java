@@ -72,7 +72,12 @@ public class FunctionServiceImpl implements FunctionService {
         Function function = (functionDto.getId() != null) ?
                 FunctionMapper.updateJpa(functionRepository.findOne(functionDto.getId()), functionDto)
                 : FunctionMapper.toJpa(functionDto);
-
+        if (functionDto.getId() != null) {
+            for (ro.teamnet.ou.domain.neo.Function neoFunction : functionNeoRepository.findByJpaId(functionDto.getId())) {
+                neoFunction.setCode(functionDto.getCode());
+                functionNeoRepository.save(neoFunction);
+            }
+        }
         List<ModuleRight> moduleRights = new ArrayList<>();
         for (ModuleRightDTO moduleRightDTO : functionDto.getModuleRights()) {
             if (moduleRightDTO.getId() != null) {
@@ -84,6 +89,7 @@ public class FunctionServiceImpl implements FunctionService {
             }
         }
         function.setModuleRights(moduleRights);
+
         return FunctionMapper.toDTO(functionRepository.save(function));
     }
 
