@@ -7,6 +7,7 @@ import ro.teamnet.ou.domain.neo.Account;
 import ro.teamnet.ou.domain.neo.OrganizationalUnit;
 import ro.teamnet.ou.mapper.AccountMapper;
 import ro.teamnet.ou.mapper.FunctionMapper;
+import ro.teamnet.ou.mapper.OrganizationalUnitMapper;
 import ro.teamnet.ou.repository.jpa.AccountFunctionRepository;
 import ro.teamnet.ou.repository.jpa.OrganizationalUnitFunctionRepository;
 import ro.teamnet.ou.repository.jpa.OrganizationalUnitRepository;
@@ -15,6 +16,7 @@ import ro.teamnet.ou.repository.neo.FunctionNeoRepository;
 import ro.teamnet.ou.repository.neo.OrganizationalUnitNeoRepository;
 import ro.teamnet.ou.web.rest.dto.AccountDTO;
 import ro.teamnet.ou.web.rest.dto.FunctionDTO;
+import ro.teamnet.ou.web.rest.dto.OrganizationalUnitDTO;
 
 import javax.inject.Inject;
 import java.util.*;
@@ -33,6 +35,18 @@ public class OUAccountServiceImpl implements OUAccountService {
     private OrganizationalUnitFunctionRepository ouFunctionRepository;
     @Inject
     private OrganizationalUnitRepository organizationalUnitRepository;
+
+    @Override
+    public List<OrganizationalUnitDTO> getOrganizationalUnits(Long accountId) {
+        ro.teamnet.ou.domain.neo.Account neoAccount = accountNeoRepository.findByJpaId(accountId);
+        List<OrganizationalUnitDTO> organizationalUnits = new ArrayList<>();
+        if (neoAccount != null && neoAccount.getOrganizationalUnits() != null) {
+            for (OrganizationalUnit organizationalUnit : neoAccount.getOrganizationalUnits()) {
+                organizationalUnits.add(OrganizationalUnitMapper.toDTO(organizationalUnit, true));
+            }
+        }
+        return organizationalUnits;
+    }
 
     @Override
     public List<Long> getOrganizationalUnitIds(Long accountId) {

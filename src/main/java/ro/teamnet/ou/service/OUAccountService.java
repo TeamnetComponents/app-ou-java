@@ -1,6 +1,7 @@
 package ro.teamnet.ou.service;
 
 import ro.teamnet.ou.web.rest.dto.AccountDTO;
+import ro.teamnet.ou.web.rest.dto.OrganizationalUnitDTO;
 
 import java.util.Collection;
 import java.util.List;
@@ -9,6 +10,8 @@ import java.util.List;
  * Service for handling accounts associated to organizational units.
  */
 public interface OUAccountService {
+    List<OrganizationalUnitDTO> getOrganizationalUnits(Long accountId);
+
     List<Long> getOrganizationalUnitIds(Long accountId);
 
     Collection<AccountDTO> getAccountsInOrganizationalUnit(Long organizationalUnitId);

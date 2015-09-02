@@ -4,7 +4,7 @@ import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
 
-import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.MappedSuperclass;
 
 /**
@@ -24,14 +24,14 @@ public abstract class OrganizationalUnitHierarchyEntity {
     public static final String FILTER_BY_OWNER_ORGANIZATIONAL_UNITS = "filterByOwnerOrganizationalUnits";
     public static final String OWNER_ORGANIZATIONAL_UNIT_IDS = "ownerOrganizationalUnitIds";
 
-    @Column(name = "OWNER_OU_ID", nullable = true)
-    private Long ownerOrganizationalUnitId;
+    @Embedded
+    private OrganizationalUnitHierarchy organizationalUnitHierarchy;
 
-    public Long getOwnerOrganizationalUnitId() {
-        return ownerOrganizationalUnitId;
+    public OrganizationalUnitHierarchy getOrganizationalUnitHierarchy() {
+        return organizationalUnitHierarchy;
     }
 
-    public void setOwnerOrganizationalUnitId(Long ownerOrganizationalUnitId) {
-        this.ownerOrganizationalUnitId = ownerOrganizationalUnitId;
+    public void setOrganizationalUnitHierarchy(OrganizationalUnitHierarchy organizationalUnitHierarchy) {
+        this.organizationalUnitHierarchy = organizationalUnitHierarchy;
     }
 }

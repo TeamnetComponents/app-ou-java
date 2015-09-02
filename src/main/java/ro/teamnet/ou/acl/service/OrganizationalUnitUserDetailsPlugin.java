@@ -10,6 +10,7 @@ import ro.teamnet.bootstrap.security.DefaultUserDetailsPlugin;
 import ro.teamnet.bootstrap.service.AccountService;
 import ro.teamnet.ou.acl.domain.OrganizationalUnitUserDetails;
 import ro.teamnet.ou.service.OUAccountService;
+import ro.teamnet.ou.web.rest.dto.OrganizationalUnitDTO;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -39,7 +40,8 @@ public class OrganizationalUnitUserDetailsPlugin extends DefaultUserDetailsPlugi
     public UserDetails loadUserDetails(UserDetails userDetails) {
         Account account = accountService.findByLogin(userDetails.getUsername());
         List<Long> ouIds = ouAccountService.getOrganizationalUnitIds(account.getId());
-        return new OrganizationalUnitUserDetails(super.loadUserDetails(userDetails), ouIds);
+        List<OrganizationalUnitDTO> organizationalUnits = ouAccountService.getOrganizationalUnits(account.getId());
+        return new OrganizationalUnitUserDetails(super.loadUserDetails(userDetails), ouIds, organizationalUnits);
     }
 
 }
