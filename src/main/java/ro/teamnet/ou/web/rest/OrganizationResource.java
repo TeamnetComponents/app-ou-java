@@ -7,19 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ro.teamnet.ou.domain.jpa.Organization;
 import ro.teamnet.ou.service.OrganizationService;
-import ro.teamnet.ou.service.OrganizationalUnitService;
-import ro.teamnet.ou.service.PerspectiveService;
 import ro.teamnet.ou.web.rest.dto.OrganizationDTO;
-import ro.teamnet.ou.web.rest.dto.OrganizationalUnitDTO;
-import ro.teamnet.ou.web.rest.dto.PerspectiveDTO;
 
 import javax.inject.Inject;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -60,11 +51,10 @@ public class OrganizationResource {
 //        organizationService.delete(organizationDTO);
 //    }
 
-    @RequestMapping(value = "/delete",
-            method = RequestMethod.DELETE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}",
+            method = RequestMethod.DELETE)
     @Timed
-    public void delete(@PathVariable Long id) {
+    public void delete(@PathVariable("id") Long id) {
         log.debug("REST request to delete : {}", id);
         organizationService.delete(id);
     }
