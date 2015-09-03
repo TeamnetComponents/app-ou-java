@@ -26,7 +26,9 @@ public interface OrganizationalUnitNeoRepository extends GraphRepository<Organiz
     @Query("MATCH (organizationalUnit:OrganizationalUnit {jpaId:{0}}) RETURN organizationalUnit")
     OrganizationalUnit findByJpaId(Long jpaId);
 
-    @Query("start n=node({0}),x=node({1}) match(n:OrganizationalUnit)-[*]-(p:OrganizationalUnit),(q:OrganizationalUnit)-[*]->(n) where ID(q)<>{1} and not(q)-->(x)   return DISTINCT q")
+    @Query("start q=node({0}) return DISTINCT q UNION ALL " +
+            "start n=node({0}),x=node({1}) match(n:OrganizationalUnit)-[*]-(p:OrganizationalUnit),(q:OrganizationalUnit)-[*]->(n) " +
+            "where ID(q)<>{1} and not(q)-->(x)   return DISTINCT q")
     Set<OrganizationalUnit> getParentOrgUnitsById(Long rootId, Long id);
 
     @Query("START a=node({0}), b=node({0})" +
