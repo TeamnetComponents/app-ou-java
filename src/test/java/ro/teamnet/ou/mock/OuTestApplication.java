@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import ro.teamnet.bootstrap.config.*;
 import ro.teamnet.bootstrap.config.apidoc.SwaggerConfiguration;
 import ro.teamnet.bootstrap.config.metrics.JHipsterHealthIndicatorConfiguration;
+import ro.teamnet.ou.acl.config.AccountFilterAspectConfig;
 import ro.teamnet.ou.acl.config.OrganizationalUnitHierarchyFilterAspectConfig;
 
 /**
@@ -24,7 +25,7 @@ import ro.teamnet.ou.acl.config.OrganizationalUnitHierarchyFilterAspectConfig;
         excludeFilters = @ComponentScan.Filter(
                 type = FilterType.ASSIGNABLE_TYPE,
                 value = {/* Components you wish to exclude */
-                        OrganizationalUnitHierarchyFilterAspectConfig.class,
+                        OrganizationalUnitHierarchyFilterAspectConfig.class, AccountFilterAspectConfig.class,
                         SwaggerConfiguration.class, WebConfigurer.class, WebSecurityConfiguration.class,
                         ThymeleafConfiguration.class, AsyncConfiguration.class, LoggingAspectConfiguration.class,
                         JHipsterHealthIndicatorConfiguration.class, CloudDatabaseConfiguration.class, LocaleConfiguration.class,
