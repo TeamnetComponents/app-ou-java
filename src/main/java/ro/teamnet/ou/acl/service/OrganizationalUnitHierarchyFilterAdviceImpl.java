@@ -15,8 +15,7 @@ import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ro.teamnet.ou.acl.domain.OrganizationalUnitHierarchyEntity.FILTER_BY_OWNER_ORGANIZATIONAL_UNITS;
-import static ro.teamnet.ou.acl.domain.OrganizationalUnitHierarchyEntity.OWNER_ORGANIZATIONAL_UNIT_IDS;
+import static ro.teamnet.ou.acl.domain.OrganizationalUnitHierarchyEntity.*;
 
 @Service
 public class OrganizationalUnitHierarchyFilterAdviceImpl implements OrganizationalUnitHierarchyFilterAdvice {
@@ -36,13 +35,20 @@ public class OrganizationalUnitHierarchyFilterAdviceImpl implements Organization
         if (session == null) {
             return;
         }
-        Filter filter = session.getEnabledFilter(FILTER_BY_OWNER_ORGANIZATIONAL_UNITS);
-        if (filter == null) {
-            filter = session.enableFilter(FILTER_BY_OWNER_ORGANIZATIONAL_UNITS);
-        }
         List<Long> authenticatedUserOUIds = getAuthenticatedUserOUIds();
         List<Long> ouHierarchy = getOUHierarchyForRoots(authenticatedUserOUIds);
-        filter.setParameterList(OWNER_ORGANIZATIONAL_UNIT_IDS, ouHierarchy);
+        if (!ouHierarchy.isEmpty()) {
+            Filter filter = session.getEnabledFilter(FILTER_BY_OWNER_ORGANIZATIONAL_UNITS);
+            if (filter == null) {
+                filter = session.enableFilter(FILTER_BY_OWNER_ORGANIZATIONAL_UNITS);
+            }
+            filter.setParameterList(OWNER_ORGANIZATIONAL_UNIT_IDS, ouHierarchy);
+        } else {
+            Filter filter = session.getEnabledFilter(FILTER_ALL_WHEN_NO_ORGANIZATIONAL_UNITS_ON_ACCOUNT);
+            if (filter == null) {
+                session.enableFilter(FILTER_ALL_WHEN_NO_ORGANIZATIONAL_UNITS_ON_ACCOUNT);
+            }
+        }
     }
 
     private Session getSession() {

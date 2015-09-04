@@ -11,6 +11,18 @@ import java.util.HashSet;
  * Created by Marian.Spoiala on 8/19/2015.
  */
 public class AccountMapper {
+
+    public static ro.teamnet.ou.domain.neo.Account toNeo(Account accountJPA) {
+        if (accountJPA == null) {
+            return null;
+        }
+        ro.teamnet.ou.domain.neo.Account account = new ro.teamnet.ou.domain.neo.Account();
+        account.setJpaId(accountJPA.getId());
+        account.setUsername(accountJPA.getLogin());
+
+        return account;
+    }
+
     public static ro.teamnet.ou.domain.neo.Account toNeo(AccountDTO accountDTO) {
         if (accountDTO == null) {
             return null;
