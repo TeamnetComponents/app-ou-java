@@ -15,6 +15,9 @@ public interface FunctionNeoRepository extends GraphRepository<Function>, Schema
     @Query("match (n:OrganizationalUnit)<-[r:FUNCTION]-(p:Account) where n.jpaId={0} return r")
     Set<Function> findByOrganizationalUnitJpaId(Long ouId);
 
+    @Query("match (n:OrganizationalUnit)<-[r:FUNCTION]-(p:Account) where n.jpaId={0} and p.jpaId={1} return r")
+    Set<Function> findByJpaIdOuIdAndAccountId(Long ouId, Long accId);
+
     @Query("match (n:OrganizationalUnit)<-[r:FUNCTION]-(p:Account) where n.jpaId={0} delete r")
     void deleteByOrganizationalUnitJpaId(Long ouId);
 
