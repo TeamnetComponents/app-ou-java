@@ -18,7 +18,7 @@ import javax.inject.Inject;
 /**
  * Aspect that enables the filtering of entities extending {@link OrganizationalUnitHierarchyEntity} based on the
  * organizational units associated with the authenticated account.
- * @see OrganizationalUnitUserDetailsPlugin#loadUserDetails(UserDetails)
+ *
  */
 @Aspect
 @Order(10000)

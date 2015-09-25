@@ -35,6 +35,11 @@ public class OrganizationalUnitHierarchyFilterAdviceImpl implements Organization
         if (session == null) {
             return;
         }
+        //Workaround to create user
+        User authenticatedUser = SecurityUtils.getAuthenticatedUser();
+        if (authenticatedUser == null) {
+            return;
+        }
         List<Long> authenticatedUserOUIds = getAuthenticatedUserOUIds();
         List<Long> ouHierarchy = getOUHierarchyForRoots(authenticatedUserOUIds);
         if (!ouHierarchy.isEmpty()) {
