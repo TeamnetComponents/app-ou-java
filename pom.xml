@@ -16,7 +16,7 @@
     <version>0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 	<properties>
-        <bootstrap.version>0.2-SNAPSHOT</bootstrap.version>
+        <bootstrap.version>0.2.7-SNAPSHOT</bootstrap.version>
         <spring-data-neo4j.version>3.2.1.RELEASE</spring-data-neo4j.version>
         <app-neo4j-base.version>0.2-SNAPSHOT</app-neo4j-base.version>
     </properties>
@@ -90,19 +90,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-javadoc</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+
         </plugins>
     </build>
 </project>
