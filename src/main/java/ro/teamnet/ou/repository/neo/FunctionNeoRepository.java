@@ -9,6 +9,9 @@ import java.util.Set;
 
 
 public interface FunctionNeoRepository extends GraphRepository<Function>, SchemaIndexRepository<Function> {
+    @Query("match (n:OrganizationalUnit)<-[r:FUNCTION]-(p:Account) return r")
+    Set<Function> getAll();
+
     @Query("match (n:OrganizationalUnit)<-[r:FUNCTION]-(p:Account) where r.jpaId={0} return r")
     Set<Function> findByJpaId(Long jpaId);
 

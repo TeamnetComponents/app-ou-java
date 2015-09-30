@@ -2,16 +2,10 @@ package ro.teamnet.ou.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.neo4j.conversion.Result;
 import org.springframework.stereotype.Service;
 import ro.teamnet.bootstrap.domain.Account;
 import ro.teamnet.bootstrap.repository.AccountRepository;
 import ro.teamnet.ou.domain.jpa.*;
-import ro.teamnet.ou.domain.jpa.Function;
-import ro.teamnet.ou.domain.jpa.Organization;
-import ro.teamnet.ou.domain.jpa.OrganizationalUnit;
-import ro.teamnet.ou.domain.jpa.Perspective;
-import ro.teamnet.ou.domain.neo.*;
 import ro.teamnet.ou.mapper.AccountMapper;
 import ro.teamnet.ou.mapper.OrganizationMapper;
 import ro.teamnet.ou.mapper.OrganizationalUnitMapper;
@@ -20,7 +14,7 @@ import ro.teamnet.ou.repository.neo.*;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.util.Iterator;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
 
@@ -28,6 +22,7 @@ import java.util.Set;
  * Created by Marian.Spoiala on 9/3/2015.
  */
 @Service
+@Transactional
 public class DbSynchronizationService {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -136,60 +131,60 @@ public class DbSynchronizationService {
         }
     }
 
+    /* Needs refactoring */
     private void syncFunctionAccount() {
         List<Function> all = functionRepository.findAll();
-        boolean checkIfIsUpdate = checkIfIsUpdate(), checkIfThisFunctionExist;
+        boolean checkIfIsUpdate = !functionNeoRepository.getAll().isEmpty();
+
         for (Function function : all) {
             log.debug("Testing if Function is found in NeoDB : " + function.getCode());
 
-            AccountFunction accountFunction = accountFunctionRepository.findAccountFunctionByFunctionId(function.getId());
-            Account account = accountRepository.findOne(accountFunction.getAccount().getId());
+            List<AccountFunction> accountFunctionList = accountFunctionRepository.findAccountFunctionByFunctionId(function.getId());
 
-            List<OrganizationalUnit> organizationalUnitList = organizationalUnitRepository.getOrganizationalUnitByAccountFunctionId(accountFunction.getId());
-            if (organizationalUnitList != null) {
-                for (OrganizationalUnit organizationalUnit : organizationalUnitList) {
+            for (AccountFunction accountFunction : accountFunctionList) {
+                Account account = accountRepository.findOne(accountFunction.getAccount().getId());
+                List<OrganizationalUnit> organizationalUnitList = organizationalUnitRepository.getOrganizationalUnitByAccountFunctionId(accountFunction.getId());
 
-                    ro.teamnet.ou.domain.neo.Function neoFunction = prepareNeoFunction(function);
-                    Set<ro.teamnet.ou.domain.neo.Function> existingFunction = functionNeoRepository.findByJpaIdOuIdAndAccountId(organizationalUnit.getId(), account.getId());
-                    if (existingFunction.size() > 0) {
-                        //if the OU have many links
-                        for (ro.teamnet.ou.domain.neo.Function fct : existingFunction) {
-                            if (function.getCode().equals(fct.getCode()) && function.getId().equals(fct.getJpaId())) {
-                                //check if the link FUNCTION exists
-                                neoFunction.setId(fct.getId());
-                                saveNeoFunctionForFunctionAccount(organizationalUnit, account, neoFunction);
-                                continue;
-                            }
-                            if (!checkIfIsUpdate) {
-                                //in case of empty neo4j database
-                                saveNeoFunctionForFunctionAccount(organizationalUnit, account, neoFunction);
-                            } else {
-                                //in case of missing some functions from neo4j database
-                                checkIfThisFunctionExist = checkIfFunctionExist(existingFunction, function);
-                                if(!checkIfThisFunctionExist) {
+                if (organizationalUnitList != null) {
+                    for (OrganizationalUnit organizationalUnit : organizationalUnitList) {
+                        ro.teamnet.ou.domain.neo.Function neoFunction = prepareNeoFunction(function);
+                        Set<ro.teamnet.ou.domain.neo.Function> existingFunction = functionNeoRepository.findByJpaIdOuIdAndAccountId(organizationalUnit.getId(), account.getId());
+
+                        if (existingFunction.size() > 0) {
+                            //if the OU have many links
+                            for (ro.teamnet.ou.domain.neo.Function fct : existingFunction) {
+                                if (function.getCode().equals(fct.getCode()) && function.getId().equals(fct.getJpaId())) {
+                                    //check if the link FUNCTION exists
+                                    neoFunction.setId(fct.getId());
                                     saveNeoFunctionForFunctionAccount(organizationalUnit, account, neoFunction);
+                                    continue;
+                                }
+                                if (!checkIfIsUpdate) {
+                                    //in case of empty neo4j database
+                                    saveNeoFunctionForFunctionAccount(organizationalUnit, account, neoFunction);
+                                } else {
+                                    //in case of missing some functions from neo4j database
+                                    if (!checkIfFunctionExists(existingFunction, function)) {
+                                        saveNeoFunctionForFunctionAccount(organizationalUnit, account, neoFunction);
+                                    }
                                 }
                             }
+                        } else {
+                            saveNeoFunctionForFunctionAccount(organizationalUnit, account, neoFunction);
                         }
-                    } else {
-                        saveNeoFunctionForFunctionAccount(organizationalUnit, account, neoFunction);
                     }
                 }
             }
         }
     }
 
-    private boolean checkIfFunctionExist(Set<ro.teamnet.ou.domain.neo.Function> existingFunction, Function function) {
+    private boolean checkIfFunctionExists(Set<ro.teamnet.ou.domain.neo.Function> existingFunction, Function function) {
         for (ro.teamnet.ou.domain.neo.Function fct : existingFunction) {
             if (function.getCode().equals(fct.getCode()) && function.getId().equals(fct.getJpaId())) {
                 return true;
             }
         }
         return false;
-    }
-
-    private boolean checkIfIsUpdate() {
-        return functionNeoRepository.findAll().iterator().hasNext();
     }
 
     private void saveNeoFunctionForFunctionAccount(OrganizationalUnit organizationalUnit, Account account, ro.teamnet.ou.domain.neo.Function neoFunction) {
