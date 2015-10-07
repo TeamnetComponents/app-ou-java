@@ -3,19 +3,21 @@ package ro.teamnet.ou.acl.service;
 import org.hibernate.Filter;
 import org.hibernate.Session;
 import org.hibernate.jpa.HibernateEntityManager;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import ro.teamnet.bootstrap.plugin.security.UserDetailsExtension;
 import ro.teamnet.bootstrap.security.util.SecurityUtils;
-import ro.teamnet.ou.acl.domain.OrganizationalUnitUserDetails;
+import ro.teamnet.ou.acl.domain.UserOrganizationalUnitDetails;
 import ro.teamnet.ou.repository.neo.OrganizationalUnitNeoRepository;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashSet;
 
 import static ro.teamnet.ou.acl.domain.OrganizationalUnitHierarchyEntity.*;
+import static ro.teamnet.ou.acl.service.OrganizationalUnitUserDetailsPlugin.USER_ORGANIZATIONAL_UNIT_DETAILS;
 
 @Service
 public class OrganizationalUnitHierarchyFilterAdviceImpl implements OrganizationalUnitHierarchyFilterAdvice {
@@ -36,12 +38,12 @@ public class OrganizationalUnitHierarchyFilterAdviceImpl implements Organization
             return;
         }
         //Workaround to create user
-        User authenticatedUser = SecurityUtils.getAuthenticatedUser();
+        UserDetails authenticatedUser = SecurityUtils.getAuthenticatedUser();
         if (authenticatedUser == null) {
             return;
         }
-        List<Long> authenticatedUserOUIds = getAuthenticatedUserOUIds();
-        List<Long> ouHierarchy = getOUHierarchyForRoots(authenticatedUserOUIds);
+        Collection<Long> authenticatedUserOUIds = getAuthenticatedUserOUIds();
+        Collection<Long> ouHierarchy = getOUHierarchyForRoots(authenticatedUserOUIds);
         if (!ouHierarchy.isEmpty()) {
             Filter filter = session.getEnabledFilter(FILTER_BY_OWNER_ORGANIZATIONAL_UNITS);
             if (filter == null) {
@@ -67,16 +69,19 @@ public class OrganizationalUnitHierarchyFilterAdviceImpl implements Organization
         return session;
     }
 
-    public List<Long> getAuthenticatedUserOUIds() {
-        User authenticatedUser = SecurityUtils.getAuthenticatedUser();
-        if (authenticatedUser instanceof OrganizationalUnitUserDetails) {
-            return ((OrganizationalUnitUserDetails) authenticatedUser).getOrganizationalUnitIds();
+    public Collection<Long> getAuthenticatedUserOUIds() {
+        UserDetails authenticatedUser = SecurityUtils.getAuthenticatedUser();
+        if (authenticatedUser instanceof UserDetailsExtension) {
+            UserOrganizationalUnitDetails userOuDetails = (UserOrganizationalUnitDetails) ((UserDetailsExtension) authenticatedUser).getExtensions().get(USER_ORGANIZATIONAL_UNIT_DETAILS);
+            if (userOuDetails != null) {
+                return userOuDetails.getOrganizationalUnitIds();
+            }
         }
-        return new ArrayList<>();
+        return new HashSet<>();
     }
 
-    private List<Long> getOUHierarchyForRoots(List<Long> rootIds) {
-        List<Long> ouHierarchy = new ArrayList<>();
+    private Collection<Long> getOUHierarchyForRoots(Collection<Long> rootIds) {
+        Collection<Long> ouHierarchy = new HashSet<>();
         for (Long rootId : rootIds) {
             ouHierarchy.add(rootId);
             ouHierarchy.addAll(ouNeoRepository.getOrganizationalUnitSubTreeJpaIdsByRootJpaId(rootId));

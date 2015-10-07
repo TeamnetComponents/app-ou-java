@@ -12,8 +12,6 @@ import java.util.List;
 public interface OUAccountService {
     List<OrganizationalUnitDTO> getOrganizationalUnits(Long accountId);
 
-    List<Long> getOrganizationalUnitIds(Long accountId);
-
     Collection<AccountDTO> getAccountsInOrganizationalUnit(Long organizationalUnitId);
 
     Collection<AccountDTO> getAccountsEligibleForOrganizationalUnit(Long organizationalUnitId);

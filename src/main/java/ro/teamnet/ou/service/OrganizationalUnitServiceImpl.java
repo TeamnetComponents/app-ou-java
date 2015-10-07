@@ -181,4 +181,10 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
         return organizationalUnitDTOs;
     }
 
+    @Override
+    public Collection<OrganizationalUnitDTO> getPublicOUsByOrganizationId(Long organizationId) {
+        //TODO
+        return Collections.emptySet();
+    }
+
 }

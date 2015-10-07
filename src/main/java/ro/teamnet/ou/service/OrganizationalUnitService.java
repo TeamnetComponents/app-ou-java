@@ -3,6 +3,7 @@ package ro.teamnet.ou.service;
 import ro.teamnet.ou.web.rest.dto.OrganizationalUnitDTO;
 import ro.teamnet.ou.web.rest.dto.PerspectiveDTO;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -26,4 +27,6 @@ public interface OrganizationalUnitService {
     OrganizationalUnitDTO saveOUTreeRoot(PerspectiveDTO perspective);
 
     List<OrganizationalUnitDTO> getParentOrgUnitsById(Long rootId, Long id);
+
+    Collection<OrganizationalUnitDTO> getPublicOUsByOrganizationId(Long organizationId);
 }

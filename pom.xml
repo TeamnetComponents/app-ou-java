@@ -16,7 +16,6 @@
     <version>0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 	<properties>
-        <bootstrap.version>0.2.6</bootstrap.version>
         <spring-data-neo4j.version>3.2.1.RELEASE</spring-data-neo4j.version>
         <app-neo4j-base.version>0.2-SNAPSHOT</app-neo4j-base.version>
     </properties>

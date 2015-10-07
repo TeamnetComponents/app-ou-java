@@ -49,18 +49,6 @@ public class OUAccountServiceImpl implements OUAccountService {
     }
 
     @Override
-    public List<Long> getOrganizationalUnitIds(Long accountId) {
-        ro.teamnet.ou.domain.neo.Account neoAccount = accountNeoRepository.findByJpaId(accountId);
-        List<Long> ouIds = new ArrayList<>();
-        if (neoAccount != null && neoAccount.getOrganizationalUnits() != null) {
-            for (OrganizationalUnit organizationalUnit : neoAccount.getOrganizationalUnits()) {
-                ouIds.add(organizationalUnit.getJpaId());
-            }
-        }
-        return ouIds;
-    }
-
-    @Override
     public Collection<AccountDTO> getAccountsInOrganizationalUnit(Long organizationalUnitId) {
         Map<Long, AccountDTO> accountsById = new HashMap<>();
         Set<ro.teamnet.ou.domain.neo.Function> functions = ouNeoRepository.findByJpaId(organizationalUnitId).getFunctions();

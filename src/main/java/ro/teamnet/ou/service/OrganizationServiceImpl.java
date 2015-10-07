@@ -3,6 +3,7 @@ package ro.teamnet.ou.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.teamnet.ou.domain.jpa.Organization;
+import ro.teamnet.ou.domain.neo.OrganizationalUnit;
 import ro.teamnet.ou.mapper.OrganizationMapper;
 import ro.teamnet.ou.repository.jpa.OrganizationRepository;
 import ro.teamnet.ou.repository.neo.OrganizationNeoRepository;
@@ -15,16 +16,20 @@ import java.util.*;
  * Created by ionut.patrascu on 31.07.2015.
  */
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class OrganizationServiceImpl implements OrganizationService {
 
     @Inject
-    public OrganizationRepository organizationRepository;
+    private OrganizationRepository organizationRepository;
 
     @Inject
-    public OrganizationNeoRepository organizationNeoRepository;
+    private OrganizationNeoRepository organizationNeoRepository;
+
+    @Inject
+    private OrganizationalUnitService organizationalUnitService;
 
     @Override
+    @Transactional
     public OrganizationDTO save(OrganizationDTO organizationDTO) {
         Organization organization = OrganizationMapper.toJPA(organizationDTO, true);
         organization = organizationRepository.save(organization);
@@ -33,6 +38,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         return OrganizationMapper.toDTO(organization, true);
     }
 
+    @Transactional
     private void saveNeo(OrganizationDTO organizationDTO) {
         ro.teamnet.ou.domain.neo.Organization neoOrganization = OrganizationMapper.toNeo(organizationDTO);
         ro.teamnet.ou.domain.neo.Organization existingNeoOrganization = organizationNeoRepository.findByJpaId(organizationDTO.getId());
@@ -43,6 +49,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
+    @Transactional
     public OrganizationDTO update(OrganizationDTO organizationDTO) {
         Organization organization = OrganizationMapper.toJPA(organizationDTO);
         organization = organizationRepository.save(organization);
@@ -51,6 +58,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         Organization organization = organizationRepository.findOne(id);
         organizationRepository.delete(organization);
@@ -72,5 +80,19 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Override
     public OrganizationDTO findOrganizationDTOById(Long id) {
         return OrganizationMapper.toDTO(organizationRepository.findOne(id));
+    }
+
+    @Override
+    public Collection<OrganizationDTO> getPublicOrganizations() {
+        return getAllOrganizationDTOs();
+    }
+
+    @Override
+    public Set<OrganizationalUnit> getOUsInOrganization(Long organizationId) {
+        Set<OrganizationalUnit> organizationalUnits = new HashSet<>();
+        for (OrganizationalUnit organizationalUnit : organizationNeoRepository.findByJpaId(organizationId).getRoots()) {
+            organizationalUnits.addAll(organizationalUnitService.getOrganizationalUnitTreeById(organizationalUnit.getId()));
+        }
+        return organizationalUnits;
     }
 }
