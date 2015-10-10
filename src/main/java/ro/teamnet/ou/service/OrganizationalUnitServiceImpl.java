@@ -5,6 +5,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ro.teamnet.bootstrap.domain.Account;
+import ro.teamnet.bootstrap.security.util.SecurityUtils;
+import ro.teamnet.bootstrap.service.AccountService;
 import ro.teamnet.ou.domain.jpa.OrganizationalUnit;
 import ro.teamnet.ou.mapper.OrganizationalUnitMapper;
 import ro.teamnet.ou.repository.jpa.OrganizationalUnitRepository;
@@ -31,6 +34,12 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
 
     @Inject
     public PerspectiveRepository perspectiveRepository;
+
+    @Inject
+    private AccountService accountService;
+
+    @Inject
+    private OUAccountService ouAccountService;
 
     @Override
     public OrganizationalUnitDTO save(OrganizationalUnitDTO organizationalUnitDTO) {
@@ -187,4 +196,32 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
         return Collections.emptySet();
     }
 
+    @Override
+    public Collection<OrganizationalUnitDTO> getOUsForCurrentUser() {
+        return getOUsForUser(SecurityUtils.getAuthenticatedUser().getUsername());
+    }
+
+    @Override
+    public Collection<OrganizationalUnitDTO> getOUsForCurrentUser(Long organizationId) {
+        return getOUsForUser(SecurityUtils.getAuthenticatedUser().getUsername(), organizationId);
+    }
+
+    @Override
+    public Collection<OrganizationalUnitDTO> getOUsForUser(String username) {
+        Account account = accountService.findByLogin(username);
+        return ouAccountService.getOrganizationalUnits(account.getId());
+    }
+
+    @Override
+    public Collection<OrganizationalUnitDTO> getOUsForUser(String username, Long organizationId) {
+        if (organizationId == null) {
+            return getOUsForUser(username);
+        }
+        Set<OrganizationalUnitDTO> organizationalUnitDTOs = new HashSet<>();
+        for (ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnit : organizationalUnitNeoRepository.
+                getOrganizationalUnitsByUsernameAndOrganization(username, organizationId)) {
+            organizationalUnitDTOs.add(OrganizationalUnitMapper.toDTO(organizationalUnit, true));
+        }
+        return organizationalUnitDTOs;
+    }
 }

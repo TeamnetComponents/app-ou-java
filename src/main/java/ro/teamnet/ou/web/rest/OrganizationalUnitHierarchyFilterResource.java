@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ro.teamnet.bootstrap.plugin.security.UserDetailsExtension;
 import ro.teamnet.bootstrap.security.util.SecurityUtils;
-import ro.teamnet.ou.acl.domain.UserOrganizationalUnitDetails;
+import ro.teamnet.ou.security.UserOrganizationalUnitDetails;
 import ro.teamnet.ou.web.rest.dto.OrganizationalUnitDTO;
 
 import java.util.Collection;
 import java.util.HashSet;
 
-import static ro.teamnet.ou.acl.service.OrganizationalUnitUserDetailsPlugin.USER_ORGANIZATIONAL_UNIT_DETAILS;
+import static ro.teamnet.ou.security.plugin.OrganizationalUnitUserDetailsPlugin.USER_ORGANIZATIONAL_UNIT_DETAILS;
 
 /**
  * Created by Oana.Mihai on 9/2/2015.
@@ -30,7 +30,7 @@ public class OrganizationalUnitHierarchyFilterResource {
         if (authenticatedUser instanceof UserDetailsExtension) {
             UserOrganizationalUnitDetails userOuDetails = (UserOrganizationalUnitDetails) ((UserDetailsExtension) authenticatedUser).getExtensions().get(USER_ORGANIZATIONAL_UNIT_DETAILS);
             if (userOuDetails != null) {
-                return userOuDetails.getOrganizationalUnits();
+                return userOuDetails.getAuthorizedOUs();
             }
         }
         return new HashSet<>();

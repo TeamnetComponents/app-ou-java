@@ -37,4 +37,14 @@ public interface OrganizationalUnitNeoRepository extends GraphRepository<Organiz
             "DELETE b,t,z")
     void deleteNodeAndChildren(Long id);
 
+    @Query("MATCH " +
+            " (account:Account{jpaId:{0}})-[:FUNCTION]->(ou:OrganizationalUnit)-[:BELONGS_TO|:PERSPECTIVE*]-(o:Organization {jpaId:{1}})" +
+            "RETURN ou")
+    Set<OrganizationalUnit> getOrganizationalUnitsByAccountJpaIdAndOrganizationJpaId(Long accountJpaId, Long organizationJpaId);
+
+    @Query("MATCH " +
+            " (account:Account{username:{0}})-[:FUNCTION]->(ou:OrganizationalUnit)-[:BELONGS_TO|:PERSPECTIVE*]-(o:Organization {jpaId:{1}})" +
+            "RETURN ou")
+    Set<OrganizationalUnit> getOrganizationalUnitsByUsernameAndOrganization(String username, Long organizationJpaId);
+
 }

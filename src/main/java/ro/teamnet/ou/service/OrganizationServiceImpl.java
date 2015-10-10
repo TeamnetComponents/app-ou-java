@@ -2,6 +2,7 @@ package ro.teamnet.ou.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ro.teamnet.bootstrap.security.util.SecurityUtils;
 import ro.teamnet.ou.domain.jpa.Organization;
 import ro.teamnet.ou.domain.neo.OrganizationalUnit;
 import ro.teamnet.ou.mapper.OrganizationMapper;
@@ -10,7 +11,9 @@ import ro.teamnet.ou.repository.neo.OrganizationNeoRepository;
 import ro.teamnet.ou.web.rest.dto.OrganizationDTO;
 
 import javax.inject.Inject;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by ionut.patrascu on 31.07.2015.
@@ -63,15 +66,15 @@ public class OrganizationServiceImpl implements OrganizationService {
         Organization organization = organizationRepository.findOne(id);
         organizationRepository.delete(organization);
 
-       // ro.teamnet.ou.domain.neo.Organization organizationNeo = organizationNeoRepository.findByJpaId(id);
-       // organizationNeoRepository.delete(organizationNeo);
+        // ro.teamnet.ou.domain.neo.Organization organizationNeo = organizationNeoRepository.findByJpaId(id);
+        // organizationNeoRepository.delete(organizationNeo);
     }
 
 
     @Override
     public Set<OrganizationDTO> getAllOrganizationDTOs() {
         Set<OrganizationDTO> organizationDTOs = new HashSet<>();
-        for(Organization organization : organizationRepository.findAll()){
+        for (Organization organization : organizationRepository.findAll()) {
             organizationDTOs.add(OrganizationMapper.toDTO(organization));
         }
         return organizationDTOs;
@@ -94,5 +97,15 @@ public class OrganizationServiceImpl implements OrganizationService {
             organizationalUnits.addAll(organizationalUnitService.getOrganizationalUnitTreeById(organizationalUnit.getId()));
         }
         return organizationalUnits;
+    }
+
+    @Override
+    public Collection<OrganizationDTO> getOrganizationsForCurrentUser() {
+        Set<OrganizationDTO> organizations = new HashSet<>();
+        String username = SecurityUtils.getAuthenticatedUser().getUsername();
+        for (ro.teamnet.ou.domain.neo.Organization organization : organizationNeoRepository.findByUsername(username)) {
+            organizations.add(OrganizationMapper.toDTO(organizationRepository.findOne(organization.getJpaId()), true));
+        }
+        return organizations;
     }
 }

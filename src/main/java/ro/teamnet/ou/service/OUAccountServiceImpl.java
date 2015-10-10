@@ -1,6 +1,7 @@
 package ro.teamnet.ou.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ro.teamnet.ou.domain.jpa.AccountFunction;
 import ro.teamnet.ou.domain.jpa.Function;
 import ro.teamnet.ou.domain.neo.Account;
@@ -11,9 +12,7 @@ import ro.teamnet.ou.mapper.OrganizationalUnitMapper;
 import ro.teamnet.ou.repository.jpa.AccountFunctionRepository;
 import ro.teamnet.ou.repository.jpa.OrganizationalUnitFunctionRepository;
 import ro.teamnet.ou.repository.jpa.OrganizationalUnitRepository;
-import ro.teamnet.ou.repository.neo.AccountNeoRepository;
-import ro.teamnet.ou.repository.neo.FunctionNeoRepository;
-import ro.teamnet.ou.repository.neo.OrganizationalUnitNeoRepository;
+import ro.teamnet.ou.repository.neo.*;
 import ro.teamnet.ou.web.rest.dto.AccountDTO;
 import ro.teamnet.ou.web.rest.dto.FunctionDTO;
 import ro.teamnet.ou.web.rest.dto.OrganizationalUnitDTO;
@@ -22,7 +21,9 @@ import javax.inject.Inject;
 import java.util.*;
 
 @Service
+@Transactional(readOnly = true)
 public class OUAccountServiceImpl implements OUAccountService {
+
     @Inject
     private AccountNeoRepository accountNeoRepository;
     @Inject
@@ -39,13 +40,15 @@ public class OUAccountServiceImpl implements OUAccountService {
     @Override
     public List<OrganizationalUnitDTO> getOrganizationalUnits(Long accountId) {
         ro.teamnet.ou.domain.neo.Account neoAccount = accountNeoRepository.findByJpaId(accountId);
-        List<OrganizationalUnitDTO> organizationalUnits = new ArrayList<>();
-        if (neoAccount != null && neoAccount.getOrganizationalUnits() != null) {
-            for (OrganizationalUnit organizationalUnit : neoAccount.getOrganizationalUnits()) {
-                organizationalUnits.add(OrganizationalUnitMapper.toDTO(organizationalUnit, true));
-            }
+        List<OrganizationalUnitDTO> organizationalUnitDTOs = new ArrayList<>();
+        Set<OrganizationalUnit> organizationalUnits = neoAccount.getOrganizationalUnits();
+        if (neoAccount == null || organizationalUnits == null) {
+            return organizationalUnitDTOs;
         }
-        return organizationalUnits;
+        for (OrganizationalUnit organizationalUnit : organizationalUnits) {
+            organizationalUnitDTOs.add(OrganizationalUnitMapper.toDTO(organizationalUnit, true));
+        }
+        return organizationalUnitDTOs;
     }
 
     @Override
@@ -91,6 +94,7 @@ public class OUAccountServiceImpl implements OUAccountService {
     }
 
     @Override
+    @Transactional
     public void createOrUpdateOUAccountRelationships(Long ouId, Collection<AccountDTO> accounts) {
         OrganizationalUnit neoOrganizationalUnit = ouNeoRepository.findByJpaId(ouId);
         neoOrganizationalUnit.setAccounts(new HashSet<Account>());
@@ -110,6 +114,7 @@ public class OUAccountServiceImpl implements OUAccountService {
         organizationalUnitRepository.save(jpaOrganizationalUnit);
     }
 
+    @Transactional
     private void saveNeoFunction(OrganizationalUnit neoOrganizationalUnit, Account neoAccount, FunctionDTO functionDTO) {
         ro.teamnet.ou.domain.neo.Function neoFunction = new ro.teamnet.ou.domain.neo.Function();
         neoFunction.setOrganizationalUnit(neoOrganizationalUnit);
@@ -121,6 +126,7 @@ public class OUAccountServiceImpl implements OUAccountService {
     }
 
     @Override
+    @Transactional
     public void deleteOuAccountRelationships(Long ouId, Long accountId) {
         functionNeoRepository.deleteByOrganizationalUnitJpaIdAndAccountJpaId(ouId, accountId);
         ro.teamnet.ou.domain.jpa.OrganizationalUnit organizationalUnit = organizationalUnitRepository

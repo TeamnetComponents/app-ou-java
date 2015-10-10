@@ -1,7 +1,6 @@
-package ro.teamnet.ou.acl.service;
+package ro.teamnet.ou.service;
 
 import ro.teamnet.bootstrap.domain.Account;
-import ro.teamnet.ou.web.rest.dto.AccountDTO;
 
 /**
  * Created by Ionut.Patrascu on 9/4/2015.

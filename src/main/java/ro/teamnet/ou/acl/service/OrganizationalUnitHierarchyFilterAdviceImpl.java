@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import ro.teamnet.bootstrap.plugin.security.UserDetailsExtension;
 import ro.teamnet.bootstrap.security.util.SecurityUtils;
-import ro.teamnet.ou.acl.domain.UserOrganizationalUnitDetails;
+import ro.teamnet.ou.security.UserOrganizationalUnitDetails;
 import ro.teamnet.ou.repository.neo.OrganizationalUnitNeoRepository;
 
 import javax.inject.Inject;
@@ -17,7 +17,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import static ro.teamnet.ou.acl.domain.OrganizationalUnitHierarchyEntity.*;
-import static ro.teamnet.ou.acl.service.OrganizationalUnitUserDetailsPlugin.USER_ORGANIZATIONAL_UNIT_DETAILS;
+import static ro.teamnet.ou.security.plugin.OrganizationalUnitUserDetailsPlugin.USER_ORGANIZATIONAL_UNIT_DETAILS;
 
 @Service
 public class OrganizationalUnitHierarchyFilterAdviceImpl implements OrganizationalUnitHierarchyFilterAdvice {
@@ -37,11 +37,7 @@ public class OrganizationalUnitHierarchyFilterAdviceImpl implements Organization
         if (session == null) {
             return;
         }
-        //Workaround to create user
-        UserDetails authenticatedUser = SecurityUtils.getAuthenticatedUser();
-        if (authenticatedUser == null) {
-            return;
-        }
+
         Collection<Long> authenticatedUserOUIds = getAuthenticatedUserOUIds();
         Collection<Long> ouHierarchy = getOUHierarchyForRoots(authenticatedUserOUIds);
         if (!ouHierarchy.isEmpty()) {
@@ -71,7 +67,7 @@ public class OrganizationalUnitHierarchyFilterAdviceImpl implements Organization
 
     public Collection<Long> getAuthenticatedUserOUIds() {
         UserDetails authenticatedUser = SecurityUtils.getAuthenticatedUser();
-        if (authenticatedUser instanceof UserDetailsExtension) {
+        if (authenticatedUser != null && authenticatedUser instanceof UserDetailsExtension) {
             UserOrganizationalUnitDetails userOuDetails = (UserOrganizationalUnitDetails) ((UserDetailsExtension) authenticatedUser).getExtensions().get(USER_ORGANIZATIONAL_UNIT_DETAILS);
             if (userOuDetails != null) {
                 return userOuDetails.getOrganizationalUnitIds();

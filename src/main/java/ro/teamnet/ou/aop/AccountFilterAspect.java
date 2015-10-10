@@ -1,10 +1,10 @@
-package ro.teamnet.ou.acl.aop;
+package ro.teamnet.ou.aop;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ro.teamnet.bootstrap.domain.Account;
-import ro.teamnet.ou.acl.service.AccountNeoService;
+import ro.teamnet.ou.service.AccountNeoService;
 
 import javax.inject.Inject;
 
@@ -18,7 +18,7 @@ public class AccountFilterAspect {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Inject
-    public AccountNeoService accountNeoService;
+    private AccountNeoService accountNeoService;
 
     @Pointcut("execution(* ro.teamnet.bootstrap.repository.AccountRepository.save(..))")
     public void onAccountRepositoryMethods(){

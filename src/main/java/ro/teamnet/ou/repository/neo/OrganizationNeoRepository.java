@@ -18,4 +18,10 @@ public interface OrganizationNeoRepository extends GraphRepository<Organization>
 
     @Query("MATCH (organization:Organization {jpaId:{0}}) RETURN organization")
     Organization findByJpaId(Long jpaId);
+
+    @Query("MATCH (account:Account{jpaId:{0}})-[*]->(rootOu:OrganizationalUnit)<-[:PERSPECTIVE]-(o:Organization) return o")
+    List<Organization> findByAccountJpaId(Long accountId);
+
+    @Query("MATCH (account:Account{username:{0}})-[*]->(rootOu:OrganizationalUnit)<-[:PERSPECTIVE]-(o:Organization) return o")
+    List<Organization> findByUsername(String username);
 }

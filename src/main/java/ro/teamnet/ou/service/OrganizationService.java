@@ -24,4 +24,6 @@ public interface OrganizationService {
     Collection<OrganizationDTO> getPublicOrganizations();
 
     Set<OrganizationalUnit> getOUsInOrganization(Long organizationId);
+
+    Collection<OrganizationDTO> getOrganizationsForCurrentUser();
 }

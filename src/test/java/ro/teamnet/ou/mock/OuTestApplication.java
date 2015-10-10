@@ -8,12 +8,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
+import org.springframework.plugin.core.config.EnablePluginRegistries;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import ro.teamnet.bootstrap.config.*;
 import ro.teamnet.bootstrap.config.apidoc.SwaggerConfiguration;
 import ro.teamnet.bootstrap.config.metrics.JHipsterHealthIndicatorConfiguration;
-import ro.teamnet.ou.acl.config.AccountFilterAspectConfig;
+import ro.teamnet.bootstrap.plugin.security.UserAuthorizationPlugin;
+import ro.teamnet.bootstrap.plugin.upload.FileServicePlugin;
 import ro.teamnet.ou.acl.config.OrganizationalUnitHierarchyFilterAspectConfig;
+import ro.teamnet.ou.config.AccountFilterAspectConfig;
 
 /**
  * This is a helper Java class that provides an alternative to creating a web.xml.
@@ -39,6 +42,7 @@ import ro.teamnet.ou.acl.config.OrganizationalUnitHierarchyFilterAspectConfig;
                 DatabaseConfiguration.class
         }
 )
+@EnablePluginRegistries({UserAuthorizationPlugin.class, FileServicePlugin.class})
 @SpringBootApplication
 public class OuTestApplication {
     /**

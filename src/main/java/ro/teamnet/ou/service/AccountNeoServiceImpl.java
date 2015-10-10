@@ -1,9 +1,8 @@
-package ro.teamnet.ou.acl.service;
+package ro.teamnet.ou.service;
+
 import org.springframework.stereotype.Service;
 import ro.teamnet.bootstrap.domain.Account;
 import ro.teamnet.ou.repository.neo.AccountNeoRepository;
-import ro.teamnet.ou.repository.neo.OrganizationalUnitNeoRepository;
-import ro.teamnet.ou.service.OUAccountService;
 
 import javax.inject.Inject;
 
@@ -11,18 +10,13 @@ import javax.inject.Inject;
 public class AccountNeoServiceImpl implements AccountNeoService {
 
     @Inject
-    AccountNeoRepository accountNeoRepository;
+    private AccountNeoRepository accountNeoRepository;
 
-    @Inject
-    OrganizationalUnitNeoRepository organizationalUnitNeoRepository;
-
-    @Inject
-    OUAccountService ouAccountService;
 
     @Override
     public void save(Account accountJPA) {
         ro.teamnet.ou.domain.neo.Account accountNeo = accountNeoRepository.findByJpaId(accountJPA.getId());
-        if(accountNeo == null){
+        if (accountNeo == null) {
             accountNeo = new ro.teamnet.ou.domain.neo.Account();
         }
         accountNeo.setJpaId(accountJPA.getId());

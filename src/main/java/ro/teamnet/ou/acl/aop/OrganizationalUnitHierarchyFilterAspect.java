@@ -7,11 +7,9 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.core.userdetails.UserDetails;
 import ro.teamnet.bootstrap.extend.AppRepository;
 import ro.teamnet.ou.acl.domain.OrganizationalUnitHierarchyEntity;
 import ro.teamnet.ou.acl.service.OrganizationalUnitHierarchyFilterAdvice;
-import ro.teamnet.ou.acl.service.OrganizationalUnitUserDetailsPlugin;
 
 import javax.inject.Inject;
 
@@ -26,7 +24,7 @@ public class OrganizationalUnitHierarchyFilterAspect {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
     @Inject
-    OrganizationalUnitHierarchyFilterAdvice filterAdvice;
+    private OrganizationalUnitHierarchyFilterAdvice filterAdvice;
 
     @Pointcut("execution(* *..*Repository*.*(..))")
     public void onRepositoryMethods() {

@@ -1,9 +1,9 @@
-package ro.teamnet.ou.acl.config;
+package ro.teamnet.ou.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import ro.teamnet.ou.acl.aop.AccountFilterAspect;
+import ro.teamnet.ou.aop.AccountFilterAspect;
 
 /**
  * Created by Ionut.Patrascu on 9/4/2015.

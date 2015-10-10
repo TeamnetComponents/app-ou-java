@@ -1,7 +1,6 @@
 package ro.teamnet.ou.web.rest.dto;
 
 import ro.teamnet.bootstrap.web.rest.dto.AccountDTO;
-import ro.teamnet.ou.domain.neo.Account;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -138,5 +137,24 @@ public class OrganizationalUnitDTO implements Serializable {
                 ", children=" + children +
                 ", accounts=" + accounts +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        OrganizationalUnitDTO that = (OrganizationalUnitDTO) o;
+
+        if (!id.equals(that.id)) return false;
+        return code.equals(that.code);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + code.hashCode();
+        return result;
     }
 }

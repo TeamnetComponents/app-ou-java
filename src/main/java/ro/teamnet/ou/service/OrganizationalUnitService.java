@@ -29,4 +29,12 @@ public interface OrganizationalUnitService {
     List<OrganizationalUnitDTO> getParentOrgUnitsById(Long rootId, Long id);
 
     Collection<OrganizationalUnitDTO> getPublicOUsByOrganizationId(Long organizationId);
+
+    Collection<OrganizationalUnitDTO> getOUsForCurrentUser();
+
+    Collection<OrganizationalUnitDTO> getOUsForCurrentUser(Long organizationId);
+
+    Collection<OrganizationalUnitDTO> getOUsForUser(String username);
+
+    Collection<OrganizationalUnitDTO> getOUsForUser(String username, Long organizationId);
 }
