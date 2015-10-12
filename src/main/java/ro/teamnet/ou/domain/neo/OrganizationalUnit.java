@@ -21,6 +21,7 @@ public class OrganizationalUnit {
     @RelatedTo(type="BELONGS_TO",direction = Direction.OUTGOING)
     private OrganizationalUnit parent;
 
+    @Fetch
     @RelatedTo(type="BELONGS_TO",direction = Direction.INCOMING)
     private Set<OrganizationalUnit> children;
 
