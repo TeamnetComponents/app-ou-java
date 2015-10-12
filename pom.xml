@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 	
     <parent>
         <groupId>ro.teamnet.neo</groupId>
         <artifactId>app-neo4j-dependencies</artifactId>
-        <version>0.2-SNAPSHOT</version>
+        <version>0.2</version>
         <relativePath />
     </parent>
 	
 	<groupId>ro.teamnet.ou</groupId>
     <artifactId>app-ou-java</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.2</version>
     <packaging>jar</packaging>
 	<properties>
         <spring-data-neo4j.version>3.2.1.RELEASE</spring-data-neo4j.version>
@@ -44,33 +42,33 @@
        <dependency>
            <groupId>ro.teamnet.neo</groupId>
            <artifactId>app-neo4j-base</artifactId>
-           <version>${app-neo4j-base.version}</version>
+           <version>0.2</version>
        </dependency>
 
         <dependency>
             <groupId>ro.teamnet.bootstrap</groupId>
             <artifactId>app-bootstrap-commons</artifactId>
-            <version>${bootstrap.version}</version>
+            <version>0.2.10</version>
         </dependency>
 
         <dependency>
             <groupId>ro.teamnet.bootstrap</groupId>
             <artifactId>app-bootstrap-dictionary</artifactId>
-            <version>${bootstrap.version}</version>
+            <version>0.2.10</version>
         </dependency>
 
 
         <dependency>
             <groupId>ro.teamnet.bootstrap</groupId>
             <artifactId>app-bootstrap-security</artifactId>
-            <version>${bootstrap.version}</version>
+            <version>0.2.10</version>
         </dependency>
 
 
         <dependency>
             <groupId>ro.teamnet.bootstrap</groupId>
             <artifactId>app-bootstrap</artifactId>
-            <version>${bootstrap.version}</version>
+            <version>0.2.10</version>
         </dependency>
 
     </dependencies>
@@ -78,7 +76,7 @@
 	<scm>
         <url>http://git-components.teamnet.ro/summary/components%2Fjava%2Fplatform-extensions%2Fapp-ou-java.git</url>
         <connection>scm:git:http://component-publisher@git-components.teamnet.ro/r/components/java/platform-extensions/app-ou-java.git</connection>
-        <tag>HEAD</tag>
+        <tag>v0.2</tag>
     </scm>
 	
 	<build>
