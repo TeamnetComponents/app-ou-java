@@ -5,13 +5,13 @@
     <parent>
         <groupId>ro.teamnet.neo</groupId>
         <artifactId>app-neo4j-dependencies</artifactId>
-        <version>0.2</version>
+        <version>0.3-SNAPSHOT</version>
         <relativePath />
     </parent>
 	
 	<groupId>ro.teamnet.ou</groupId>
     <artifactId>app-ou-java</artifactId>
-    <version>0.2</version>
+    <version>0.3-SNAPSHOT</version>
     <packaging>jar</packaging>
 	<properties>
         <spring-data-neo4j.version>3.2.1.RELEASE</spring-data-neo4j.version>
@@ -42,33 +42,33 @@
        <dependency>
            <groupId>ro.teamnet.neo</groupId>
            <artifactId>app-neo4j-base</artifactId>
-           <version>0.2</version>
+           <version>0.3-SNAPSHOT</version>
        </dependency>
 
         <dependency>
             <groupId>ro.teamnet.bootstrap</groupId>
             <artifactId>app-bootstrap-commons</artifactId>
-            <version>0.2.10</version>
+            <version>0.2.11-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>ro.teamnet.bootstrap</groupId>
             <artifactId>app-bootstrap-dictionary</artifactId>
-            <version>0.2.10</version>
+            <version>0.2.11-SNAPSHOT</version>
         </dependency>
 
 
         <dependency>
             <groupId>ro.teamnet.bootstrap</groupId>
             <artifactId>app-bootstrap-security</artifactId>
-            <version>0.2.10</version>
+            <version>0.2.11-SNAPSHOT</version>
         </dependency>
 
 
         <dependency>
             <groupId>ro.teamnet.bootstrap</groupId>
             <artifactId>app-bootstrap</artifactId>
-            <version>0.2.10</version>
+            <version>0.2.11-SNAPSHOT</version>
         </dependency>
 
     </dependencies>
@@ -76,7 +76,7 @@
 	<scm>
         <url>http://git-components.teamnet.ro/summary/components%2Fjava%2Fplatform-extensions%2Fapp-ou-java.git</url>
         <connection>scm:git:http://component-publisher@git-components.teamnet.ro/r/components/java/platform-extensions/app-ou-java.git</connection>
-        <tag>v0.2</tag>
+        <tag>HEAD</tag>
     </scm>
 	
 	<build>
