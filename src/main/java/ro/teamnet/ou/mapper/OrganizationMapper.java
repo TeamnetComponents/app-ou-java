@@ -100,4 +100,19 @@ public class OrganizationMapper {
     public static OrganizationDTO toDTO(Organization organization) {
         return toDTO(organization, false);
     }
+
+    public static OrganizationDTO toDTO(ro.teamnet.ou.domain.neo.Organization organizationNeo) {
+
+        OrganizationDTO organizationDTO = new OrganizationDTO();
+
+        organizationDTO.setId(organizationNeo.getJpaId());
+        organizationDTO.setCode(organizationNeo.getCode());
+
+        /*
+        organizationDTO.setPerspectives(organizationNeo.getPerspectives());
+        organizationDTO.setRoots(organizationNeo.getRoots());
+        */
+
+        return organizationDTO;
+    }
 }

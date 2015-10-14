@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import ro.teamnet.bootstrap.plugin.security.UserDetailsExtension;
 import ro.teamnet.bootstrap.security.util.SecurityUtils;
-import ro.teamnet.ou.security.UserOrganizationalUnitDetails;
 import ro.teamnet.ou.repository.neo.OrganizationalUnitNeoRepository;
+import ro.teamnet.ou.security.UserOrganizationalUnitDetails;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -65,6 +65,7 @@ public class OrganizationalUnitHierarchyFilterAdviceImpl implements Organization
         return session;
     }
 
+    @Override
     public Collection<Long> getAuthenticatedUserOUIds() {
         UserDetails authenticatedUser = SecurityUtils.getAuthenticatedUser();
         if (authenticatedUser != null && authenticatedUser instanceof UserDetailsExtension) {

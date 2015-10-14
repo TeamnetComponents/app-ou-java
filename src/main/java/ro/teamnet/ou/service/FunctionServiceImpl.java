@@ -62,6 +62,11 @@ public class FunctionServiceImpl implements FunctionService {
         return FunctionMapper.toDTO(function);
     }
 
+    public FunctionDTO findOneByCode(String code) {
+        Function function = functionRepository.findByCode(code);
+        return FunctionMapper.toDTO(function);
+    }
+
     @Override
     public Set<FunctionDTO> findAll() {
         return FunctionMapper.toDTO(functionRepository.getAllWithModuleRights());
@@ -108,10 +113,13 @@ public class FunctionServiceImpl implements FunctionService {
 
     @Override
     public void addToAccount(Long accountId, FunctionDTO functionDTO) {
-        AccountFunction accountFunction = new AccountFunction();
-        accountFunction.setAccount(accountRepository.findOne(accountId));
-        accountFunction.setFunction(functionRepository.findOne(functionDTO.getId()));
-        accountFunctionRepository.save(accountFunction);
+        AccountFunction accountFunction = accountFunctionRepository.findByAccountIdAndFunctionId(accountId, functionDTO.getId());
+        if (accountFunction == null) {
+            accountFunction = new AccountFunction();
+            accountFunction.setAccount(accountRepository.findOne(accountId));
+            accountFunction.setFunction(functionRepository.findOne(functionDTO.getId()));
+            accountFunctionRepository.save(accountFunction);
+        }
     }
 
     @Override

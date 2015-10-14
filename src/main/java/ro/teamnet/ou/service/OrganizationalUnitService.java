@@ -30,6 +30,10 @@ public interface OrganizationalUnitService {
 
     Collection<OrganizationalUnitDTO> getPublicOUsByOrganizationId(Long organizationId);
 
+    Set<Long> getOrgUnitSubTreeJpaIdsByRootJpaId(Long jpaId);
+
+    Boolean filterOrgUnitByUserRights(Long orgUnitJpaId);
+
     Collection<OrganizationalUnitDTO> getOUsForCurrentUser();
 
     Collection<OrganizationalUnitDTO> getOUsForCurrentUser(Long organizationId);

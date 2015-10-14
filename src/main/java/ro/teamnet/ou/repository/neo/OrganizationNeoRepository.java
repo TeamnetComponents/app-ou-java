@@ -1,6 +1,5 @@
 package ro.teamnet.ou.repository.neo;
 
-
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.GraphRepository;
 import org.springframework.data.neo4j.repository.SchemaIndexRepository;
@@ -18,6 +17,9 @@ public interface OrganizationNeoRepository extends GraphRepository<Organization>
 
     @Query("MATCH (organization:Organization {jpaId:{0}}) RETURN organization")
     Organization findByJpaId(Long jpaId);
+
+    @Query("match (n:OrganizationalUnit {jpaId:{0}})-[BELONGS_TO*]->(x:OrganizationalUnit), (x:OrganizationalUnit)<-[PERSPECTIVE]-(m:Organization) return m")
+    Organization findByOrganizationalUnitJpaId(Long jpaId);
 
     @Query("MATCH (account:Account{jpaId:{0}})-[*]->(rootOu:OrganizationalUnit)<-[:PERSPECTIVE]-(o:Organization) return o")
     List<Organization> findByAccountJpaId(Long accountId);

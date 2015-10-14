@@ -3,11 +3,15 @@ package ro.teamnet.ou.service;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.teamnet.bootstrap.domain.Account;
+import ro.teamnet.bootstrap.domain.ApplicationRole;
 import ro.teamnet.bootstrap.security.util.SecurityUtils;
 import ro.teamnet.bootstrap.service.AccountService;
+import ro.teamnet.ou.acl.service.OrganizationalUnitHierarchyFilterAdvice;
 import ro.teamnet.ou.domain.jpa.OrganizationalUnit;
 import ro.teamnet.ou.mapper.OrganizationalUnitMapper;
 import ro.teamnet.ou.repository.jpa.OrganizationalUnitRepository;
@@ -41,10 +45,15 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
     @Inject
     private OUAccountService ouAccountService;
 
+    @Inject
+    OrganizationalUnitHierarchyFilterAdvice filterAdvice;
+
+    //TODO : Ce se intampla daca nu merge nici salvarea in neo?
     @Override
     public OrganizationalUnitDTO save(OrganizationalUnitDTO organizationalUnitDTO) {
         organizationalUnitDTO = saveJPA(organizationalUnitDTO);
-        saveNeo(organizationalUnitDTO);
+        if (organizationalUnitDTO != null)
+            saveNeo(organizationalUnitDTO);
         return organizationalUnitDTO;
     }
 
@@ -63,7 +72,7 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
     private void saveNeo(OrganizationalUnitDTO organizationalUnitDTO) {
         ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnit = OrganizationalUnitMapper.toNeo(organizationalUnitDTO);
 
-        if(organizationalUnitDTO.getParent() != null) {
+        if (organizationalUnitDTO.getParent() != null) {
             organizationalUnit.setParent(organizationalUnitNeoRepository.findByJpaId(organizationalUnitDTO.getParent().getId()));
         }
         ro.teamnet.ou.domain.neo.OrganizationalUnit existingNeoOu = organizationalUnitNeoRepository.findByJpaId(organizationalUnitDTO.getId());
@@ -121,9 +130,9 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
     }
 
     private JSONObject bfs(ro.teamnet.ou.domain.neo.OrganizationalUnit rootNode,
-                   List<ro.teamnet.ou.domain.neo.OrganizationalUnit> orgUnitList,
-                   List<Long> marked,
-                   HashMap<Long, Long> map) {
+                           List<ro.teamnet.ou.domain.neo.OrganizationalUnit> orgUnitList,
+                           List<Long> marked,
+                           HashMap<Long, Long> map) {
 
         JSONArray arrayJSON = new JSONArray();
         JSONObject nodeJSON = new JSONObject();
@@ -224,4 +233,33 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
         }
         return organizationalUnitDTOs;
     }
+
+    @Override
+    public Set<Long> getOrgUnitSubTreeJpaIdsByRootJpaId(Long jpaId) {
+        return organizationalUnitNeoRepository.getOrganizationalUnitSubTreeJpaIdsByRootJpaId(jpaId);
+    }
+
+    @Override
+    public Boolean filterOrgUnitByUserRights(Long orgUnitJpaId) {
+
+        UserDetails authenticatedUser = SecurityUtils.getAuthenticatedUser();
+
+        for (GrantedAuthority grantedAuthority : authenticatedUser.getAuthorities()) {
+            if (grantedAuthority instanceof ApplicationRole) {
+                ApplicationRole applicationRole = (ApplicationRole) grantedAuthority;
+                if (applicationRole.getCode().equals("ROLE_ADMIN")) {
+                    return true;
+                }
+            }
+        }
+
+        Collection<Long> orgUnitJpaIds = filterAdvice.getAuthenticatedUserOUIds();
+        for (Long x : orgUnitJpaIds) {
+            if (x.equals(orgUnitJpaId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

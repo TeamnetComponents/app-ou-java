@@ -100,6 +100,11 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
+    public OrganizationDTO findOrganizationDTOByOrgUnitId(Long jpaId) {
+        return OrganizationMapper.toDTO(organizationNeoRepository.findByOrganizationalUnitJpaId(jpaId));
+    }
+
+    @Override
     public Collection<OrganizationDTO> getOrganizationsForCurrentUser() {
         Set<OrganizationDTO> organizations = new HashSet<>();
         String username = SecurityUtils.getAuthenticatedUser().getUsername();
@@ -107,5 +112,14 @@ public class OrganizationServiceImpl implements OrganizationService {
             organizations.add(OrganizationMapper.toDTO(organizationRepository.findOne(organization.getJpaId()), true));
         }
         return organizations;
+    }
+
+    @Override
+    public OrganizationDTO findByCode(String code) {
+        Organization organization = organizationRepository.findByCode(code);
+        if (organization == null) {
+            return null;
+        }
+        return OrganizationMapper.toDTO(organizationRepository.findByCode(code));
     }
 }

@@ -11,6 +11,8 @@ import java.util.Set;
  */
 public interface OrganizationService {
 
+    OrganizationDTO findByCode(String code);
+
     OrganizationDTO save(OrganizationDTO organizationDTO);
 
     OrganizationDTO update(OrganizationDTO organizationDTO);
@@ -24,6 +26,8 @@ public interface OrganizationService {
     Collection<OrganizationDTO> getPublicOrganizations();
 
     Set<OrganizationalUnit> getOUsInOrganization(Long organizationId);
+
+    OrganizationDTO findOrganizationDTOByOrgUnitId(Long jpaId);
 
     Collection<OrganizationDTO> getOrganizationsForCurrentUser();
 }

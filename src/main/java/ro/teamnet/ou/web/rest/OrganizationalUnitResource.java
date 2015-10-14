@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ro.teamnet.ou.acl.aop.OUFilter;
 import ro.teamnet.ou.service.OUAccountService;
 import ro.teamnet.ou.service.OrganizationalUnitService;
 import ro.teamnet.ou.web.rest.dto.AccountDTO;
@@ -32,6 +33,7 @@ public class OrganizationalUnitResource {
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @OUFilter("ro.teamnet.ou.web.rest.dto.OrganizationalUnitDTO")
     public ResponseEntity<Set<OrganizationalUnitDTO>> getAll() {
         log.debug("REST request to get all");
         return new ResponseEntity<>(organizationalUnitService.findAll(), HttpStatus.OK);
@@ -39,8 +41,10 @@ public class OrganizationalUnitResource {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @OUFilter("ro.teamnet.ou.web.rest.dto.OrganizationalUnitDTO")
     public ResponseEntity<OrganizationalUnitDTO> get(@PathVariable Long id) {
         log.debug("REST request to get  : {}", id);
+
         OrganizationalUnitDTO organizationalUnit = organizationalUnitService.findOne(id);
         if (organizationalUnit == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -49,19 +53,32 @@ public class OrganizationalUnitResource {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @OUFilter("ro.teamnet.ou.web.rest.dto.OrganizationalUnitDTO")
     public ResponseEntity<OrganizationalUnitDTO> create(@RequestBody OrganizationalUnitDTO organizationalUnitDTO) {
         log.debug("REST request to create a new organizational unit");
+        organizationalUnitDTO = organizationalUnitService.save(organizationalUnitDTO);
+
+        if (organizationalUnitDTO == null) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         return new ResponseEntity<>(organizationalUnitService.save(organizationalUnitDTO), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    @OUFilter("ro.teamnet.ou.web.rest.dto.OrganizationalUnitDTO")
     public ResponseEntity<OrganizationalUnitDTO> update(@RequestBody OrganizationalUnitDTO organizationalUnitDTO) {
         log.debug("REST request to update the organizational unit : {}", organizationalUnitDTO.getId());
+        organizationalUnitDTO = organizationalUnitService.save(organizationalUnitDTO);
+
+        if (organizationalUnitDTO == null) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         return new ResponseEntity<>(organizationalUnitService.save(organizationalUnitDTO), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @OUFilter("ro.teamnet.ou.web.rest.dto.OrganizationalUnitDTO")
     public void delete(@PathVariable Long id) {
         log.debug("REST request to delete : {}", id);
         organizationalUnitService.delete(id);
@@ -77,22 +94,25 @@ public class OrganizationalUnitResource {
     @RequestMapping(value = "/getParentOrgUnitsById/{rootId}/{id}",
             method = RequestMethod.GET)
     @Timed
-    List<OrganizationalUnitDTO> getParentOrgUnitsById(@PathVariable Long rootId, @PathVariable Long id) {
-        return organizationalUnitService.getParentOrgUnitsById(rootId, id);
+    @OUFilter("ro.teamnet.ou.web.rest.dto.OrganizationalUnitDTO")
+    public ResponseEntity<List<OrganizationalUnitDTO>> getParentOrgUnitsById(@PathVariable Long rootId, @PathVariable Long id) {
+        return new ResponseEntity<>(organizationalUnitService.getParentOrgUnitsById(rootId, id), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/accounts/{ouId}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public Collection<AccountDTO> getAccounts(@PathVariable Long ouId) {
-        return ouAccountService.getAccountsInOrganizationalUnit(ouId);
+    @OUFilter("ro.teamnet.ou.web.rest.dto.AccountDTO")
+    public ResponseEntity<Collection<AccountDTO>> getAccounts(@PathVariable Long ouId) {
+        return new ResponseEntity<>(ouAccountService.getAccountsInOrganizationalUnit(ouId), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/eligibleAccounts/{ouId}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public Collection<AccountDTO> getEligibleAccounts(@PathVariable Long ouId) {
-        return ouAccountService.getAccountsEligibleForOrganizationalUnit(ouId);
+    @OUFilter("ro.teamnet.ou.web.rest.dto.AccountDTO")
+    public ResponseEntity<Collection<AccountDTO>> getEligibleAccounts(@PathVariable Long ouId) {
+        return new ResponseEntity<>(ouAccountService.getAccountsEligibleForOrganizationalUnit(ouId), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/accounts/{ouId}", method = RequestMethod.POST,

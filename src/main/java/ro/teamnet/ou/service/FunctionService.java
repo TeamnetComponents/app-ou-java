@@ -12,6 +12,8 @@ public interface FunctionService {
 
     FunctionDTO findOne(Long id);
 
+    FunctionDTO findOneByCode(String code);
+
     Set<FunctionDTO> findAll();
 
     Set<FunctionDTO> findAllByAccountId(Long accountId);

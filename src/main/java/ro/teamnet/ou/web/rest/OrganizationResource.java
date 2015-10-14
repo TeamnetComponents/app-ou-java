@@ -7,7 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ro.teamnet.ou.acl.aop.OUFilter;
+import ro.teamnet.ou.service.OrganizationAccountService;
 import ro.teamnet.ou.service.OrganizationService;
+import ro.teamnet.ou.web.rest.dto.AccountDTO;
 import ro.teamnet.ou.web.rest.dto.OrganizationDTO;
 
 import javax.inject.Inject;
@@ -25,14 +28,17 @@ public class OrganizationResource {
     @Inject
     private OrganizationService organizationService;
 
+    @Inject
+    private OrganizationAccountService organizationAccountService;
+
     @RequestMapping(value = "/save",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE,
             method = RequestMethod.POST)
     public ResponseEntity<OrganizationDTO> updateOrganization(@RequestBody OrganizationDTO organizationDTO) {
-        if(organizationDTO.getId()!=null)    {
+        if (organizationDTO.getId() != null) {
             organizationDTO = organizationService.update(organizationDTO);
-        }else {
+        } else {
             organizationDTO = organizationService.save(organizationDTO);
         }
         if (organizationDTO == null) {
@@ -71,9 +77,37 @@ public class OrganizationResource {
     @RequestMapping(value = "/getAllOrganizations",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @OUFilter(value = "ro.teamnet.ou.web.rest.dto.OrganizationDTO")
     public ResponseEntity<Set<OrganizationDTO>> getAll() {
 
         log.debug("REST request to get all: OrganizationDTOs");
         return new ResponseEntity<Set<OrganizationDTO>>(organizationService.getAllOrganizationDTOs(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/accounts/{orgId}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @OUFilter(value = "ro.teamnet.ou.web.rest.dto.AccountDTO")
+    public ResponseEntity<Set<AccountDTO>> getOrganizationAccounts(@PathVariable Long orgId) {
+        log.debug("REST request to get all: Organization Accounts");
+        return new ResponseEntity<Set<AccountDTO>>(organizationAccountService.getAccountsByOrgId(orgId), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/availableAccounts/{orgId}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @OUFilter(value = "ro.teamnet.ou.web.rest.dto.AccountDTO")
+    public ResponseEntity<Set<AccountDTO>> getAvailableOrgAccounts(@PathVariable Long orgId) {
+        log.debug("REST request to get all: Organization Accounts");
+        return new ResponseEntity<>(organizationAccountService.getAvailableAccounts(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/accounts/{orgId}",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity addAccounts(@PathVariable Long orgId, @RequestBody Set<AccountDTO> accountDTOs) {
+        log.debug("REST request to get all: Organization Accounts");
+        organizationAccountService.createOrUpdateOrgAccounts(orgId, accountDTOs);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
