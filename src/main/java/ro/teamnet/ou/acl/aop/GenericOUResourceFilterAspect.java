@@ -33,18 +33,19 @@ public class GenericOUResourceFilterAspect {
         OUFilter ouFilter = method.getAnnotation(OUFilter.class);
         String filterValue = ouFilter.value();
 
-        if (filterValue.equals("NOT_SET"))
+        if (filterValue.equals("NOT_SET")) {
             return pjp.proceed();
+        }
 
         if (pjp.getSignature().getName().toLowerCase().contains("save") ||
                 pjp.getSignature().getName().toLowerCase().contains("create") ||
                 pjp.getSignature().getName().toLowerCase().contains("update")) {
 
-            if (ouFilterService.isObjectSaveAllowed(filterValue, pjp.getArgs()) == false) {
+            if (!ouFilterService.isObjectSaveAllowed(filterValue, pjp.getArgs())) {
                 return new ResponseEntity(HttpStatus.FORBIDDEN);
             }
         } else if (pjp.getSignature().getName().toLowerCase().contains("delete")) {
-            if (ouFilterService.isObjectDeleteAllowed(filterValue, pjp.getArgs()) == false) {
+            if (!ouFilterService.isObjectDeleteAllowed(filterValue, pjp.getArgs())) {
                 return new ResponseEntity(HttpStatus.FORBIDDEN);
             }
         }

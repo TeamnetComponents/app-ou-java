@@ -34,13 +34,13 @@ public class FunctionNeoRepositoryTest {
     OuNeoUtil ouNeoGenericService = new OuNeoUtilImpl();
 
     @Inject
-    FunctionNeoRepository functionNeoRepository;
+    private FunctionNeoRepository functionNeoRepository;
 
     @Inject
-    AccountNeoRepository accountNeoRepository;
+    private AccountNeoRepository accountNeoRepository;
 
     @Inject
-    OrganizationalUnitNeoRepository organizationalUnitNeoRepository;
+    private OrganizationalUnitNeoRepository organizationalUnitNeoRepository;
 
     private Function function;
     private Account account;

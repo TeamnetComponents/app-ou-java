@@ -7,11 +7,11 @@ import org.springframework.plugin.core.Plugin;
  */
 public interface OUFilterPlugin extends Plugin<String> {
 
-    public Boolean isObjectAllowed(Object obj);
+    Boolean isObjectAllowed(Object obj);
 
     Object filterObjects(Object obj);
 
-    public Boolean isObjectSaveAllowed(Object obj);
+    Boolean isObjectSaveAllowed(Object obj);
 
-    public Boolean isObjectDeleteAllowed(Object obj);
+    Boolean isObjectDeleteAllowed(Object obj);
 }

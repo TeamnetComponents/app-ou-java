@@ -13,7 +13,7 @@ import javax.inject.Inject;
 public class AccountFunctionServiceImpl implements AccountFunctionService {
 
     @Inject
-    AccountFunctionRepository accountFunctionRepository;
+    private AccountFunctionRepository accountFunctionRepository;
 
     @Override
     public AccountFunction findByAccountIdAndFunctionId(Long accountId, Long functionId) {

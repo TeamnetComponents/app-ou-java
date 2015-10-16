@@ -9,5 +9,5 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface OUFilter {
-    public String value() default "NOT_SET";
+    String value() default "NOT_SET";
 }

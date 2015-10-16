@@ -31,7 +31,7 @@ public class OrganizationResource {
     private final Logger log = LoggerFactory.getLogger(OrganizationResource.class);
 
     @Inject
-    AccountService accountService;
+    private AccountService accountService;
 
     @Inject
     private OrganizationService organizationService;

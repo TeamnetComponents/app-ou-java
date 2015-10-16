@@ -18,7 +18,7 @@ import java.util.*;
 public class OrgUnitFilterPlugin implements OUFilterPlugin {
 
     @Inject
-    OrganizationalUnitHierarchyFilterAdvice organizationalUnitHierarchyFilterAdvice;
+    private OrganizationalUnitHierarchyFilterAdvice organizationalUnitHierarchyFilterAdvice;
 
     private Boolean hasPermissionForAll(UserDetails authenticatedUser) {
         for (GrantedAuthority grantedAuthority : authenticatedUser.getAuthorities()) {
@@ -46,21 +46,24 @@ public class OrgUnitFilterPlugin implements OUFilterPlugin {
     @Override
     public Boolean isObjectAllowed(Object obj) {
         //By default if not recognized, it will not be filtered
-        if (!(obj instanceof OrganizationalUnitDTO))
+        if (!(obj instanceof OrganizationalUnitDTO)) {
             return true;
+        }
 
         OrganizationalUnitDTO organizationalUnitDTO = (OrganizationalUnitDTO) obj;
 
         UserDetails authenticatedUser = SecurityUtils.getAuthenticatedUser();
 
-        if (hasPermissionForAll(authenticatedUser))
+        if (hasPermissionForAll(authenticatedUser)) {
             return true;
+        }
 
         Collection<Long> orgUnitJpaIds = organizationalUnitHierarchyFilterAdvice.getAuthenticatedUserOUIds();
         Long orgUnitJpaId = organizationalUnitDTO.getId();
 
-        if (checkIfBelongs(orgUnitJpaIds, orgUnitJpaId))
+        if (checkIfBelongs(orgUnitJpaIds, orgUnitJpaId)) {
             return true;
+        }
 
         return false;
     }
@@ -72,8 +75,9 @@ public class OrgUnitFilterPlugin implements OUFilterPlugin {
 
         Collection<Long> authOrgUnitJpaIds = organizationalUnitHierarchyFilterAdvice.getAuthenticatedUserOUIds();
 
-        if (hasPermissionForAll(authenticatedUser))
+        if (hasPermissionForAll(authenticatedUser)) {
             return obj;
+        }
 
         if (obj instanceof Set) {
             Set<OrganizationalUnitDTO> orgUnitDTOs = (Set<OrganizationalUnitDTO>) obj;
@@ -101,8 +105,9 @@ public class OrgUnitFilterPlugin implements OUFilterPlugin {
     @Override
     public Boolean isObjectSaveAllowed(Object obj) {
         //By default if not recognized, it will not be filtered
-        if (!(obj instanceof Object[]))
+        if (!(obj instanceof Object[])) {
             return true;
+        }
 
         Object[] args = (Object[]) obj;
 
@@ -117,8 +122,9 @@ public class OrgUnitFilterPlugin implements OUFilterPlugin {
     @Override
     public Boolean isObjectDeleteAllowed(Object obj) {
         //By default if not recognized, it will not be filtered
-        if (!(obj instanceof Object[]))
+        if (!(obj instanceof Object[])) {
             return true;
+        }
 
         Object[] args = (Object[]) obj;
 

@@ -23,6 +23,7 @@ import javax.inject.Inject;
 public class OrganizationalUnitHierarchyFilterAspect {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
+
     @Inject
     private OrganizationalUnitHierarchyFilterAdvice filterAdvice;
 

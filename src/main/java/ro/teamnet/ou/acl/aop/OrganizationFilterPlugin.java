@@ -20,13 +20,13 @@ import java.util.*;
 public class OrganizationFilterPlugin implements OUFilterPlugin {
 
     @Inject
-    OrganizationService organizationService;
+    private OrganizationService organizationService;
 
     @Inject
-    AccountService accountService;
+    private AccountService accountService;
 
     @Inject
-    OrganizationalUnitHierarchyFilterAdvice organizationalUnitHierarchyFilterAdvice;
+    private OrganizationalUnitHierarchyFilterAdvice organizationalUnitHierarchyFilterAdvice;
 
     private Boolean hasPermissionForAll(UserDetails authenticatedUser) {
         for (GrantedAuthority grantedAuthority : authenticatedUser.getAuthorities()) {
@@ -54,20 +54,24 @@ public class OrganizationFilterPlugin implements OUFilterPlugin {
     @Override
     public Boolean isObjectAllowed(Object obj) {
         //By default if not recognized, it will not be filtered
-        if (!(obj instanceof OrganizationDTO))
+        if (!(obj instanceof OrganizationDTO)) {
             return true;
+        }
 
         OrganizationDTO organizationDTO = (OrganizationDTO) obj;
 
         UserDetails authenticatedUser = SecurityUtils.getAuthenticatedUser();
 
-        if (hasPermissionForAll(authenticatedUser))
+        if (hasPermissionForAll(authenticatedUser)) {
             return true;
+        }
 
         Collection<OrganizationDTO> orgDTOs = organizationService.getOrganizationsForCurrentUser();
         Long checkOrgJpaId = organizationDTO.getId();
 
-        if (checkIfBelongs(orgDTOs, checkOrgJpaId)) ;
+        if (checkIfBelongs(orgDTOs, checkOrgJpaId)) {
+            return true;
+        }
 
         return false;
     }
@@ -76,8 +80,9 @@ public class OrganizationFilterPlugin implements OUFilterPlugin {
     public Object filterObjects(Object obj) {
         UserDetails authenticatedUser = SecurityUtils.getAuthenticatedUser();
 
-        if (hasPermissionForAll(authenticatedUser))
+        if (hasPermissionForAll(authenticatedUser)) {
             return obj;
+        }
 
         Collection<OrganizationDTO> orgDTOs = organizationService.getOrganizationsForCurrentUser();
 
@@ -107,8 +112,9 @@ public class OrganizationFilterPlugin implements OUFilterPlugin {
     @Override
     public Boolean isObjectSaveAllowed(Object obj) {
         //By default if not recognized, it will not be filtered
-        if (!(obj instanceof Object[]))
+        if (!(obj instanceof Object[])) {
             return true;
+        }
 
         Object[] args = (Object[]) obj;
 
@@ -123,8 +129,9 @@ public class OrganizationFilterPlugin implements OUFilterPlugin {
     @Override
     public Boolean isObjectDeleteAllowed(Object obj) {
         //By default if not recognized, it will not be filtered
-        if (!(obj instanceof Object[]))
+        if (!(obj instanceof Object[])) {
             return true;
+        }
 
         Object[] args = (Object[]) obj;
 

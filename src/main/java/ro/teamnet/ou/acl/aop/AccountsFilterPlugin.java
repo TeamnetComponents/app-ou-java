@@ -5,7 +5,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import ro.teamnet.bootstrap.domain.ModuleRight;
 import ro.teamnet.bootstrap.security.util.SecurityUtils;
-import ro.teamnet.bootstrap.service.AccountService;
 import ro.teamnet.ou.domain.jpa.Organization;
 import ro.teamnet.ou.service.OrganizationAccountService;
 import ro.teamnet.ou.web.rest.dto.AccountDTO;
@@ -20,10 +19,7 @@ import java.util.*;
 public class AccountsFilterPlugin implements OUFilterPlugin {
 
     @Inject
-    OrganizationAccountService organizationAccountService;
-
-    @Inject
-    AccountService accountService;
+    private OrganizationAccountService organizationAccountService;
 
     private Boolean hasPermissionForAll(UserDetails authenticatedUser) {
         for (GrantedAuthority grantedAuthority : authenticatedUser.getAuthorities()) {
@@ -53,21 +49,24 @@ public class AccountsFilterPlugin implements OUFilterPlugin {
     @Override
     public Boolean isObjectAllowed(Object obj) {
         //By default if not recognized, it will not be filtered
-        if (!(obj instanceof AccountDTO))
+        if (!(obj instanceof AccountDTO)) {
             return true;
+        }
 
         AccountDTO accountDTO = (AccountDTO) obj;
 
         UserDetails authenticatedUser = SecurityUtils.getAuthenticatedUser();
 
-        if (hasPermissionForAll(authenticatedUser))
+        if (hasPermissionForAll(authenticatedUser)) {
             return true;
+        }
 
         Set<Organization> authUserOrganizations = organizationAccountService.getOrgsByAccountUsername(authenticatedUser.getUsername());
         Set<Organization> reqUserOrganizations = organizationAccountService.getOrgsByAccountId(accountDTO.getId());
 
-        if (checkIfBelongs(authUserOrganizations, reqUserOrganizations))
+        if (checkIfBelongs(authUserOrganizations, reqUserOrganizations)) {
             return true;
+        }
 
         return false;
     }
@@ -76,8 +75,9 @@ public class AccountsFilterPlugin implements OUFilterPlugin {
     public Object filterObjects(Object obj) {
         UserDetails authenticatedUser = SecurityUtils.getAuthenticatedUser();
 
-        if (hasPermissionForAll(authenticatedUser))
+        if (hasPermissionForAll(authenticatedUser)) {
             return obj;
+        }
 
         Set<Organization> authUserOrganizations = organizationAccountService.getOrgsByAccountUsername(authenticatedUser.getUsername());
         Set<Organization> reqUserOrganizations;
@@ -120,8 +120,9 @@ public class AccountsFilterPlugin implements OUFilterPlugin {
     @Override
     public Boolean isObjectSaveAllowed(Object obj) {
         //By default if not recognized, it will not be filtered
-        if (!(obj instanceof Object[]))
+        if (!(obj instanceof Object[])) {
             return true;
+        }
 
         Object[] args = (Object[]) obj;
 
@@ -136,8 +137,9 @@ public class AccountsFilterPlugin implements OUFilterPlugin {
     @Override
     public Boolean isObjectDeleteAllowed(Object obj) {
         //By default if not recognized, it will not be filtered
-        if (!(obj instanceof Object[]))
+        if (!(obj instanceof Object[])) {
             return true;
+        }
 
         Object[] args = (Object[]) obj;
 

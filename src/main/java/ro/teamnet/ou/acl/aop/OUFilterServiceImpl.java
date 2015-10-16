@@ -1,8 +1,6 @@
 package ro.teamnet.ou.acl.aop;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.plugin.core.PluginRegistry;
 import org.springframework.stereotype.Component;
@@ -15,8 +13,6 @@ import java.util.List;
  */
 @Component("ouFilterService")
 public class OUFilterServiceImpl implements OUFilterService {
-
-    private final Logger log = LoggerFactory.getLogger(OUFilterServiceImpl.class);
 
     @Inject
     @Qualifier("oUFilterPluginRegistry")

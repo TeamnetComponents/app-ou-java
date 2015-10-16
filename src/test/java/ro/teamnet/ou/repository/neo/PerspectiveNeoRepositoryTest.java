@@ -37,13 +37,13 @@ public class PerspectiveNeoRepositoryTest {
     OuNeoUtil ouNeoGenericService = new OuNeoUtilImpl();
 
     @Inject
-    PerspectiveNeoRepository perspectiveNeoRepository;
+    private PerspectiveNeoRepository perspectiveNeoRepository;
 
     @Inject
-    OrganizationNeoRepository organizationNeoRepository;
+    private OrganizationNeoRepository organizationNeoRepository;
 
     @Inject
-    OrganizationalUnitNeoRepository organizationalUnitNeoRepository;
+    private OrganizationalUnitNeoRepository organizationalUnitNeoRepository;
 
     private Perspective perspective;
     private Organization organization;
