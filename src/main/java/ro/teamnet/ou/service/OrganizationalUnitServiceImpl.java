@@ -37,7 +37,7 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
     private OrganizationalUnitNeoRepository organizationalUnitNeoRepository;
 
     @Inject
-    public PerspectiveRepository perspectiveRepository;
+    private PerspectiveRepository perspectiveRepository;
 
     @Inject
     private AccountService accountService;
@@ -46,7 +46,7 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
     private OUAccountService ouAccountService;
 
     @Inject
-    OrganizationalUnitHierarchyFilterAdvice filterAdvice;
+    private OrganizationalUnitHierarchyFilterAdvice filterAdvice;
 
     //TODO : Ce se intampla daca nu merge nici salvarea in neo?
     @Override
@@ -82,8 +82,18 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
         organizationalUnitNeoRepository.save(organizationalUnit);
     }
 
+    /**
+     * Atentie! Pe Organizational Unit DTO nu vin si AccountFunction! Mapperul nu va avea cum sa le adauge si rezulta
+     * buguri!
+     *
+     * @param organizationalUnitDTO
+     * @return
+     */
     private OrganizationalUnitDTO saveJPA(OrganizationalUnitDTO organizationalUnitDTO) {
-        OrganizationalUnit organizationalUnit = OrganizationalUnitMapper.toJPA(organizationalUnitDTO);
+        OrganizationalUnit organizationalUnit = organizationalUnitRepository.findOne(organizationalUnitDTO.getId());
+        if (organizationalUnit == null) {
+            organizationalUnit = OrganizationalUnitMapper.toJPA(organizationalUnitDTO);
+        }
         organizationalUnitRepository.save(organizationalUnit);
         organizationalUnitDTO.setId(organizationalUnit.getId());
         return organizationalUnitDTO;
