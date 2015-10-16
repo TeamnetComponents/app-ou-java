@@ -1,13 +1,19 @@
 package ro.teamnet.ou.service;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ro.teamnet.bootstrap.security.UserExtension;
 import ro.teamnet.bootstrap.security.util.SecurityUtils;
+import ro.teamnet.bootstrap.web.rest.dto.AccountDTO;
+import ro.teamnet.ou.domain.jpa.Function;
 import ro.teamnet.ou.domain.jpa.Organization;
 import ro.teamnet.ou.domain.neo.OrganizationalUnit;
 import ro.teamnet.ou.mapper.OrganizationMapper;
 import ro.teamnet.ou.repository.jpa.OrganizationRepository;
 import ro.teamnet.ou.repository.neo.OrganizationNeoRepository;
+import ro.teamnet.ou.security.UserOrganizationalUnitDetails;
 import ro.teamnet.ou.web.rest.dto.OrganizationDTO;
 
 import javax.inject.Inject;
@@ -112,6 +118,28 @@ public class OrganizationServiceImpl implements OrganizationService {
             organizations.add(OrganizationMapper.toDTO(organizationRepository.findOne(organization.getJpaId()), true));
         }
         return organizations;
+    }
+
+    @Override
+    public AccountDTO getCurrentUserWithOuAuthorities() {
+        UserDetails userDetails = SecurityUtils.getAuthenticatedUser();
+        UserOrganizationalUnitDetails ouExtensions = null;
+
+        if (userDetails instanceof UserExtension) {
+            Object obj = ((UserExtension) userDetails).getExtensions().get("UserOrganizationalUnitDetails");
+            if (obj != null && obj instanceof UserOrganizationalUnitDetails) {
+                ouExtensions = (UserOrganizationalUnitDetails) obj;
+            }
+        }
+
+        Collection<GrantedAuthority> grantedAuthorities = new HashSet<>();
+        Collection<Function> functions = ouExtensions.getFunctions();
+        for (Function function : functions) {
+            grantedAuthorities.addAll(function.getModuleRights());
+        }
+
+        return new AccountDTO(userDetails, grantedAuthorities);
+
     }
 
     @Override

@@ -1,5 +1,6 @@
 package ro.teamnet.ou.service;
 
+import ro.teamnet.bootstrap.web.rest.dto.AccountDTO;
 import ro.teamnet.ou.domain.neo.OrganizationalUnit;
 import ro.teamnet.ou.web.rest.dto.OrganizationDTO;
 
@@ -30,4 +31,6 @@ public interface OrganizationService {
     OrganizationDTO findOrganizationDTOByOrgUnitId(Long jpaId);
 
     Collection<OrganizationDTO> getOrganizationsForCurrentUser();
+
+    AccountDTO getCurrentUserWithOuAuthorities();
 }

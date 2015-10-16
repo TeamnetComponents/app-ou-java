@@ -7,13 +7,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ro.teamnet.bootstrap.domain.Account;
+import ro.teamnet.bootstrap.service.AccountService;
 import ro.teamnet.ou.acl.aop.OUFilter;
+import ro.teamnet.ou.mapper.AccountMapper;
 import ro.teamnet.ou.service.OrganizationAccountService;
 import ro.teamnet.ou.service.OrganizationService;
 import ro.teamnet.ou.web.rest.dto.AccountDTO;
 import ro.teamnet.ou.web.rest.dto.OrganizationDTO;
 
 import javax.inject.Inject;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -24,6 +29,9 @@ import java.util.Set;
 public class OrganizationResource {
 
     private final Logger log = LoggerFactory.getLogger(OrganizationResource.class);
+
+    @Inject
+    AccountService accountService;
 
     @Inject
     private OrganizationService organizationService;
@@ -109,5 +117,38 @@ public class OrganizationResource {
         log.debug("REST request to get all: Organization Accounts");
         organizationAccountService.createOrUpdateOrgAccounts(orgId, accountDTOs);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/account/getAll", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @OUFilter("ro.teamnet.ou.web.rest.dto.AccountDTO")
+    public ResponseEntity<Set<AccountDTO>> getAllAccounts() {
+        List<Account> accounts = accountService.findAll();
+
+        Set<AccountDTO> accountDTOs = new HashSet<>();
+        for (Account account : accounts) {
+            accountDTOs.add(AccountMapper.toDTO(account));
+        }
+
+        return new ResponseEntity<>(accountDTOs, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/account/getByLogin/{login:.+}", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AccountDTO> getAccountByLogin(@PathVariable String login) {
+        Account account = accountService.findByLogin(login);
+        return new ResponseEntity<>(AccountMapper.toDTO(account), HttpStatus.OK);
+    }
+
+    /**
+     * Method returns all the rights associated with this account that are part of the OU module
+     *
+     * @return
+     */
+    @RequestMapping(value = "/account/getCurrentUserWithOuAuthorities", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ro.teamnet.bootstrap.web.rest.dto.AccountDTO> getCurrentUserWithOuAuthorities() {
+        ro.teamnet.bootstrap.web.rest.dto.AccountDTO accountDTO = organizationService.getCurrentUserWithOuAuthorities();
+        return new ResponseEntity<>(accountDTO, HttpStatus.OK);
     }
 }

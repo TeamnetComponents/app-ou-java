@@ -72,6 +72,19 @@ public class OrganizationalUnitMapper {
     }
 
     /**
+     * Converts the JPA for an organizational unit into a Neo4J entity.
+     *
+     * @param organizationalUnitJPA the organizational unit DTO
+     * @return the Neo4J entity
+     */
+    public static ro.teamnet.ou.domain.neo.OrganizationalUnit toNeo(OrganizationalUnit organizationalUnitJPA) {
+        ro.teamnet.ou.domain.neo.OrganizationalUnit organizationalUnit = new ro.teamnet.ou.domain.neo.OrganizationalUnit();
+        organizationalUnit.setJpaId(organizationalUnit.getId());
+        organizationalUnit.setCode(organizationalUnit.getCode());
+        return organizationalUnit;
+    }
+
+    /**
      * Converts the JPA entity for an organizational unit into a DTO.
      *
      * @param organizationalUnit the organizational unit JPA entity
@@ -155,7 +168,8 @@ public class OrganizationalUnitMapper {
 
     /**
      * Converts the Neo4J entity for an organizational unit into a DTO.
-     * @param lazyFetching if true, the references to perspective and children wil not be added to the entity
+     *
+     * @param lazyFetching          if true, the references to perspective and children wil not be added to the entity
      * @param organizationalUnitNeo the organizational unit Neo4J entity
      * @return the DTO
      */

@@ -13,7 +13,10 @@ import java.util.Set;
  */
 public interface OrganizationalUnitRepository extends AppRepository<OrganizationalUnit, Long> {
     @Query("select ou from OrganizationalUnit ou left join fetch ou.accountFunctions where ou.id = :id")
-    OrganizationalUnit getOneWithAccountFunctions(@Param("id")Long id);
+    OrganizationalUnit getOneWithAccountFunctions(@Param("id") Long id);
+
+    @Query("select ou from OrganizationalUnit ou left join fetch ou.accountFunctions")
+    Set<OrganizationalUnit> getAllWithAccountFunctions();
 
     @Query("select ou from OrganizationalUnit ou join ou.accountFunctions p where p.id = :id")
     List<OrganizationalUnit> getOrganizationalUnitByAccountFunctionId(@Param("id") Long id);

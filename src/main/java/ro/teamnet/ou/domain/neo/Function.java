@@ -8,17 +8,42 @@ public class Function {
     @GraphId
     private Long id;
 
+    @Fetch
     @StartNode
     private Account account;
 
+    @Fetch
     @EndNode
     private OrganizationalUnit organizationalUnit;
 
+    @Fetch
     @GraphProperty(propertyName = "code")
     private String code;
 
+    @Fetch
     @GraphProperty(propertyName = "jpaId")
     private Long jpaId;
+
+    public Function() {
+    }
+
+    ;
+
+    public Function(Long id, Account account, OrganizationalUnit organizationalUnit, String code, Long jpaId) {
+        this.id = id;
+        this.account = account;
+        this.organizationalUnit = organizationalUnit;
+        this.code = code;
+        this.jpaId = jpaId;
+    }
+
+    public Function(Function function) {
+        this.id = function.getId();
+        this.account = function.getAccount();
+        this.organizationalUnit = function.getOrganizationalUnit();
+        this.code = function.getCode();
+        this.jpaId = function.getJpaId();
+    }
 
     public Long getId() {
         return id;

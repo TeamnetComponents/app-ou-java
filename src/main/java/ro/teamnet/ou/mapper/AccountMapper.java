@@ -40,6 +40,9 @@ public class AccountMapper {
         AccountDTO accountDTO = new AccountDTO();
         accountDTO.setId(account.getId());
         accountDTO.setUsername(account.getLogin());
+        accountDTO.setEmail(account.getEmail());
+        accountDTO.setLastName(account.getLastName());
+        accountDTO.setFirstName(account.getFirstName());
         accountDTO.setFunctions(new HashSet<FunctionDTO>());
         accountDTO.setAvailableFunctions(new HashSet<FunctionDTO>());
         return accountDTO;
