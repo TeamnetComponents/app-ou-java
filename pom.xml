@@ -8,12 +8,13 @@
         <version>0.3-SNAPSHOT</version>
         <relativePath />
     </parent>
-	
+
 	<groupId>ro.teamnet.ou</groupId>
     <artifactId>app-ou-java</artifactId>
     <version>0.3-SNAPSHOT</version>
     <packaging>jar</packaging>
 	<properties>
+        <bootstrap.version>0.2.11</bootstrap.version>
         <spring-data-neo4j.version>3.2.1.RELEASE</spring-data-neo4j.version>
         <app-neo4j-base.version>0.2-SNAPSHOT</app-neo4j-base.version>
     </properties>
@@ -48,27 +49,27 @@
         <dependency>
             <groupId>ro.teamnet.bootstrap</groupId>
             <artifactId>app-bootstrap-commons</artifactId>
-            <version>0.2.11-SNAPSHOT</version>
+            <version>${bootstrap.version}</version>
         </dependency>
 
         <dependency>
             <groupId>ro.teamnet.bootstrap</groupId>
             <artifactId>app-bootstrap-dictionary</artifactId>
-            <version>0.2.11-SNAPSHOT</version>
+            <version>${bootstrap.version}</version>
         </dependency>
 
 
         <dependency>
             <groupId>ro.teamnet.bootstrap</groupId>
             <artifactId>app-bootstrap-security</artifactId>
-            <version>0.2.11-SNAPSHOT</version>
+            <version>${bootstrap.version}</version>
         </dependency>
 
 
         <dependency>
             <groupId>ro.teamnet.bootstrap</groupId>
             <artifactId>app-bootstrap</artifactId>
-            <version>0.2.11-SNAPSHOT</version>
+            <version>${bootstrap.version}</version>
         </dependency>
 
     </dependencies>
