@@ -41,7 +41,7 @@ public class AccountFunctionResource {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/account/{accountId}/{functionId}", method = RequestMethod.DELETE,
+    @RequestMapping(value = "/function/delete/{accountId}/{functionId}", method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity removeFromAccount(@PathVariable Long accountId, @PathVariable Long functionId) {
