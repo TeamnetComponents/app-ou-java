@@ -135,6 +135,7 @@ public class OrganizationResource {
 
     @RequestMapping(value = "/account/getByLogin/{login:.+}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @OUFilter("ro.teamnet.ou.web.rest.dto.AccountDTO")
     public ResponseEntity<AccountDTO> getAccountByLogin(@PathVariable String login) {
         Account account = accountService.findByLogin(login);
         return new ResponseEntity<>(AccountMapper.toDTO(account), HttpStatus.OK);

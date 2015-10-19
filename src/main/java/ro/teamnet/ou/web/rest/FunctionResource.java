@@ -18,14 +18,14 @@ import java.util.Set;
  */
 @RestController
 @RequestMapping("/app/rest/function")
-public class FunctionResource{
+public class FunctionResource {
 
     private final Logger log = LoggerFactory.getLogger(FunctionResource.class);
     private FunctionService functionService;
 
     @Inject
     public FunctionResource(FunctionService functionService) {
-        this.functionService=functionService;
+        this.functionService = functionService;
     }
 
     @RequestMapping(method = RequestMethod.GET,
@@ -70,29 +70,6 @@ public class FunctionResource{
     public void delete(@PathVariable Long id) {
         log.debug("REST request to delete : {}", id);
         functionService.delete(id);
-    }
-
-    @RequestMapping(value = "/account/{accountId}", method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public Set<FunctionDTO> getAllByAccountId(@PathVariable Long accountId) {
-        return functionService.findAllByAccountId(accountId);
-    }
-
-    @RequestMapping(value = "/account/{accountId}", method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public ResponseEntity addToAccount(@PathVariable Long accountId, @RequestBody FunctionDTO functionDTO) {
-        functionService.addToAccount(accountId, functionDTO);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/account/{accountId}/{functionId}", method = RequestMethod.DELETE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public ResponseEntity removeFromAccount(@PathVariable Long accountId, @PathVariable Long functionId) {
-        functionService.removeFromAccount(accountId, functionId);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/ou/{ouId}", method = RequestMethod.GET,
