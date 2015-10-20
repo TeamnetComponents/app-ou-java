@@ -134,11 +134,13 @@ public class FunctionServiceImpl implements FunctionService {
 
     @Override
     public void addToOrganizationalUnit(Long ouId, FunctionDTO functionDTO) {
-
-        OrganizationalUnitFunction ouFunction = new OrganizationalUnitFunction();
-        ouFunction.setOrganizationalUnit(ouRepository.findOne(ouId));
-        ouFunction.setFunction(functionRepository.findOne(functionDTO.getId()));
-        ouFunctionRepository.save(ouFunction);
+        Set<OrganizationalUnitFunction> ouFunctions = ouFunctionRepository.getByOrgUnitIdAndFunctionId(ouId, functionDTO.getId());
+        if (ouFunctions == null || ouFunctions.size() == 0) {
+            OrganizationalUnitFunction ouFunction = new OrganizationalUnitFunction();
+            ouFunction.setOrganizationalUnit(ouRepository.findOne(ouId));
+            ouFunction.setFunction(functionRepository.findOne(functionDTO.getId()));
+            ouFunctionRepository.save(ouFunction);
+        }
     }
 
     @Override

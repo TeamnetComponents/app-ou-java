@@ -26,8 +26,10 @@ import java.util.Set;
 public class OrganizationalUnitResource {
 
     private final Logger log = LoggerFactory.getLogger(OrganizationalUnitResource.class);
+
     @Inject
     private OrganizationalUnitService organizationalUnitService;
+
     @Inject
     private OUAccountService ouAccountService;
 

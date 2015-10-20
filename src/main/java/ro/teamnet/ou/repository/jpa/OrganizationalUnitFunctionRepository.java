@@ -18,4 +18,7 @@ public interface OrganizationalUnitFunctionRepository extends AppRepository<Orga
     Set<Function> findFunctionsByOrganizationalUnitId(@Param("organizationalUnitId") Long organizationalUnit);
 
     void deleteByOrganizationalUnitIdAndFunctionId(Long organizationalUnitId, Long functionId);
+
+    @Query("select ouFunction from OrganizationalUnitFunction ouFunction where ouFunction.organizationalUnit.id =:ouId and ouFunction.function.id =:functionId")
+    Set<OrganizationalUnitFunction> getByOrgUnitIdAndFunctionId(@Param("ouId") Long ouId, @Param("functionId") Long functionId);
 }
