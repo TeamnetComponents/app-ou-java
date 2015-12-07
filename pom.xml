@@ -5,13 +5,13 @@
     <parent>
         <groupId>ro.teamnet.neo</groupId>
         <artifactId>app-neo4j-dependencies</artifactId>
-        <version>0.3-SNAPSHOT</version>
+        <version>0.3</version>
         <relativePath />
     </parent>
 
 	<groupId>ro.teamnet.ou</groupId>
     <artifactId>app-ou-java</artifactId>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.3</version>
     <packaging>jar</packaging>
 	
     <distributionManagement>
@@ -39,7 +39,7 @@
        <dependency>
            <groupId>ro.teamnet.neo</groupId>
            <artifactId>app-neo4j-base</artifactId>
-           <version>${app-neo4j-ou.version}</version>
+           <version>0.3</version>
        </dependency>
 
         <dependency>
@@ -73,7 +73,7 @@
 	<scm>
         <url>http://git-components.teamnet.ro/summary/components%2Fjava%2Fplatform-extensions%2Fapp-ou-java.git</url>
         <connection>scm:git:http://component-publisher@git-components.teamnet.ro/r/components/java/platform-extensions/app-ou-java.git</connection>
-        <tag>HEAD</tag>
+        <tag>v0.3</tag>
     </scm>
 	
 	<build>
