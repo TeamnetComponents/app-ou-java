@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ro.teamnet.bootstrap.domain.ModuleRight;
 import ro.teamnet.bootstrap.security.util.SecurityUtils;
 import ro.teamnet.ou.acl.service.OrganizationalUnitHierarchyFilterAdvice;
+import ro.teamnet.ou.service.OrganizationalUnitService;
 import ro.teamnet.ou.web.rest.dto.OrganizationalUnitDTO;
 
 import javax.inject.Inject;
@@ -19,6 +20,9 @@ public class OrgUnitFilterPlugin implements OUFilterPlugin {
 
     @Inject
     private OrganizationalUnitHierarchyFilterAdvice organizationalUnitHierarchyFilterAdvice;
+
+    @Inject
+    private OrganizationalUnitService organizationalUnitService;
 
     private Boolean hasPermissionForAll(UserDetails authenticatedUser) {
         for (GrantedAuthority grantedAuthority : authenticatedUser.getAuthorities()) {
@@ -128,8 +132,8 @@ public class OrgUnitFilterPlugin implements OUFilterPlugin {
 
         Object[] args = (Object[]) obj;
 
-        if (args.length == 1 && (args[0] instanceof Long || args[0] instanceof Integer)) {
-            OrganizationalUnitDTO organizationalUnitDTO = (OrganizationalUnitDTO) args[0];
+        if (args.length == 1 && (args[0] instanceof Long)) {
+            OrganizationalUnitDTO organizationalUnitDTO = organizationalUnitService.findOne((Long) args[0]);
             return this.isObjectAllowed(organizationalUnitDTO);
         }
 

@@ -90,9 +90,10 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
      * @return
      */
     private OrganizationalUnitDTO saveJPA(OrganizationalUnitDTO organizationalUnitDTO) {
-        OrganizationalUnit organizationalUnit = organizationalUnitRepository.findOne(organizationalUnitDTO.getId());
-        if (organizationalUnit == null) {
-            organizationalUnit = OrganizationalUnitMapper.toJPA(organizationalUnitDTO);
+        OrganizationalUnit organizationalUnit = OrganizationalUnitMapper.toJPA(organizationalUnitDTO);
+        if (organizationalUnitDTO.getId() != null) {
+            OrganizationalUnit currentOrganizationalUnit = organizationalUnitRepository.findOne(organizationalUnitDTO.getId());
+            organizationalUnit.setAccountFunctions(currentOrganizationalUnit.getAccountFunctions());
         }
         organizationalUnitRepository.save(organizationalUnit);
         organizationalUnitDTO.setId(organizationalUnit.getId());
