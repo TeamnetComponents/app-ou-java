@@ -155,16 +155,6 @@ public class DbSynchronizationService {
         }
     }
 
-    ro.teamnet.ou.domain.neo.Function getFunctionIfExists(Set<ro.teamnet.ou.domain.neo.Function> functions, Long accountId, Long orgUnitId) {
-        for (ro.teamnet.ou.domain.neo.Function function : functions) {
-            if (function.getAccount().getJpaId().equals(accountId) && function.getOrganizationalUnit().getJpaId().equals(orgUnitId)) {
-                return function;
-            }
-        }
-
-        return null;
-    }
-
     /**
      * Synchronizes functions from JPA with functions from Neo.
      */
@@ -182,24 +172,26 @@ public class DbSynchronizationService {
                 Account account = accountFunction.getAccount();
                 Function function = accountFunction.getFunction();
 
-                ro.teamnet.ou.domain.neo.Function neoFunction = getFunctionIfExists(existingFunctions, account.getId(), organizationalUnit.getId());
-                if (neoFunction != null) {
-                    if (!neoFunction.getCode().equals(function.getCode())) {
-                        neoFunction = new ro.teamnet.ou.domain.neo.Function(neoFunction);
+                Set<ro.teamnet.ou.domain.neo.Function> neoFunctions = functionNeoRepository.findByJpaIdOuIdAndAccountId(account.getId(), organizationalUnit.getId());
+                for (ro.teamnet.ou.domain.neo.Function neoFunction : neoFunctions) {
+                    if (neoFunction != null) {
+                        if (!neoFunction.getCode().equals(function.getCode())) {
+                            neoFunction = new ro.teamnet.ou.domain.neo.Function(neoFunction);
+                            neoFunction.setCode(function.getCode());
+                            functionsToSave.add(neoFunction);
+                        }
+
+                        existingFunctions.remove(neoFunction);
+                    } else {
+                        neoFunction = new ro.teamnet.ou.domain.neo.Function();
+                        neoFunction.setId(null);
+                        neoFunction.setJpaId(function.getId());
                         neoFunction.setCode(function.getCode());
+                        neoFunction.setAccount(accountNeoRepository.findByJpaId(account.getId()));
+                        neoFunction.setOrganizationalUnit(neoOrganizationalUnit);
+
                         functionsToSave.add(neoFunction);
                     }
-
-                    existingFunctions.remove(neoFunction);
-                } else {
-                    neoFunction = new ro.teamnet.ou.domain.neo.Function();
-                    neoFunction.setId(null);
-                    neoFunction.setJpaId(function.getId());
-                    neoFunction.setCode(function.getCode());
-                    neoFunction.setAccount(accountNeoRepository.findByJpaId(account.getId()));
-                    neoFunction.setOrganizationalUnit(neoOrganizationalUnit);
-
-                    functionsToSave.add(neoFunction);
                 }
             }
 

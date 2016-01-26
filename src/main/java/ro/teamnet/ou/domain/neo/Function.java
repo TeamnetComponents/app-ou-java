@@ -8,11 +8,9 @@ public class Function {
     @GraphId
     private Long id;
 
-    @Fetch
     @StartNode
     private Account account;
 
-    @Fetch
     @EndNode
     private OrganizationalUnit organizationalUnit;
 
