@@ -12,7 +12,7 @@ import ro.teamnet.ou.web.rest.dto.AccountOrganizationsDTO;
 
 @RestController
 @RequestMapping(value = "/app/rest/adminAccount")
-public class AdminAccountResource {
+public class AdminOrganizationalResource {
 
     @Inject
     private OrganizationAccountService organizationAccountService;
