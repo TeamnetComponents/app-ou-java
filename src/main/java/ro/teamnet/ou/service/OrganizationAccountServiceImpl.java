@@ -10,8 +10,10 @@ import ro.teamnet.ou.mapper.AccountMapper;
 import ro.teamnet.ou.repository.jpa.OrganizationAccountRepository;
 import ro.teamnet.ou.repository.jpa.OrganizationRepository;
 import ro.teamnet.ou.web.rest.dto.AccountDTO;
+import ro.teamnet.ou.web.rest.dto.AccountOrganizationsDTO;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -55,6 +57,24 @@ public class OrganizationAccountServiceImpl implements OrganizationAccountServic
         }
 
         return accountDTOs;
+    }
+
+    /**
+     *  This returns all application accounts regardless if they have
+     *  organizations assigned or not
+     */
+    public List<AccountOrganizationsDTO> getAllAccountsWithOrganizations() {
+        List<AccountOrganizationsDTO> allAccountsWithOrganizations = new ArrayList<>();
+        List<ro.teamnet.bootstrap.web.rest.dto.AccountDTO> bootstrapAccountsDTOs = accountService.findAllExtended();
+
+        for (ro.teamnet.bootstrap.web.rest.dto.AccountDTO bootstrapAccountDTO : bootstrapAccountsDTOs) {
+            AccountOrganizationsDTO accountWithOrganizationsDTO = new AccountOrganizationsDTO();
+            accountWithOrganizationsDTO.setAccount(bootstrapAccountDTO);
+            accountWithOrganizationsDTO.setOrganizations(getOrgsByAccountId(bootstrapAccountDTO.getId()));
+            allAccountsWithOrganizations.add(accountWithOrganizationsDTO);
+        }
+
+        return allAccountsWithOrganizations;
     }
 
     public Boolean itContains(Set<AccountDTO> accountDTOs, Long id) {
