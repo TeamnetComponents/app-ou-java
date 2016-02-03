@@ -173,8 +173,17 @@ public class DbSynchronizationService {
                 Function function = accountFunction.getFunction();
 
                 Set<ro.teamnet.ou.domain.neo.Function> neoFunctions = functionNeoRepository.findByJpaIdOuIdAndAccountId(account.getId(), organizationalUnit.getId());
-                for (ro.teamnet.ou.domain.neo.Function neoFunction : neoFunctions) {
-                    if (neoFunction != null) {
+                if (neoFunctions.size() == 0) {
+                    ro.teamnet.ou.domain.neo.Function neoFunction = new ro.teamnet.ou.domain.neo.Function();
+                    neoFunction.setId(null);
+                    neoFunction.setJpaId(function.getId());
+                    neoFunction.setCode(function.getCode());
+                    neoFunction.setAccount(accountNeoRepository.findByJpaId(account.getId()));
+                    neoFunction.setOrganizationalUnit(neoOrganizationalUnit);
+
+                    functionsToSave.add(neoFunction);
+                } else {
+                    for (ro.teamnet.ou.domain.neo.Function neoFunction : neoFunctions) {
                         if (!neoFunction.getCode().equals(function.getCode())) {
                             neoFunction = new ro.teamnet.ou.domain.neo.Function(neoFunction);
                             neoFunction.setCode(function.getCode());
@@ -182,15 +191,6 @@ public class DbSynchronizationService {
                         }
 
                         existingFunctions.remove(neoFunction);
-                    } else {
-                        neoFunction = new ro.teamnet.ou.domain.neo.Function();
-                        neoFunction.setId(null);
-                        neoFunction.setJpaId(function.getId());
-                        neoFunction.setCode(function.getCode());
-                        neoFunction.setAccount(accountNeoRepository.findByJpaId(account.getId()));
-                        neoFunction.setOrganizationalUnit(neoOrganizationalUnit);
-
-                        functionsToSave.add(neoFunction);
                     }
                 }
             }
