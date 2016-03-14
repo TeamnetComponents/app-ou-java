@@ -22,12 +22,13 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Created by Radu.Hoaghe on 8/3/2015.
+ * .OrganizationResource
  */
 @RestController
 @RequestMapping("/app/rest/organization")
 public class OrganizationResource {
 
+    public static final String REST_REQUEST_TO_GET_ALL_ORGANIZATION_ACCOUNTS = "REST request to get all: Organization Accounts";
     private final Logger log = LoggerFactory.getLogger(OrganizationResource.class);
 
     @Inject
@@ -44,26 +45,19 @@ public class OrganizationResource {
             produces = MediaType.APPLICATION_JSON_VALUE,
             method = RequestMethod.POST)
     public ResponseEntity<OrganizationDTO> updateOrganization(@RequestBody OrganizationDTO organizationDTO) {
+        OrganizationDTO organizationDTONew;
         if (organizationDTO.getId() != null) {
-            organizationDTO = organizationService.update(organizationDTO);
+            organizationDTONew = organizationService.update(organizationDTO);
         } else {
-            organizationDTO = organizationService.save(organizationDTO);
+            organizationDTONew = organizationService.save(organizationDTO);
         }
-        if (organizationDTO == null) {
+        if (organizationDTONew == null) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(organizationDTO, HttpStatus.OK);
+        return new ResponseEntity<>(organizationDTONew, HttpStatus.OK);
     }
 
 
-//    @RequestMapping(value = "/deleteOrganization",
-//            consumes = MediaType.APPLICATION_JSON_VALUE,
-//            produces = MediaType.APPLICATION_JSON_VALUE,
-//            method = RequestMethod.POST)
-//    public void deleteOrganization(@RequestBody OrganizationDTO organizationDTO) {
-//
-//        organizationService.delete(organizationDTO);
-//    }
 
     @RequestMapping(value = "/{id}",
             method = RequestMethod.DELETE)
@@ -79,7 +73,7 @@ public class OrganizationResource {
     public ResponseEntity<OrganizationDTO> getById(@PathVariable Long id) {
 
         log.debug("REST request to get Organization by id : {}", id);
-        return new ResponseEntity<OrganizationDTO>(organizationService.findOrganizationDTOById(id), HttpStatus.OK);
+        return new ResponseEntity<>(organizationService.findOrganizationDTOById(id), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/getAllOrganizations",
@@ -89,7 +83,7 @@ public class OrganizationResource {
     public ResponseEntity<Set<OrganizationDTO>> getAll() {
 
         log.debug("REST request to get all: OrganizationDTOs");
-        return new ResponseEntity<Set<OrganizationDTO>>(organizationService.getAllOrganizationDTOs(), HttpStatus.OK);
+        return new ResponseEntity<>(organizationService.getAllOrganizationDTOs(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/accounts/{orgId}",
@@ -97,8 +91,8 @@ public class OrganizationResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @OUFilter(value = "ro.teamnet.ou.web.rest.dto.AccountDTO")
     public ResponseEntity<Set<AccountDTO>> getOrganizationAccounts(@PathVariable Long orgId) {
-        log.debug("REST request to get all: Organization Accounts");
-        return new ResponseEntity<Set<AccountDTO>>(organizationAccountService.getAccountsByOrgId(orgId), HttpStatus.OK);
+        log.debug(REST_REQUEST_TO_GET_ALL_ORGANIZATION_ACCOUNTS);
+        return new ResponseEntity<>(organizationAccountService.getAccountsByOrgId(orgId), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/availableAccounts/{orgId}",
@@ -106,7 +100,7 @@ public class OrganizationResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @OUFilter(value = "ro.teamnet.ou.web.rest.dto.AccountDTO")
     public ResponseEntity<Set<AccountDTO>> getAvailableOrgAccounts(@PathVariable Long orgId) {
-        log.debug("REST request to get all: Organization Accounts");
+        log.debug(REST_REQUEST_TO_GET_ALL_ORGANIZATION_ACCOUNTS);
         return new ResponseEntity<>(organizationAccountService.getAvailableAccounts(), HttpStatus.OK);
     }
 
@@ -144,7 +138,6 @@ public class OrganizationResource {
     /**
      * Method returns all the rights associated with this account that are part of the OU module
      *
-     * @return
      */
     @RequestMapping(value = "/account/getCurrentUserWithOuAuthorities", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
