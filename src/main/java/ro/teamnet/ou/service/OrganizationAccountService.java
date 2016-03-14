@@ -2,9 +2,7 @@ package ro.teamnet.ou.service;
 
 import ro.teamnet.ou.domain.jpa.Organization;
 import ro.teamnet.ou.web.rest.dto.AccountDTO;
-import ro.teamnet.ou.web.rest.dto.AccountOrganizationsDTO;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -13,8 +11,6 @@ import java.util.Set;
 public interface OrganizationAccountService {
 
     Set<AccountDTO> getAvailableAccounts();
-
-    List<AccountOrganizationsDTO> getAllAccountsWithOrganizations();
 
     Set<AccountDTO> getAccountsByOrgId(Long orgId);
 
