@@ -7,9 +7,21 @@
     <!--
         Added the entity PERSPECTIVE
     -->
-    <changeSet id="20150731142346" author="marian">
+    <changeSet id="20150731142346" author="marian" dbms="!mssql">
         <createTable tableName="T_PERSPECTIVE">
             <column name="ID" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="CODE" type="varchar(100)">
+                <constraints unique="true"/>
+            </column>
+            <column name="DESCRIPTION" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20150731142346#mssql" author="marian" dbms="mssql">
+        <createTable tableName="T_PERSPECTIVE">
+            <column name="ID" type="bigint" autoIncrement="false">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="CODE" type="varchar(100)">

@@ -7,9 +7,24 @@
     <!--
         Added the entity T_ORGANIZATIONAL_UNIT
     -->
-    <changeSet id="20150731143012" author="marian">
+    <changeSet id="20150731143012" author="marian" dbms="!mssql">
         <createTable tableName="T_ORGANIZATIONAL_UNIT">
             <column name="ID" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="CODE" type="varchar(100)">
+                <constraints unique="true"/>
+            </column>
+            <column name="DESCRIPTION" type="varchar(255)"/>
+            <column name="VALID_FROM" type="timestamp"/>
+            <column name="VALID_TO" type="timestamp"/>
+            <column name="IS_ACTIVE" type="bit"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20150731143012#mssql" author="marian" dbms="mssql">
+        <createTable tableName="T_ORGANIZATIONAL_UNIT">
+            <column name="ID" type="bigint" autoIncrement="false">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="CODE" type="varchar(100)">
