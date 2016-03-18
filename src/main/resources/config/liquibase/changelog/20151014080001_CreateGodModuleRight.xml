@@ -11,12 +11,14 @@
     <property name="activated" value="1" dbms="oracle"/>
 
     <property name="pk_t_module" value="HIBERNATE_SEQUENCE.NEXTVAL" dbms="oracle"/>
+    <property name="pk_t_module" value="next value for hibernate_sequence" dbms="mssql"/>
     <property name="pk_t_module" value="nextval('t_module_id_module_seq')" dbms="postgresql"/>
-    <property name="pk_t_module" value="null" dbms="!oracle,!postgresql"/>
+    <property name="pk_t_module" value="null" dbms="!oracle,!postgresql,!mssql"/>
 
     <property name="pk_t_module_right" value="HIBERNATE_SEQUENCE.NEXTVAL" dbms="oracle"/>
+    <property name="pk_t_module_right" value="next value for hibernate_sequence" dbms="mssql"/>
     <property name="pk_t_module_right" value="nextval('t_module_right_id_module_right_seq')" dbms="postgresql"/>
-    <property name="pk_t_module_right" value="null" dbms="!oracle,!postgresql"/>
+    <property name="pk_t_module_right" value="null" dbms="!oracle,!postgresql,!mssql"/>
 
     <changeSet id="20151014080001" author="marian">
         <insert tableName="T_MODULE">
