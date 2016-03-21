@@ -93,8 +93,9 @@ public class OrganizationalUnitResource {
         return organizationalUnitService.getTree(rootId);
     }
 
-    @RequestMapping(value = "/getParentOrgUnitsById/{rootId}/{id}",
-            method = RequestMethod.GET)
+    // TODO killer query, fix or delete this
+    /*@RequestMapping(value = "/getParentOrgUnitsById/{rootId}/{id}",
+            method = RequestMethod.GET)*/
     @Timed
     @OUFilter("ro.teamnet.ou.web.rest.dto.OrganizationalUnitDTO")
     public ResponseEntity<List<OrganizationalUnitDTO>> getParentOrgUnitsById(@PathVariable Long rootId, @PathVariable Long id) {
