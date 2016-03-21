@@ -21,8 +21,8 @@ public interface AccountFunctionRepository extends AppRepository<AccountFunction
     @Query("select af from AccountFunction af where af.function.id = :functionId")
     List<AccountFunction> findAccountFunctionByFunctionId(@Param("functionId") Long functionId);
 
-    @Query("select c from AccountFunction  c join fetch c.function join fetch c.account where c.function in(:functs) ")
-    Set<AccountFunction> findByFunctionIn(Collection<Function> functions);
+    @Query("select c from AccountFunction  c join fetch c.function join fetch c.account where c.function in(:functions) ")
+    Set<AccountFunction> findByFunctionIn(@Param("functions") Collection<Function> functions);
 
     Set<AccountFunction> findByAccountId(Long accountId);
 
