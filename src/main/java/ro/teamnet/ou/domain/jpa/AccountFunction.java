@@ -10,7 +10,7 @@ public class AccountFunction {
 
     @Id
     @Column(name="ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne

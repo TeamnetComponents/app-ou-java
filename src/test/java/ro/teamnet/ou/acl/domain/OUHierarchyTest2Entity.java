@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class OUHierarchyTest2Entity extends OrganizationalUnitHierarchyEntity{
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     public Long getId() {

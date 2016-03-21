@@ -7,21 +7,9 @@
     <!--
         Added the entity ORGANIZATION
     -->
-    <changeSet id="20150731122745" author="marian" dbms="!mssql">
+    <changeSet id="20150731122745" author="marian">
         <createTable tableName="T_ORGANIZATION">
             <column name="ID" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="CODE" type="varchar(100)">
-                <constraints unique="true"/>
-            </column>
-            <column name="DESCRIPTION" type="varchar(255)"/>
-        </createTable>
-    </changeSet>
-
-    <changeSet id="20150731122745#mssql" author="marian" dbms="mssql">
-        <createTable tableName="T_ORGANIZATION">
-            <column name="ID" type="bigint" autoIncrement="false">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="CODE" type="varchar(100)">

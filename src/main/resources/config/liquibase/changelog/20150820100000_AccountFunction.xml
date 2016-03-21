@@ -4,7 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="20150820100000" author="oanam" dbms="!mssql">
+    <changeSet id="20150820100000" author="oanam">
         <createTable tableName="T_ACCOUNT_FUNCTION">
             <column name="ID" autoIncrement="true" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
@@ -26,30 +26,6 @@
                                  referencedTableName="T_ROLE"/>
 
     </changeSet>
-
-    <changeSet id="20150820100000#mssql" author="oanam" dbms="mssql">
-        <createTable tableName="T_ACCOUNT_FUNCTION">
-            <column name="ID" autoIncrement="false" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="ACCOUNT_ID" type="bigint"/>
-            <column name="FUNCTION_ID" type="bigint"/>
-        </createTable>
-
-        <addForeignKeyConstraint baseColumnNames="ACCOUNT_ID"
-                                 baseTableName="T_ACCOUNT_FUNCTION"
-                                 constraintName="fk_account_function_a"
-                                 referencedColumnNames="ID_ACCOUNT"
-                                 referencedTableName="T_ACCOUNT"/>
-
-        <addForeignKeyConstraint baseColumnNames="FUNCTION_ID"
-                                 baseTableName="T_ACCOUNT_FUNCTION"
-                                 constraintName="fk_account_function_f"
-                                 referencedColumnNames="ID_ROLE"
-                                 referencedTableName="T_ROLE"/>
-
-    </changeSet>
-
     <changeSet id="20150831170000" author="oanam">
         <createTable tableName="T_OU_ACCOUNT_FUNCTION">
             <column name="OU_ID" type="bigint">
