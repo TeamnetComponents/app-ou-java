@@ -38,7 +38,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     private OrganizationalUnitService organizationalUnitService;
 
     @Override
-    @Transactional
+    @Transactional("crossStoreTransactionManager")
     public OrganizationDTO save(OrganizationDTO organizationDTO) {
         Organization organization = OrganizationMapper.toJPA(organizationDTO, true);
         organization = organizationRepository.save(organization);
@@ -47,7 +47,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         return OrganizationMapper.toDTO(organization, true);
     }
 
-    @Transactional
+
     private void saveNeo(OrganizationDTO organizationDTO) {
         ro.teamnet.ou.domain.neo.Organization neoOrganization = OrganizationMapper.toNeo(organizationDTO);
         ro.teamnet.ou.domain.neo.Organization existingNeoOrganization = organizationNeoRepository.findByJpaId(organizationDTO.getId());
@@ -58,7 +58,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
-    @Transactional
+    @Transactional("crossStoreTransactionManager")
     public OrganizationDTO update(OrganizationDTO organizationDTO) {
         Organization organization = OrganizationMapper.toJPA(organizationDTO);
         organization = organizationRepository.save(organization);
