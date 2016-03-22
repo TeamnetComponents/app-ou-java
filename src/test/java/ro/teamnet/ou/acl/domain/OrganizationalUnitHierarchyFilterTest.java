@@ -10,6 +10,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 import ro.teamnet.ou.acl.service.OrganizationalUnitHierarchyFilterAdviceImpl;
 import ro.teamnet.ou.domain.neo.OrganizationalUnit;
 import ro.teamnet.ou.mock.OuTestApplication;
@@ -18,7 +19,7 @@ import ro.teamnet.ou.repository.jpa.OUHierarchyTestEntityRepository;
 import ro.teamnet.ou.repository.neo.OrganizationalUnitNeoRepository;
 
 import javax.inject.Inject;
-import javax.transaction.Transactional;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -45,7 +46,7 @@ public class OrganizationalUnitHierarchyFilterTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(value="transactionManager")
     public void testOrganizationalUnitHierarchyFilterForRootWithNoChildren() {
         long OWNER_OU_ID = -1000L;
         saveNewTestEntity(OWNER_OU_ID);
@@ -72,7 +73,7 @@ public class OrganizationalUnitHierarchyFilterTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(value="transactionManager")
     public void testOrganizationalUnitHierarchyFilterForRootWithNoChildrenOnTwoEntities() {
         long OWNER_OU_ID = -1000L;
         saveNewTestEntity(OWNER_OU_ID);
@@ -112,7 +113,7 @@ public class OrganizationalUnitHierarchyFilterTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(value="transactionManager")
     public void testOrganizationalUnitHierarchyFilterForRootWithOneChild() {
         long ROOT_OU_ID = -1000L;
         long CHILD_OU_ID = -1100L;
@@ -149,7 +150,7 @@ public class OrganizationalUnitHierarchyFilterTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(value="transactionManager")
     public void testOrganizationalUnitHierarchyFilterForRootWithMultipleDescendants() {
         long ROOT_OU_ID = -1000L;
         long CHILD1_OU_ID = -1100L;
@@ -202,7 +203,7 @@ public class OrganizationalUnitHierarchyFilterTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(value="transactionManager")
     public void testOrganizationalUnitHierarchyFilterForSubtree() {
         long ROOT_OU_ID = -1000L;
         long CHILD1_OU_ID = -1100L;

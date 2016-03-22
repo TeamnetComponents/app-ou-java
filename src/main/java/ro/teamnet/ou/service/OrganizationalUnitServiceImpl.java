@@ -28,7 +28,7 @@ import java.util.*;
  * Created by Marian.Spoiala 20.08.2015
  */
 @Service
-@Transactional
+@Transactional(value="transactionManager",readOnly = true)
 public class OrganizationalUnitServiceImpl implements OrganizationalUnitService {
 
     @Inject
@@ -51,6 +51,7 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
 
     //TODO : Ce se intampla daca nu merge nici salvarea in neo?
     @Override
+    @Transactional(value = "crossStoreTransactionManager")
     public OrganizationalUnitDTO save(OrganizationalUnitDTO organizationalUnitDTO) {
         organizationalUnitDTO = saveJPA(organizationalUnitDTO);
         if (organizationalUnitDTO != null)
@@ -59,6 +60,7 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
     }
 
     @Override
+    @Transactional(value = "crossStoreTransactionManager")
     public OrganizationalUnitDTO saveOUTreeRoot(PerspectiveDTO perspective) {
         OrganizationalUnit ouTreeRoot = new OrganizationalUnit();
         ouTreeRoot.setPerspective(perspectiveRepository.findOne(perspective.getId()));
@@ -102,6 +104,7 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
     }
 
     @Override
+    @Transactional(value = "crossStoreTransactionManager")
     public void delete(Long id) {
         organizationalUnitRepository.delete(id);
 
@@ -118,6 +121,7 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
     }
 
     @Override
+    @Transactional(value="crossStoreTransactionManager",readOnly = true)
     public Set<OrganizationalUnitDTO> findAll() {
         List<OrganizationalUnit> organizationalUnits = organizationalUnitRepository.findAll();
         Set<ro.teamnet.ou.domain.neo.OrganizationalUnit> organizationalUnitsNeo = organizationalUnitNeoRepository.getAllOrganizationalUnits();
@@ -145,6 +149,7 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
 
 
 
+    @Transactional(value = "neo4jTransactionManager",readOnly = true)
     public List<OrganizationalUnitDTO> getParentOrgUnitsById(Long rootId, Long id) {
         ro.teamnet.ou.domain.neo.OrganizationalUnit rootOu = organizationalUnitNeoRepository.findByJpaId(rootId);
         ro.teamnet.ou.domain.neo.OrganizationalUnit nodeOu = organizationalUnitNeoRepository.findByJpaId(id);
@@ -182,6 +187,7 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
     }
 
     @Override
+    @Transactional(value = "crossStoreTransactionManager",readOnly = true)
     public Collection<OrganizationalUnitDTO> getOUsForUser(String username, Long organizationId) {
         if (organizationId == null) {
             return getOUsForUser(username);

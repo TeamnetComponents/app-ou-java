@@ -19,11 +19,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by ionut.patrascu on 31.07.2015.
- */
+
 @Service
-@Transactional
+@Transactional(value="transactionManager", readOnly = true)
 public class PerspectiveServiceImpl implements PerspectiveService {
 
     @Inject
@@ -48,6 +46,7 @@ public class PerspectiveServiceImpl implements PerspectiveService {
     }
 
     @Override
+    @Transactional(value = "crossStoreTransactionManager")
     public Set<PerspectiveDTO> getAllPerspectives() {
         List<Perspective> perspectives = perspectiveRepository.findAll();
         Result<ro.teamnet.ou.domain.neo.Perspective> neoPerspectives = perspectiveNeoRepository.findAll();
@@ -64,6 +63,7 @@ public class PerspectiveServiceImpl implements PerspectiveService {
     }
 
     @Override
+    @Transactional(value = "crossStoreTransactionManager")
     public PerspectiveDTO save(PerspectiveDTO perspectiveDTO) {
         perspectiveDTO = saveJpa(perspectiveDTO);
         saveNeo(perspectiveDTO);
@@ -71,6 +71,7 @@ public class PerspectiveServiceImpl implements PerspectiveService {
     }
 
     @Override
+    @Transactional(value = "crossStoreTransactionManager")
     public PerspectiveDTO update(PerspectiveDTO perspectiveDTO) {
         perspectiveDTO = updateJpa(perspectiveDTO);
         updateNeo(perspectiveDTO);
@@ -109,7 +110,6 @@ public class PerspectiveServiceImpl implements PerspectiveService {
     }
 
     @Cacheable(value = {"perspectives"},key="#a0")
-    @Transactional(readOnly = true)
     @Override
     public Set<PerspectiveDTO> findPerspectivesByOrganizationId(Long id){
          Set<Perspective> perspectives = perspectiveRepository.findByOrganizationId(id);
@@ -121,6 +121,7 @@ public class PerspectiveServiceImpl implements PerspectiveService {
     }
 
     @Override
+    @Transactional(value = "crossStoreTransactionManager")
     public void delete(PerspectiveDTO perspectiveDTO) {
         Perspective perspective = perspectiveRepository.findOne(perspectiveDTO.getId());
         perspectiveRepository.delete(perspective);

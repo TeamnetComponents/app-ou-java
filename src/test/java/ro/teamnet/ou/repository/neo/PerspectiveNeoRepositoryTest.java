@@ -57,7 +57,7 @@ public class PerspectiveNeoRepositoryTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(value="neo4jTransactionManager")
     public void createPerspective() {
         Organization testOrganization = organizationNeoRepository.save(organization);
         OrganizationalUnit testOrganizationalUnit = organizationalUnitNeoRepository.save(organizationalUnit);
@@ -80,7 +80,7 @@ public class PerspectiveNeoRepositoryTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(value="neo4jTransactionManager")
     public void updatePerspective() {
         Organization testOrganization = organizationNeoRepository.save(organization);
         OrganizationalUnit testOrganizationalUnit = organizationalUnitNeoRepository.save(organizationalUnit);
@@ -106,7 +106,7 @@ public class PerspectiveNeoRepositoryTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(value="neo4jTransactionManager")
     public void deletePerspective() {
         Organization testOrganization = organizationNeoRepository.save(organization);
         OrganizationalUnit testOrganizationalUnit = organizationalUnitNeoRepository.save(organizationalUnit);

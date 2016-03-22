@@ -36,7 +36,11 @@ public class OrganizationalUnitHierarchyFilterAspect {
     public void withinRepositoryBeansOrConfigurationClasses(){
     }
 
-    @Before("onRepositoryMethods() && !withinRepositoryBeansOrConfigurationClasses()")
+    @Pointcut("within(org.springframework.data.neo4j.repository.GraphRepository)")
+    public void neo4jRepositoryMethods(){
+    }
+
+    @Before("onRepositoryMethods() && !withinRepositoryBeansOrConfigurationClasses() &&!neo4jRepositoryMethods()")
     public void aroundRepositoryMethods(JoinPoint jp) throws Throwable {
 //        log.debug("before repository method - begin");
         if (filterAdvice == null || !(jp.getTarget() instanceof AppRepository)) {

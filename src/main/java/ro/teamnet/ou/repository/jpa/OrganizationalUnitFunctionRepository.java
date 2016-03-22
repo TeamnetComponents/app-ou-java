@@ -17,7 +17,6 @@ import java.util.Set;
 public interface OrganizationalUnitFunctionRepository extends AppRepository<OrganizationalUnitFunction, Long> {
 
     @Query("select ouFunction.function from OrganizationalUnitFunction ouFunction where ouFunction.organizationalUnit.id = :organizationalUnitId")
-    @QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value ="true") })
     Set<Function> findFunctionsByOrganizationalUnitId(@Param("organizationalUnitId") Long organizationalUnit);
 
     void deleteByOrganizationalUnitIdAndFunctionId(Long organizationalUnitId, Long functionId);

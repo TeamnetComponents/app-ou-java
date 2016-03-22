@@ -43,7 +43,7 @@ public class OrganizationalUnitNeoRepositoryTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(value="neo4jTransactionManager")
     public void createOrganizationalUnit() {
         OrganizationalUnit testOrganizationalUnit = organizationalUnitNeoRepository.save(organizationalUnit);
         OrganizationalUnit organizationalUnitFound = organizationalUnitNeoRepository.findOne(testOrganizationalUnit.getId());
@@ -55,7 +55,7 @@ public class OrganizationalUnitNeoRepositoryTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(value="neo4jTransactionManager")
     public void updateOrganizationalUnit() {
         OrganizationalUnit testOrganizationalUnit = organizationalUnitNeoRepository.save(organizationalUnit);
 
@@ -71,7 +71,7 @@ public class OrganizationalUnitNeoRepositoryTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(value="neo4jTransactionManager")
     public void deleteOrganizationalUnit() {
         OrganizationalUnit testOrganizationalUnit = organizationalUnitNeoRepository.save(organizationalUnit);
 
@@ -82,7 +82,7 @@ public class OrganizationalUnitNeoRepositoryTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(value="neo4jTransactionManager")
     public void getOrganizationalUnitTreeById() {
         OrganizationalUnit organizationalUnit1 = ouNeoGenericService.createOrganizationalUnit("OrganizationalUnitTest1", 1l);
         OrganizationalUnit organizationalUnit2 = ouNeoGenericService.createOrganizationalUnit("OrganizationalUnitTest2", 2l);
@@ -108,7 +108,7 @@ public class OrganizationalUnitNeoRepositoryTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(value="neo4jTransactionManager")
     public void getOrganizationalUnitSubTreeJpaIdsByRootJpaId() {
         OrganizationalUnit organizationalUnit1 = ouNeoGenericService.createOrganizationalUnit("OrganizationalUnitTest1", 1l);
         OrganizationalUnit organizationalUnit2 = ouNeoGenericService.createOrganizationalUnit("OrganizationalUnitTest2", 2l);

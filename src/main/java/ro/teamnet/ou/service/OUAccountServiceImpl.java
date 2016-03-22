@@ -21,7 +21,7 @@ import javax.inject.Inject;
 import java.util.*;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional(value="transactionManager", readOnly = true)
 public class OUAccountServiceImpl implements OUAccountService {
 
     @Inject
@@ -38,13 +38,12 @@ public class OUAccountServiceImpl implements OUAccountService {
     private OrganizationalUnitRepository organizationalUnitRepository;
 
     @Override
+    @Transactional(value = "neo4jTransactionManager",readOnly = true)
     public List<OrganizationalUnitDTO> getOrganizationalUnits(Long accountId) {
         ro.teamnet.ou.domain.neo.Account neoAccount = accountNeoRepository.findByJpaId(accountId);
         List<OrganizationalUnitDTO> organizationalUnitDTOs = new ArrayList<>();
         Set<OrganizationalUnit> organizationalUnits = neoAccount.getOrganizationalUnits();
-        if (neoAccount == null || organizationalUnits == null) {
-            return organizationalUnitDTOs;
-        }
+
         for (OrganizationalUnit organizationalUnit : organizationalUnits) {
             organizationalUnitDTOs.add(OrganizationalUnitMapper.toDTO(organizationalUnit, true));
         }
@@ -52,6 +51,7 @@ public class OUAccountServiceImpl implements OUAccountService {
     }
 
     @Override
+    @Transactional(value = "crossStoreTransactionManager",readOnly = true)
     public Collection<AccountDTO> getAccountsInOrganizationalUnit(Long organizationalUnitId) {
         Map<Long, AccountDTO> accountsById = new HashMap<>();
         Set<ro.teamnet.ou.domain.neo.Function> functions = ouNeoRepository.findByJpaId(organizationalUnitId).getFunctions();
@@ -75,6 +75,7 @@ public class OUAccountServiceImpl implements OUAccountService {
     }
 
     @Override
+    @Transactional(value = "crossStoreTransactionManager",readOnly = true)
     public Collection<AccountDTO> getAccountsEligibleForOrganizationalUnit(Long organizationalUnitId) {
         Map<Long, AccountDTO> accountsById = new HashMap<>();
         Set<Function> availableOuFunctions = ouFunctionRepository.findFunctionsByOrganizationalUnitId(organizationalUnitId);
@@ -94,7 +95,7 @@ public class OUAccountServiceImpl implements OUAccountService {
     }
 
     @Override
-    @Transactional
+    @Transactional(value = "crossStoreTransactionManager")
     public void createOrUpdateOUAccountRelationships(Long ouId, Collection<AccountDTO> accounts) {
         OrganizationalUnit neoOrganizationalUnit = ouNeoRepository.findByJpaId(ouId);
         neoOrganizationalUnit.setAccounts(new HashSet<Account>());
@@ -114,7 +115,7 @@ public class OUAccountServiceImpl implements OUAccountService {
         organizationalUnitRepository.save(jpaOrganizationalUnit);
     }
 
-    @Transactional
+    @Transactional(value="neo4jTransactionManager")
     private void saveNeoFunction(OrganizationalUnit neoOrganizationalUnit, Account neoAccount, FunctionDTO functionDTO) {
         ro.teamnet.ou.domain.neo.Function neoFunction = new ro.teamnet.ou.domain.neo.Function();
         neoFunction.setOrganizationalUnit(neoOrganizationalUnit);
@@ -126,7 +127,7 @@ public class OUAccountServiceImpl implements OUAccountService {
     }
 
     @Override
-    @Transactional
+    @Transactional(value = "crossStoreTransactionManager")
     public void deleteOuAccountRelationships(Long ouId, Long accountId) {
         functionNeoRepository.deleteByOrganizationalUnitJpaIdAndAccountJpaId(ouId, accountId);
         ro.teamnet.ou.domain.jpa.OrganizationalUnit organizationalUnit = organizationalUnitRepository
