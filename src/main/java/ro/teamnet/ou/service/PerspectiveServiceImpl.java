@@ -1,5 +1,6 @@
 package ro.teamnet.ou.service;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.neo4j.conversion.Result;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -107,6 +108,9 @@ public class PerspectiveServiceImpl implements PerspectiveService {
         return perspectiveDTO;
     }
 
+    @Cacheable(value = {"perspectives"},key="#a0")
+    @Transactional(readOnly = true)
+    @Override
     public Set<PerspectiveDTO> findPerspectivesByOrganizationId(Long id){
          Set<Perspective> perspectives = perspectiveRepository.findByOrganizationId(id);
          Set<PerspectiveDTO> perspectiveDTOSet = new HashSet<>();

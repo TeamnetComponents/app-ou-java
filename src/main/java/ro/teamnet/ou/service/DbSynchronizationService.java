@@ -57,7 +57,7 @@ public class DbSynchronizationService {
     @Inject
     private FunctionNeoRepository functionNeoRepository;
 
-    @PostConstruct
+//    @PostConstruct
     public void synchronizeJpaAndNeoDbData() {
         syncAccounts();
         syncOrganizations();
@@ -83,6 +83,7 @@ public class DbSynchronizationService {
                 accountNeoRepository.save(accountNeo);
             }
         }
+        log.debug("End Synchronizing JPA Accounts with Neo...");
     }
 
     /**
@@ -173,7 +174,7 @@ public class DbSynchronizationService {
                 Function function = accountFunction.getFunction();
 
                 Set<ro.teamnet.ou.domain.neo.Function> neoFunctions = functionNeoRepository.findByJpaIdOuIdAndAccountId(account.getId(), organizationalUnit.getId());
-                if (neoFunctions.size() == 0) {
+                if (neoFunctions.isEmpty()) {
                     ro.teamnet.ou.domain.neo.Function neoFunction = new ro.teamnet.ou.domain.neo.Function();
                     neoFunction.setId(null);
                     neoFunction.setJpaId(function.getId());

@@ -38,7 +38,7 @@ public class OrganizationalUnitHierarchyFilterAspect {
 
     @Before("onRepositoryMethods() && !withinRepositoryBeansOrConfigurationClasses()")
     public void aroundRepositoryMethods(JoinPoint jp) throws Throwable {
-        log.debug("before repository method - begin");
+//        log.debug("before repository method - begin");
         if (filterAdvice == null || !(jp.getTarget() instanceof AppRepository)) {
             return;
         }

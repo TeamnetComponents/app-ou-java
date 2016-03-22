@@ -1,12 +1,14 @@
 package ro.teamnet.ou.repository.jpa;
 
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
 import ro.teamnet.bootstrap.extend.AppRepository;
 import ro.teamnet.ou.domain.jpa.AccountFunction;
 import ro.teamnet.ou.domain.jpa.Function;
 import ro.teamnet.ou.domain.jpa.OrganizationalUnitFunction;
 
+import javax.persistence.QueryHint;
 import java.util.Set;
 
 /**
@@ -15,6 +17,7 @@ import java.util.Set;
 public interface OrganizationalUnitFunctionRepository extends AppRepository<OrganizationalUnitFunction, Long> {
 
     @Query("select ouFunction.function from OrganizationalUnitFunction ouFunction where ouFunction.organizationalUnit.id = :organizationalUnitId")
+    @QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value ="true") })
     Set<Function> findFunctionsByOrganizationalUnitId(@Param("organizationalUnitId") Long organizationalUnit);
 
     void deleteByOrganizationalUnitIdAndFunctionId(Long organizationalUnitId, Long functionId);

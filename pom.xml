@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 	
     <parent>
         <groupId>ro.teamnet.neo</groupId>
         <artifactId>app-neo4j-dependencies</artifactId>
-        <version>0.4-SNAPSHOT</version>
+        <version>0.3</version>
         <relativePath />
     </parent>
-
+	
 	<groupId>ro.teamnet.ou</groupId>
     <artifactId>app-ou-java</artifactId>
-    <version>0.4-SNAPSHOT</version>
+    <version>0.3</version>
     <packaging>jar</packaging>
-	
+	<properties>
+        <bootstrap.version>0.2.12</bootstrap.version>
+        <spring-data-neo4j.version>3.2.1.RELEASE</spring-data-neo4j.version>
+        <app-neo4j-base.version>0.3</app-neo4j-base.version>
+    </properties>
     <distributionManagement>
         <repository>
             <id>tni-hq-artifact</id>
@@ -39,7 +45,7 @@
        <dependency>
            <groupId>ro.teamnet.neo</groupId>
            <artifactId>app-neo4j-base</artifactId>
-           <version>0.4-SNAPSHOT</version>
+           <version>${app-neo4j-base.version}</version>
        </dependency>
 
         <dependency>
@@ -75,7 +81,7 @@
         <connection>scm:git:http://component-publisher@git-components.teamnet.ro/r/components/java/platform-extensions/app-ou-java.git</connection>
         <tag>HEAD</tag>
     </scm>
-	
+
 	<build>
         <plugins>
 			<plugin>
