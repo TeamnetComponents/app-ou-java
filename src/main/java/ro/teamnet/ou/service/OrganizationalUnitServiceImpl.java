@@ -121,7 +121,7 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
     }
 
     @Override
-    @Transactional(value="crossStoreTransactionManager",readOnly = true)
+    @Transactional(value="crossStoreTransactionManager",readOnly = true,propagation = Propagation.REQUIRES_NEW)
     public Set<OrganizationalUnitDTO> findAll() {
         List<OrganizationalUnit> organizationalUnits = organizationalUnitRepository.findAll();
         Set<ro.teamnet.ou.domain.neo.OrganizationalUnit> organizationalUnitsNeo = organizationalUnitNeoRepository.getAllOrganizationalUnits();
@@ -149,7 +149,7 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
 
 
 
-    @Transactional(value = "neo4jTransactionManager",readOnly = true)
+    @Transactional(value = "neo4jTransactionManager",readOnly = true,propagation = Propagation.REQUIRES_NEW)
     public List<OrganizationalUnitDTO> getParentOrgUnitsById(Long rootId, Long id) {
         ro.teamnet.ou.domain.neo.OrganizationalUnit rootOu = organizationalUnitNeoRepository.findByJpaId(rootId);
         ro.teamnet.ou.domain.neo.OrganizationalUnit nodeOu = organizationalUnitNeoRepository.findByJpaId(id);
@@ -171,23 +171,26 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
     }
 
     @Override
+    @Transactional(value = "crossStoreTransactionManager",readOnly = true,propagation = Propagation.REQUIRES_NEW)
     public Collection<OrganizationalUnitDTO> getOUsForCurrentUser() {
         return getOUsForUser(SecurityUtils.getAuthenticatedUser().getUsername());
     }
 
     @Override
+    @Transactional(value = "crossStoreTransactionManager",readOnly = true,propagation = Propagation.REQUIRES_NEW)
     public Collection<OrganizationalUnitDTO> getOUsForCurrentUser(Long organizationId) {
         return getOUsForUser(SecurityUtils.getAuthenticatedUser().getUsername(), organizationId);
     }
 
     @Override
+    @Transactional(value = "crossStoreTransactionManager",readOnly = true,propagation = Propagation.REQUIRES_NEW)
     public Collection<OrganizationalUnitDTO> getOUsForUser(String username) {
         Account account = accountService.findByLogin(username);
         return ouAccountService.getOrganizationalUnits(account.getId());
     }
 
     @Override
-    @Transactional(value = "crossStoreTransactionManager",readOnly = true)
+    @Transactional(value = "crossStoreTransactionManager",readOnly = true,propagation = Propagation.REQUIRES_NEW)
     public Collection<OrganizationalUnitDTO> getOUsForUser(String username, Long organizationId) {
         if (organizationId == null) {
             return getOUsForUser(username);
@@ -201,6 +204,7 @@ public class OrganizationalUnitServiceImpl implements OrganizationalUnitService 
     }
 
     @Override
+    @Transactional(value = "neo4jTransactionManager",readOnly = true,propagation = Propagation.REQUIRES_NEW)
     public Set<Long> getOrgUnitSubTreeJpaIdsByRootJpaId(Long jpaId) {
         return organizationalUnitNeoRepository.getOrganizationalUnitSubTreeJpaIdsByRootJpaId(jpaId);
     }
