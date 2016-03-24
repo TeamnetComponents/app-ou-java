@@ -131,7 +131,7 @@ public class OrganizationResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @OUFilter("ro.teamnet.ou.web.rest.dto.AccountDTO")
     public ResponseEntity<AccountDTO> getAccountByLogin(@PathVariable String login) {
-        Account account = accountService.findAllByLogin(login);
+        Account account = accountService.findByLogin(login);
         return new ResponseEntity<>(AccountMapper.toDTO(account), HttpStatus.OK);
     }
 
