@@ -29,7 +29,7 @@ import java.util.Set;
  * Service class for managing Functions.
  */
 @Service
-@Transactional(value="transactionManager",readOnly = true)
+@Transactional(value="jpaTransactionManager",readOnly = true)
 public class FunctionServiceImpl implements FunctionService {
 
     @Inject
@@ -114,7 +114,7 @@ public class FunctionServiceImpl implements FunctionService {
     }
 
     @Override
-    @Transactional(value="transactionManager")
+    @Transactional(value="jpaTransactionManager")
     public void addToAccount(Long accountId, FunctionDTO functionDTO) {
         AccountFunction accountFunction = accountFunctionRepository.findByAccountIdAndFunctionId(accountId, functionDTO.getId());
         if (accountFunction == null) {
@@ -126,7 +126,7 @@ public class FunctionServiceImpl implements FunctionService {
     }
 
     @Override
-    @Transactional(value="transactionManager")
+    @Transactional(value="jpaTransactionManager")
     public void removeFromAccount(Long accountId, Long functionId) {
         accountFunctionRepository.deleteByAccountIdAndFunctionId(accountId, functionId);
     }
@@ -149,7 +149,7 @@ public class FunctionServiceImpl implements FunctionService {
     }
 
     @Override
-    @Transactional(value="transactionManager")
+    @Transactional(value="jpaTransactionManager")
     public void removeFromOrganizationalUnit(Long ouId, Long functionId) {
         ouFunctionRepository.deleteByOrganizationalUnitIdAndFunctionId(ouId, functionId);
     }

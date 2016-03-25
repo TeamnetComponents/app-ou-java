@@ -1,6 +1,7 @@
 package ro.teamnet.ou.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ro.teamnet.ou.domain.jpa.AccountFunction;
 import ro.teamnet.ou.domain.jpa.Function;
@@ -21,7 +22,7 @@ import javax.inject.Inject;
 import java.util.*;
 
 @Service
-@Transactional(value="transactionManager", readOnly = true)
+@Transactional(value="jpaTransactionManager", readOnly = true)
 public class OUAccountServiceImpl implements OUAccountService {
 
     @Inject
@@ -38,7 +39,7 @@ public class OUAccountServiceImpl implements OUAccountService {
     private OrganizationalUnitRepository organizationalUnitRepository;
 
     @Override
-    @Transactional(value = "neo4jTransactionManager",readOnly = true)
+    @Transactional(value = "neo4jTransactionManager",readOnly = true,propagation = Propagation.REQUIRES_NEW)
     public List<OrganizationalUnitDTO> getOrganizationalUnits(Long accountId) {
         ro.teamnet.ou.domain.neo.Account neoAccount = accountNeoRepository.findByJpaId(accountId);
         List<OrganizationalUnitDTO> organizationalUnitDTOs = new ArrayList<>();

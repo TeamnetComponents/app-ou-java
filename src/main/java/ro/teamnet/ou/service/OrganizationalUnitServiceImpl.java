@@ -28,7 +28,7 @@ import java.util.*;
  * Created by Marian.Spoiala 20.08.2015
  */
 @Service
-@Transactional(value="transactionManager",readOnly = true)
+@Transactional(value="jpaTransactionManager",readOnly = true)
 public class OrganizationalUnitServiceImpl implements OrganizationalUnitService {
 
     @Inject

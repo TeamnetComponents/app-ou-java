@@ -21,7 +21,7 @@ import java.util.Set;
 
 
 @Service
-@Transactional(value="transactionManager", readOnly = true)
+@Transactional(value="jpaTransactionManager", readOnly = true)
 public class PerspectiveServiceImpl implements PerspectiveService {
 
     @Inject

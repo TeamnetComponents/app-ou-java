@@ -25,7 +25,7 @@ import java.util.Set;
  * Created by ionut.patrascu on 31.07.2015.
  */
 @Service
-@Transactional(value="transactionManager", readOnly = true)
+@Transactional(value="jpaTransactionManager", readOnly = true)
 public class OrganizationServiceImpl implements OrganizationService {
 
     @Inject
@@ -67,7 +67,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
-    @Transactional(value="transactionManager")
+    @Transactional(value="jpaTransactionManager")
     public void delete(Long id) {
         Organization organization = organizationRepository.findOne(id);
         organizationRepository.delete(organization);

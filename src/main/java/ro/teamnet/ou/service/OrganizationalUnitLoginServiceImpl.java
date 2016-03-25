@@ -22,7 +22,7 @@ import static ro.teamnet.ou.security.plugin.OrganizationalUnitUserDetailsPlugin.
  * Created by Oana.Mihai on 10/9/2015.
  */
 @Service
-@Transactional(value="transactionManager", readOnly = true)
+@Transactional(value="jpaTransactionManager", readOnly = true)
 public class OrganizationalUnitLoginServiceImpl implements OrganizationalUnitLoginService{
     @Inject
     private OrganizationService organizationService;

@@ -46,7 +46,7 @@ public class OrganizationalUnitHierarchyFilterTest {
     }
 
     @Test
-    @Transactional(value="transactionManager")
+    @Transactional(value="jpaTransactionManager")
     public void testOrganizationalUnitHierarchyFilterForRootWithNoChildren() {
         long OWNER_OU_ID = -1000L;
         saveNewTestEntity(OWNER_OU_ID);
@@ -73,7 +73,7 @@ public class OrganizationalUnitHierarchyFilterTest {
     }
 
     @Test
-    @Transactional(value="transactionManager")
+    @Transactional(value="jpaTransactionManager")
     public void testOrganizationalUnitHierarchyFilterForRootWithNoChildrenOnTwoEntities() {
         long OWNER_OU_ID = -1000L;
         saveNewTestEntity(OWNER_OU_ID);
@@ -113,7 +113,7 @@ public class OrganizationalUnitHierarchyFilterTest {
     }
 
     @Test
-    @Transactional(value="transactionManager")
+    @Transactional(value="jpaTransactionManager")
     public void testOrganizationalUnitHierarchyFilterForRootWithOneChild() {
         long ROOT_OU_ID = -1000L;
         long CHILD_OU_ID = -1100L;
@@ -150,7 +150,7 @@ public class OrganizationalUnitHierarchyFilterTest {
     }
 
     @Test
-    @Transactional(value="transactionManager")
+    @Transactional(value="jpaTransactionManager")
     public void testOrganizationalUnitHierarchyFilterForRootWithMultipleDescendants() {
         long ROOT_OU_ID = -1000L;
         long CHILD1_OU_ID = -1100L;
@@ -203,7 +203,7 @@ public class OrganizationalUnitHierarchyFilterTest {
     }
 
     @Test
-    @Transactional(value="transactionManager")
+    @Transactional(value="jpaTransactionManager")
     public void testOrganizationalUnitHierarchyFilterForSubtree() {
         long ROOT_OU_ID = -1000L;
         long CHILD1_OU_ID = -1100L;
