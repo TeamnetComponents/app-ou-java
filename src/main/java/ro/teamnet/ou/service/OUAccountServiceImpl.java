@@ -42,10 +42,11 @@ public class OUAccountServiceImpl implements OUAccountService {
     public List<OrganizationalUnitDTO> getOrganizationalUnits(Long accountId) {
         ro.teamnet.ou.domain.neo.Account neoAccount = accountNeoRepository.findByJpaId(accountId);
         List<OrganizationalUnitDTO> organizationalUnitDTOs = new ArrayList<>();
-        Set<OrganizationalUnit> organizationalUnits = neoAccount.getOrganizationalUnits();
-
-        for (OrganizationalUnit organizationalUnit : organizationalUnits) {
-            organizationalUnitDTOs.add(OrganizationalUnitMapper.toDTO(organizationalUnit, true));
+        if (neoAccount != null) {
+            Set<OrganizationalUnit> organizationalUnits = neoAccount.getOrganizationalUnits();
+            for (OrganizationalUnit organizationalUnit : organizationalUnits) {
+                organizationalUnitDTOs.add(OrganizationalUnitMapper.toDTO(organizationalUnit, true));
+            }
         }
         return organizationalUnitDTOs;
     }
