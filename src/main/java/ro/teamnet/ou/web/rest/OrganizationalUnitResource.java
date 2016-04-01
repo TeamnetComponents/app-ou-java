@@ -116,6 +116,13 @@ public class OrganizationalUnitResource {
         return new ResponseEntity<>(ouAccountService.getAccountsInOrganizationalUnit(ouId), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/accountsByCode/{code}", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<Collection<ro.teamnet.bootstrap.web.rest.dto.AccountDTO>> getAccountsByCode(@PathVariable String code) {
+        return new ResponseEntity<>(ouAccountService.getAccountsInOrganizationalUnitByCode(code), HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/eligibleAccounts/{ouId}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed

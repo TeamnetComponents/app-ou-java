@@ -1,8 +1,10 @@
 package ro.teamnet.ou.service;
 
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import ro.teamnet.bootstrap.repository.AccountRepository;
 import ro.teamnet.ou.domain.jpa.AccountFunction;
 import ro.teamnet.ou.domain.jpa.Function;
 import ro.teamnet.ou.domain.neo.Account;
@@ -37,6 +39,8 @@ public class OUAccountServiceImpl implements OUAccountService {
     private OrganizationalUnitFunctionRepository ouFunctionRepository;
     @Inject
     private OrganizationalUnitRepository organizationalUnitRepository;
+    @Inject
+    private AccountRepository accountRepository;
 
     @Override
     @Transactional(value = "neo4jTransactionManager",readOnly = true,propagation = Propagation.REQUIRES_NEW)
@@ -50,6 +54,34 @@ public class OUAccountServiceImpl implements OUAccountService {
             }
         }
         return organizationalUnitDTOs;
+    }
+
+    @Override
+    @Transactional(value = "crossStoreTransactionManager",readOnly = true)
+    public Collection<ro.teamnet.bootstrap.web.rest.dto.AccountDTO> getAccountsInOrganizationalUnitByCode(String code) {
+        List<ro.teamnet.ou.domain.jpa.OrganizationalUnit> ou = organizationalUnitRepository.getOrganizationalUnitByCode(code);
+        if (ou.size() != 1) {
+            return Collections.emptySet();
+        } else {
+            Set<Long> accountIds = new HashSet<>();
+            Set<ro.teamnet.ou.domain.neo.Function> functions = ouNeoRepository.findByJpaId(ou.get(0).getId()).getFunctions();
+            if (functions != null && !functions.isEmpty()) {
+                for (ro.teamnet.ou.domain.neo.Function function : functions) {
+                    Long accountId = function.getAccount().getJpaId();
+                    if (!accountIds.contains(accountId)) {
+                        accountIds.add(accountId);
+                    }
+                }
+            }
+            Set<ro.teamnet.bootstrap.web.rest.dto.AccountDTO> accountDTOs = new HashSet<>();
+            for (Long id : accountIds) {
+                ro.teamnet.bootstrap.domain.Account account = accountRepository.getOneEager(id);
+                if (account != null) {
+                    accountDTOs.add(new ro.teamnet.bootstrap.web.rest.dto.AccountDTO(account, new HashSet<GrantedAuthority>(account.getRoles())));
+                }
+            }
+            return accountDTOs;
+        }
     }
 
     @Override
