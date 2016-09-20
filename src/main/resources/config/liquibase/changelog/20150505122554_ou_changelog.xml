@@ -28,6 +28,7 @@
         </insert>
 
         <insert tableName="T_MENU">
+            <column name="ID" valueComputed="${pk_t_module}"/>
             <column name="parent_id" value='0'/>
             <column name="name" value="Ou"/>
             <column name="route" value="ou"/>
