@@ -14,6 +14,8 @@ public interface OUAccountService {
 
     Collection<AccountDTO> getAccountsInOrganizationalUnit(Long organizationalUnitId);
 
+    Collection<ro.teamnet.bootstrap.web.rest.dto.AccountDTO> getAccountsInOrganizationalUnitByCode(String code);
+
     Collection<AccountDTO> getAccountsEligibleForOrganizationalUnit(Long organizationalUnitId);
 
     void createOrUpdateOUAccountRelationships(Long ouId, Collection<AccountDTO> accounts);

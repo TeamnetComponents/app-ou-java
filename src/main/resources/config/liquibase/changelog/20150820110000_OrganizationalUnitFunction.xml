@@ -4,9 +4,32 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="20150820110000" author="oanam">
+    <changeSet id="20150820110000" author="oanam" dbms="!mssql">
         <createTable tableName="T_OU_FUNCTION">
             <column name="ID" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="OU_ID" type="bigint" />
+            <column name="FUNCTION_ID" type="bigint"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="OU_ID"
+                                 baseTableName="T_OU_FUNCTION"
+                                 constraintName="fk_account_function_o"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="T_ORGANIZATIONAL_UNIT"/>
+
+        <addForeignKeyConstraint baseColumnNames="FUNCTION_ID"
+                                 baseTableName="T_OU_FUNCTION"
+                                 constraintName="fk_ou_function_f"
+                                 referencedColumnNames="ID_ROLE"
+                                 referencedTableName="T_ROLE"/>
+
+    </changeSet>
+
+    <changeSet id="20150820110000#mssql" author="oanam" dbms="mssql">
+        <createTable tableName="T_OU_FUNCTION">
+            <column name="ID" autoIncrement="false" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="OU_ID" type="bigint" />

@@ -20,4 +20,7 @@ public interface OrganizationalUnitRepository extends AppRepository<Organization
 
     @Query("select ou from OrganizationalUnit ou join ou.accountFunctions p where p.id = :id")
     List<OrganizationalUnit> getOrganizationalUnitByAccountFunctionId(@Param("id") Long id);
+
+    @Query("select ou from OrganizationalUnit ou where ou.code = :code")
+    List<OrganizationalUnit> getOrganizationalUnitByCode(@Param("code") String code);
 }

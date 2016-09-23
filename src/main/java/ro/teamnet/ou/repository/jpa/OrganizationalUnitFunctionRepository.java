@@ -1,12 +1,14 @@
 package ro.teamnet.ou.repository.jpa;
 
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
 import ro.teamnet.bootstrap.extend.AppRepository;
 import ro.teamnet.ou.domain.jpa.AccountFunction;
 import ro.teamnet.ou.domain.jpa.Function;
 import ro.teamnet.ou.domain.jpa.OrganizationalUnitFunction;
 
+import javax.persistence.QueryHint;
 import java.util.Set;
 
 /**

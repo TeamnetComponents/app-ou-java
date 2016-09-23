@@ -43,7 +43,7 @@ public class OrganizationNeoRepositoryTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(value="neo4jTransactionManager")
     public void createOrganization() {
         Organization testOrganization = organizationNeoRepository.save(organization);
         Organization organizationFound = organizationNeoRepository.findOne(testOrganization.getId());
@@ -55,7 +55,7 @@ public class OrganizationNeoRepositoryTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(value="neo4jTransactionManager")
     public void updateOrganization() {
         Organization testOrganization = organizationNeoRepository.save(organization);
 
@@ -71,7 +71,7 @@ public class OrganizationNeoRepositoryTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(value="neo4jTransactionManager")
     public void deleteOrganization() {
         Organization testOrganization = organizationNeoRepository.save(organization);
 

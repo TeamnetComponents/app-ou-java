@@ -1,5 +1,6 @@
 package ro.teamnet.ou.service;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.neo4j.conversion.Result;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,11 +19,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by ionut.patrascu on 31.07.2015.
- */
+
 @Service
-@Transactional
+@Transactional(value="jpaTransactionManager", readOnly = true)
 public class PerspectiveServiceImpl implements PerspectiveService {
 
     @Inject
@@ -47,6 +46,7 @@ public class PerspectiveServiceImpl implements PerspectiveService {
     }
 
     @Override
+    @Transactional(value = "crossStoreTransactionManager")
     public Set<PerspectiveDTO> getAllPerspectives() {
         List<Perspective> perspectives = perspectiveRepository.findAll();
         Result<ro.teamnet.ou.domain.neo.Perspective> neoPerspectives = perspectiveNeoRepository.findAll();
@@ -63,6 +63,7 @@ public class PerspectiveServiceImpl implements PerspectiveService {
     }
 
     @Override
+    @Transactional(value = "crossStoreTransactionManager")
     public PerspectiveDTO save(PerspectiveDTO perspectiveDTO) {
         perspectiveDTO = saveJpa(perspectiveDTO);
         saveNeo(perspectiveDTO);
@@ -70,6 +71,7 @@ public class PerspectiveServiceImpl implements PerspectiveService {
     }
 
     @Override
+    @Transactional(value = "crossStoreTransactionManager")
     public PerspectiveDTO update(PerspectiveDTO perspectiveDTO) {
         perspectiveDTO = updateJpa(perspectiveDTO);
         updateNeo(perspectiveDTO);
@@ -107,6 +109,8 @@ public class PerspectiveServiceImpl implements PerspectiveService {
         return perspectiveDTO;
     }
 
+    @Cacheable(value = {"perspectives"},key="#a0")
+    @Override
     public Set<PerspectiveDTO> findPerspectivesByOrganizationId(Long id){
          Set<Perspective> perspectives = perspectiveRepository.findByOrganizationId(id);
          Set<PerspectiveDTO> perspectiveDTOSet = new HashSet<>();
@@ -117,6 +121,7 @@ public class PerspectiveServiceImpl implements PerspectiveService {
     }
 
     @Override
+    @Transactional(value = "crossStoreTransactionManager")
     public void delete(PerspectiveDTO perspectiveDTO) {
         Perspective perspective = perspectiveRepository.findOne(perspectiveDTO.getId());
         perspectiveRepository.delete(perspective);

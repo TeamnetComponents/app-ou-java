@@ -26,7 +26,7 @@ import java.util.HashMap;
  */
 
 @Service
-@Transactional(readOnly = true)
+@Transactional(value="jpaTransactionManager", readOnly = true)
 public class OrganizationalUnitUserDetailsPlugin implements UserDetailsDecoratorPlugin {
 
     public static final String USER_ORGANIZATIONAL_UNIT_DETAILS = "UserOrganizationalUnitDetails";

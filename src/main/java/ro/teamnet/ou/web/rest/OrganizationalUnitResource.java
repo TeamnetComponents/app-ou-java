@@ -3,6 +3,7 @@ package ro.teamnet.ou.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import ro.teamnet.ou.acl.aop.OUFilter;
 import ro.teamnet.ou.service.OUAccountService;
 import ro.teamnet.ou.service.OrganizationalUnitService;
+import ro.teamnet.ou.service.OrganizationalUnitServiceNeo;
 import ro.teamnet.ou.web.rest.dto.AccountDTO;
 import ro.teamnet.ou.web.rest.dto.OrganizationalUnitDTO;
 
@@ -29,6 +31,9 @@ public class OrganizationalUnitResource {
 
     @Inject
     private OrganizationalUnitService organizationalUnitService;
+
+    @Inject
+    private OrganizationalUnitServiceNeo organizationalUnitServiceNeo;
 
     @Inject
     private OUAccountService ouAccountService;
@@ -89,8 +94,9 @@ public class OrganizationalUnitResource {
     @RequestMapping(value = "/getTree/{rootId}",
             method = RequestMethod.GET)
     @Timed
+    @Cacheable("organizations")
     public String getTree(@PathVariable Long rootId) {
-        return organizationalUnitService.getTree(rootId);
+        return organizationalUnitServiceNeo.getTree(rootId);
     }
 
     // TODO killer query, fix or delete this
@@ -108,6 +114,13 @@ public class OrganizationalUnitResource {
     @OUFilter("ro.teamnet.ou.web.rest.dto.AccountDTO")
     public ResponseEntity<Collection<AccountDTO>> getAccounts(@PathVariable Long ouId) {
         return new ResponseEntity<>(ouAccountService.getAccountsInOrganizationalUnit(ouId), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/accountsByCode/{code}", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<Collection<ro.teamnet.bootstrap.web.rest.dto.AccountDTO>> getAccountsByCode(@PathVariable String code) {
+        return new ResponseEntity<>(ouAccountService.getAccountsInOrganizationalUnitByCode(code), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/eligibleAccounts/{ouId}", method = RequestMethod.GET,

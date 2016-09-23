@@ -29,7 +29,7 @@ import java.util.Set;
  * Service class for managing Functions.
  */
 @Service
-@Transactional
+@Transactional(value="jpaTransactionManager",readOnly = true)
 public class FunctionServiceImpl implements FunctionService {
 
     @Inject
@@ -73,6 +73,7 @@ public class FunctionServiceImpl implements FunctionService {
     }
 
     @Override
+    @Transactional(value = "crossStoreTransactionManager")
     public FunctionDTO save(FunctionDTO functionDto) {
         Function function = (functionDto.getId() != null) ?
                 FunctionMapper.updateJpa(functionRepository.findOne(functionDto.getId()), functionDto)
@@ -99,6 +100,7 @@ public class FunctionServiceImpl implements FunctionService {
     }
 
     @Override
+    @Transactional(value = "crossStoreTransactionManager")
     public void delete(Long id) {
         functionRepository.delete(id);
         for (ro.teamnet.ou.domain.neo.Function neoFunction : functionNeoRepository.findByJpaId(id)) {
@@ -112,6 +114,7 @@ public class FunctionServiceImpl implements FunctionService {
     }
 
     @Override
+    @Transactional(value="jpaTransactionManager")
     public void addToAccount(Long accountId, FunctionDTO functionDTO) {
         AccountFunction accountFunction = accountFunctionRepository.findByAccountIdAndFunctionId(accountId, functionDTO.getId());
         if (accountFunction == null) {
@@ -123,6 +126,7 @@ public class FunctionServiceImpl implements FunctionService {
     }
 
     @Override
+    @Transactional(value="jpaTransactionManager")
     public void removeFromAccount(Long accountId, Long functionId) {
         accountFunctionRepository.deleteByAccountIdAndFunctionId(accountId, functionId);
     }
@@ -133,9 +137,10 @@ public class FunctionServiceImpl implements FunctionService {
     }
 
     @Override
+    @Transactional(value="crossStoreTransactionManager")
     public void addToOrganizationalUnit(Long ouId, FunctionDTO functionDTO) {
         Set<OrganizationalUnitFunction> ouFunctions = ouFunctionRepository.getByOrgUnitIdAndFunctionId(ouId, functionDTO.getId());
-        if (ouFunctions == null || ouFunctions.size() == 0) {
+        if (ouFunctions == null || ouFunctions.isEmpty()) {
             OrganizationalUnitFunction ouFunction = new OrganizationalUnitFunction();
             ouFunction.setOrganizationalUnit(ouRepository.findOne(ouId));
             ouFunction.setFunction(functionRepository.findOne(functionDTO.getId()));
@@ -144,6 +149,7 @@ public class FunctionServiceImpl implements FunctionService {
     }
 
     @Override
+    @Transactional(value="jpaTransactionManager")
     public void removeFromOrganizationalUnit(Long ouId, Long functionId) {
         ouFunctionRepository.deleteByOrganizationalUnitIdAndFunctionId(ouId, functionId);
     }

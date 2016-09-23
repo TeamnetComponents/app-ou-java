@@ -42,7 +42,7 @@ public class AccountNeoRepositoryTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(value="neo4jTransactionManager")
     public void createAccount() {
         Account testAccount = accountNeoRepository.save(account);
         Account accountFound = accountNeoRepository.findOne(testAccount.getId());
@@ -54,7 +54,7 @@ public class AccountNeoRepositoryTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(value="neo4jTransactionManager")
     public void updateAccount() {
         Account testAccount = accountNeoRepository.save(account);
 
@@ -70,7 +70,7 @@ public class AccountNeoRepositoryTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(value="neo4jTransactionManager")
     public void deleteAccount() {
         Account testAccount = accountNeoRepository.save(account);
 

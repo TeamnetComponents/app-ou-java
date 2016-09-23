@@ -25,7 +25,7 @@ import java.util.Set;
  * Created by ionut.patrascu on 31.07.2015.
  */
 @Service
-@Transactional(readOnly = true)
+@Transactional(value="jpaTransactionManager", readOnly = true)
 public class OrganizationServiceImpl implements OrganizationService {
 
     @Inject
@@ -38,7 +38,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     private OrganizationalUnitService organizationalUnitService;
 
     @Override
-    @Transactional
+    @Transactional(value="crossStoreTransactionManager")
     public OrganizationDTO save(OrganizationDTO organizationDTO) {
         Organization organization = OrganizationMapper.toJPA(organizationDTO, true);
         organization = organizationRepository.save(organization);
@@ -47,7 +47,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         return OrganizationMapper.toDTO(organization, true);
     }
 
-    @Transactional
+
     private void saveNeo(OrganizationDTO organizationDTO) {
         ro.teamnet.ou.domain.neo.Organization neoOrganization = OrganizationMapper.toNeo(organizationDTO);
         ro.teamnet.ou.domain.neo.Organization existingNeoOrganization = organizationNeoRepository.findByJpaId(organizationDTO.getId());
@@ -58,7 +58,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
-    @Transactional
+    @Transactional(value="crossStoreTransactionManager")
     public OrganizationDTO update(OrganizationDTO organizationDTO) {
         Organization organization = OrganizationMapper.toJPA(organizationDTO);
         organization = organizationRepository.save(organization);
@@ -67,7 +67,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
-    @Transactional
+    @Transactional(value="jpaTransactionManager")
     public void delete(Long id) {
         Organization organization = organizationRepository.findOne(id);
         organizationRepository.delete(organization);
@@ -97,6 +97,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
+    @Transactional(value="crossStoreTransactionManager")
     public Set<OrganizationalUnit> getOUsInOrganization(Long organizationId) {
         Set<OrganizationalUnit> organizationalUnits = new HashSet<>();
         for (OrganizationalUnit organizationalUnit : organizationNeoRepository.findByJpaId(organizationId).getRoots()) {
@@ -133,7 +134,11 @@ public class OrganizationServiceImpl implements OrganizationService {
         }
 
         Collection<GrantedAuthority> grantedAuthorities = new HashSet<>();
+        if(ouExtensions==null){
+            return null;
+        }
         Collection<Function> functions = ouExtensions.getFunctions();
+
         for (Function function : functions) {
             grantedAuthorities.addAll(function.getModuleRights());
         }

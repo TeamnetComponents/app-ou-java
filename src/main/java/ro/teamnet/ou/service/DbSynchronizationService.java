@@ -3,6 +3,7 @@ package ro.teamnet.ou.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ro.teamnet.bootstrap.domain.Account;
 import ro.teamnet.bootstrap.repository.AccountRepository;
 import ro.teamnet.ou.domain.jpa.*;
@@ -16,7 +17,7 @@ import ro.teamnet.ou.repository.neo.*;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,7 +26,7 @@ import java.util.Set;
  * Created by Marian.Spoiala on 9/3/2015.
  */
 @Service
-@Transactional
+@Transactional(value="crossStoreTransactionManager")
 public class DbSynchronizationService {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -57,7 +58,7 @@ public class DbSynchronizationService {
     @Inject
     private FunctionNeoRepository functionNeoRepository;
 
-    @PostConstruct
+//    @PostConstruct
     public void synchronizeJpaAndNeoDbData() {
         syncAccounts();
         syncOrganizations();
@@ -83,6 +84,7 @@ public class DbSynchronizationService {
                 accountNeoRepository.save(accountNeo);
             }
         }
+        log.debug("End Synchronizing JPA Accounts with Neo...");
     }
 
     /**
@@ -173,7 +175,7 @@ public class DbSynchronizationService {
                 Function function = accountFunction.getFunction();
 
                 Set<ro.teamnet.ou.domain.neo.Function> neoFunctions = functionNeoRepository.findByJpaIdOuIdAndAccountId(account.getId(), organizationalUnit.getId());
-                if (neoFunctions.size() == 0) {
+                if (neoFunctions.isEmpty()) {
                     ro.teamnet.ou.domain.neo.Function neoFunction = new ro.teamnet.ou.domain.neo.Function();
                     neoFunction.setId(null);
                     neoFunction.setJpaId(function.getId());

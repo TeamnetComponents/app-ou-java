@@ -54,7 +54,7 @@ public class FunctionNeoRepositoryTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(value="neo4jTransactionManager")
     public void createFunction() {
         Account testAccount = accountNeoRepository.save(account);
         OrganizationalUnit testOrganizationalUnit = organizationalUnitNeoRepository.save(organizationalUnit);
@@ -77,7 +77,7 @@ public class FunctionNeoRepositoryTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(value="neo4jTransactionManager")
     public void updateFunction() {
         Account testAccount = accountNeoRepository.save(account);
         OrganizationalUnit testOrganizationalUnit = organizationalUnitNeoRepository.save(organizationalUnit);
@@ -103,7 +103,7 @@ public class FunctionNeoRepositoryTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(value="neo4jTransactionManager")
     public void deleteFunction() {
         Account testAccount = accountNeoRepository.save(account);
         OrganizationalUnit testOrganizationalUnit = organizationalUnitNeoRepository.save(organizationalUnit);

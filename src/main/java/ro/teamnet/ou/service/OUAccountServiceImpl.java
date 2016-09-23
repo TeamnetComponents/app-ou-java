@@ -1,7 +1,10 @@
 package ro.teamnet.ou.service;
 
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import ro.teamnet.bootstrap.repository.AccountRepository;
 import ro.teamnet.ou.domain.jpa.AccountFunction;
 import ro.teamnet.ou.domain.jpa.Function;
 import ro.teamnet.ou.domain.neo.Account;
@@ -21,7 +24,7 @@ import javax.inject.Inject;
 import java.util.*;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional(value="jpaTransactionManager", readOnly = true)
 public class OUAccountServiceImpl implements OUAccountService {
 
     @Inject
@@ -36,22 +39,53 @@ public class OUAccountServiceImpl implements OUAccountService {
     private OrganizationalUnitFunctionRepository ouFunctionRepository;
     @Inject
     private OrganizationalUnitRepository organizationalUnitRepository;
+    @Inject
+    private AccountRepository accountRepository;
 
     @Override
+    @Transactional(value = "neo4jTransactionManager",readOnly = true,propagation = Propagation.REQUIRES_NEW)
     public List<OrganizationalUnitDTO> getOrganizationalUnits(Long accountId) {
         ro.teamnet.ou.domain.neo.Account neoAccount = accountNeoRepository.findByJpaId(accountId);
         List<OrganizationalUnitDTO> organizationalUnitDTOs = new ArrayList<>();
-        Set<OrganizationalUnit> organizationalUnits = neoAccount.getOrganizationalUnits();
-        if (neoAccount == null || organizationalUnits == null) {
-            return organizationalUnitDTOs;
-        }
-        for (OrganizationalUnit organizationalUnit : organizationalUnits) {
-            organizationalUnitDTOs.add(OrganizationalUnitMapper.toDTO(organizationalUnit, true));
+        if (neoAccount != null) {
+            Set<OrganizationalUnit> organizationalUnits = neoAccount.getOrganizationalUnits();
+            for (OrganizationalUnit organizationalUnit : organizationalUnits) {
+                organizationalUnitDTOs.add(OrganizationalUnitMapper.toDTO(organizationalUnit, true));
+            }
         }
         return organizationalUnitDTOs;
     }
 
     @Override
+    @Transactional(value = "crossStoreTransactionManager",readOnly = true)
+    public Collection<ro.teamnet.bootstrap.web.rest.dto.AccountDTO> getAccountsInOrganizationalUnitByCode(String code) {
+        List<ro.teamnet.ou.domain.jpa.OrganizationalUnit> ou = organizationalUnitRepository.getOrganizationalUnitByCode(code);
+        if (ou.size() != 1) {
+            return Collections.emptySet();
+        } else {
+            Set<Long> accountIds = new HashSet<>();
+            Set<ro.teamnet.ou.domain.neo.Function> functions = ouNeoRepository.findByJpaId(ou.get(0).getId()).getFunctions();
+            if (functions != null && !functions.isEmpty()) {
+                for (ro.teamnet.ou.domain.neo.Function function : functions) {
+                    Long accountId = function.getAccount().getJpaId();
+                    if (!accountIds.contains(accountId)) {
+                        accountIds.add(accountId);
+                    }
+                }
+            }
+            Set<ro.teamnet.bootstrap.web.rest.dto.AccountDTO> accountDTOs = new HashSet<>();
+            for (Long id : accountIds) {
+                ro.teamnet.bootstrap.domain.Account account = accountRepository.getOneEager(id);
+                if (account != null) {
+                    accountDTOs.add(new ro.teamnet.bootstrap.web.rest.dto.AccountDTO(account, new HashSet<GrantedAuthority>(account.getRoles())));
+                }
+            }
+            return accountDTOs;
+        }
+    }
+
+    @Override
+    @Transactional(value = "crossStoreTransactionManager",readOnly = true)
     public Collection<AccountDTO> getAccountsInOrganizationalUnit(Long organizationalUnitId) {
         Map<Long, AccountDTO> accountsById = new HashMap<>();
         Set<ro.teamnet.ou.domain.neo.Function> functions = ouNeoRepository.findByJpaId(organizationalUnitId).getFunctions();
@@ -75,6 +109,7 @@ public class OUAccountServiceImpl implements OUAccountService {
     }
 
     @Override
+    @Transactional(value = "crossStoreTransactionManager",readOnly = true)
     public Collection<AccountDTO> getAccountsEligibleForOrganizationalUnit(Long organizationalUnitId) {
         Map<Long, AccountDTO> accountsById = new HashMap<>();
         Set<Function> availableOuFunctions = ouFunctionRepository.findFunctionsByOrganizationalUnitId(organizationalUnitId);
@@ -94,7 +129,7 @@ public class OUAccountServiceImpl implements OUAccountService {
     }
 
     @Override
-    @Transactional
+    @Transactional(value = "crossStoreTransactionManager")
     public void createOrUpdateOUAccountRelationships(Long ouId, Collection<AccountDTO> accounts) {
         OrganizationalUnit neoOrganizationalUnit = ouNeoRepository.findByJpaId(ouId);
         neoOrganizationalUnit.setAccounts(new HashSet<Account>());
@@ -114,7 +149,7 @@ public class OUAccountServiceImpl implements OUAccountService {
         organizationalUnitRepository.save(jpaOrganizationalUnit);
     }
 
-    @Transactional
+    @Transactional(value="neo4jTransactionManager")
     private void saveNeoFunction(OrganizationalUnit neoOrganizationalUnit, Account neoAccount, FunctionDTO functionDTO) {
         ro.teamnet.ou.domain.neo.Function neoFunction = new ro.teamnet.ou.domain.neo.Function();
         neoFunction.setOrganizationalUnit(neoOrganizationalUnit);
@@ -126,7 +161,7 @@ public class OUAccountServiceImpl implements OUAccountService {
     }
 
     @Override
-    @Transactional
+    @Transactional(value = "crossStoreTransactionManager")
     public void deleteOuAccountRelationships(Long ouId, Long accountId) {
         functionNeoRepository.deleteByOrganizationalUnitJpaIdAndAccountJpaId(ouId, accountId);
         ro.teamnet.ou.domain.jpa.OrganizationalUnit organizationalUnit = organizationalUnitRepository

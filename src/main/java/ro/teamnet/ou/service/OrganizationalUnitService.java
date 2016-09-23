@@ -22,7 +22,7 @@ public interface OrganizationalUnitService {
 
     Set<ro.teamnet.ou.domain.neo.OrganizationalUnit> getOrganizationalUnitTreeById(Long id);
 
-    String getTree(Long rootId);
+
 
     OrganizationalUnitDTO saveOUTreeRoot(PerspectiveDTO perspective);
 

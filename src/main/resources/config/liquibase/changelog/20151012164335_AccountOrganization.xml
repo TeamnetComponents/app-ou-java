@@ -4,9 +4,32 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="20151012164335" author="marian">
+    <changeSet id="20151012164335" author="marian" dbms="!mssql">
         <createTable tableName="T_ORGANIZATION_ACCOUNT">
             <column name="ID" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="ACCOUNT_ID" type="bigint"/>
+            <column name="ORGANIZATION_ID" type="bigint"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="ACCOUNT_ID"
+                                 baseTableName="T_ORGANIZATION_ACCOUNT"
+                                 constraintName="fk_account_organization_a"
+                                 referencedColumnNames="ID_ACCOUNT"
+                                 referencedTableName="T_ACCOUNT"/>
+
+        <addForeignKeyConstraint baseColumnNames="ORGANIZATION_ID"
+                                 baseTableName="T_ORGANIZATION_ACCOUNT"
+                                 constraintName="fk_account_organization_f"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="T_ORGANIZATION"/>
+
+    </changeSet>
+
+    <changeSet id="20151012164335" author="marian" dbms="mssql">
+        <createTable tableName="T_ORGANIZATION_ACCOUNT">
+            <column name="ID" autoIncrement="false" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="ACCOUNT_ID" type="bigint"/>
