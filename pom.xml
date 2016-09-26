@@ -11,7 +11,7 @@
 
 	<groupId>ro.teamnet.ou</groupId>
     <artifactId>app-ou-java</artifactId>
-    <version>0.4</version>
+    <version>0.5-SNAPSHOT</version>
     <packaging>jar</packaging>
 	
     <distributionManagement>
@@ -73,7 +73,7 @@
 	<scm>
         <url>http://git-components.teamnet.ro/summary/components%2Fjava%2Fplatform-extensions%2Fapp-ou-java.git</url>
         <connection>scm:git:http://component-publisher@git-components.teamnet.ro/r/components/java/platform-extensions/app-ou-java.git</connection>
-        <tag>v0.4</tag>
+        <tag>HEAD</tag>
     </scm>
 	
 	<build>
