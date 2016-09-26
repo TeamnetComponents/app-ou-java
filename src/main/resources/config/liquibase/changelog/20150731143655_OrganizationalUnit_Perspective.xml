@@ -13,7 +13,7 @@
 
         <addForeignKeyConstraint baseColumnNames="PERSPECTIVE_ID"
                                  baseTableName="T_ORGANIZATIONAL_UNIT"
-                                 constraintName="fk_organizational_unit_perspective"
+                                 constraintName="fk_ou_perspective"
                                  referencedColumnNames="ID"
                                  referencedTableName="T_PERSPECTIVE"/>
     </changeSet>
